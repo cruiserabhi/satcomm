@@ -9,7 +9,7 @@
 cwd=$PWD
 
 # list of failures to be ignored
-IGNORE_DIR_LIST=("apps/reference/rits/tests" "apps/reference/rits/tests/applicationTest" "apps/reference/rits/tests/qMonitorTest" "apps/reference/rits/tests/qimcTest" "apps/reference" "apps/samples" "apps/samples/cv2x")
+IGNORE_DIR_LIST=("apps/reference/rits/tests" "apps/reference/rits/tests/applicationTest" "apps/reference/rits/tests/qMonitorTest" "apps/reference/rits/tests/qimcTest" "apps/reference" "apps/samples/cv2x")
 
 build_app() {
   dir=$1
@@ -26,7 +26,7 @@ build_app() {
   else
     mkdir -p build
     cd build
-    cmake .. -DCMAKE_INSTALL_PREFIX=./install -DCMAKE_INSTALL_SYSCONFDIR=$SDKTARGETSYSROOT/etc/ -DBUILD_ALL_SAMPLES=ON 2>&1 > /dev/null
+    cmake .. -DCMAKE_INSTALL_PREFIX=./install -DCMAKE_INSTALL_SYSCONFDIR=$SDKTARGETSYSROOT/etc/ -DBUILD_ALL_SAMPLES=ON -DTELSDK_FEATURE_SATCOM=ON 2>&1 > /dev/null
     if [ $? != "0" ]
     then
       echo "===$dir: cmake failed"
