@@ -92,23 +92,58 @@ ${GRPC_SRC_DIR}/CMakeLists.txt: ${GRPC_ARCHIVE}
 # repository root (DOWNLOAD_CACHE) before falling back to network URLs
 # that match the hashes referenced in grpc/bazel/grpc_deps.bzl.
 define ensure_grpc_dep
-	set -e; \
-	target_dir="$(1)"; \
-	archive_name="$(2)"; \
-	strip_components="$(3)"; \
-	urls="$(4)"; \
-	if [ -d $$target_dir ] && find $$target_dir -mindepth 1 -print -quit | grep -q .; then \
-		echo "Using existing $$target_dir"; \
-	else \
-		archive_path=${THIRD_PARTY}/$$archive_name; \
-		$(call download_with_fallback,$$urls,$$archive_path); \
-		mkdir -p $$target_dir; \
-		tar -xzf $$archive_path -C $$target_dir --strip-components=$$strip_components; \
-	fi
+        set -e; \
+        target_dir="$(1)"; \
+        archive_name="$(2)"; \
+        strip_components="$(3)"; \
+        urls="$(4)"; \
+        local_archives="$(5)"; \
+        if [ -d $$target_dir ] && find $$target_dir -mindepth 1 -print -quit | grep -q .; then \
+                echo "Using existing $$target_dir"; \
+        else \
+                archive_path=${THIRD_PARTY}/$$archive_name; \
+                if [ -n "$$local_archives" ]; then \
+                        for local_src in $$local_archives; do \
+                                if [ -f $$local_src ]; then \
+                                        archive_path=${THIRD_PARTY}/$$(basename $$local_src); \
+                                        echo "Using local archive $$local_src -> $$archive_path"; \
+                                        mkdir -p $$(dirname $$archive_path); \
+                                        cp $$local_src $$archive_path; \
+                                        break; \
+                                fi; \
+                        done; \
+                fi; \
+                if [ -f $$archive_path ] && [ ! -s $$archive_path ]; then \
+                        echo "Removing empty archive $$archive_path"; \
+                        rm -f $$archive_path; \
+                fi; \
+                if [ ! -f $$archive_path ]; then \
+                        $(call download_with_fallback,$$urls,$$archive_path); \
+                fi; \
+                mkdir -p $$target_dir; \
+                case $$archive_path in \
+                        *.zip) \
+                                tmpdir=$$(mktemp -d); \
+                                unzip -q $$archive_path -d $$tmpdir; \
+                                srcdir=$$tmpdir; \
+                                if [ $$strip_components -gt 0 ]; then \
+                                        for i in $$(seq 1 $$strip_components); do \
+                                                srcdir=$$(find $$srcdir -mindepth 1 -maxdepth 1 -type d | head -n1); \
+                                                if [ -z "$$srcdir" ]; then echo "ERROR: unable to strip $$strip_components component(s) from $$archive_path"; rm -rf $$tmpdir; exit 1; fi; \
+                                        done; \
+                                fi; \
+                                (cd $$srcdir && tar cf - .) | (cd $$target_dir && tar xf -); \
+                                rm -rf $$tmpdir; \
+                                ;; \
+                        *) \
+                                tar -xzf $$archive_path -C $$target_dir --strip-components=$$strip_components; \
+                                ;; \
+                esac; \
+        fi
 endef
 
 grpc-deps: ${GRPC_SRC_DIR}/CMakeLists.txt
-	$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/abseil-cpp,abseil-cpp-20220623.0.tar.gz,1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/abseil/abseil-cpp/archive/20220623.0.tar.gz https://github.com/abseil/abseil-cpp/archive/20220623.0.tar.gz)
+	$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/abseil-cpp,abseil-cpp-20220623.0.tar.gz,1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/abseil/abseil-cpp/archive/20220623.0.tar.gz https://github.com/abseil/abseil-cpp/archive/20220623.0.tar.gz,${REPO_TOP}/abseil-cpp-master.zip ${REPO_TOP}/grpc-1.52.1/third_party/abseil-cpp-master.zip ${REPO_TOP}/grpc-1.52.1/third_party/abseil-cpp-20220623.0.tar.gz)
 	$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/cares/cares,c-ares-6654436a307a5a686b008c1d4c93b0085da6e6d8.tar.gz,1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/c-ares/c-ares/archive/6654436a307a5a686b008c1d4c93b0085da6e6d8.tar.gz https://github.com/c-ares/c-ares/archive/6654436a307a5a686b008c1d4c93b0085da6e6d8.tar.gz)
 	$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/re2,re2-2022-04-01.tar.gz,1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/google/re2/archive/2022-04-01.tar.gz https://github.com/google/re2/archive/2022-04-01.tar.gz)
 	$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/zlib,zlib-04f42ceca40f73e2978b50e93806c2a18c1281fc.tar.gz,1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/madler/zlib/archive/04f42ceca40f73e2978b50e93806c2a18c1281fc.tar.gz https://github.com/madler/zlib/archive/04f42ceca40f73e2978b50e93806c2a18c1281fc.tar.gz)
