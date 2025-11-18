@@ -7,6 +7,8 @@ export PATH := ${SIM_REPO}/build/build/bin:$(PATH)
 
 THIRD_PARTY := ${SIM_REPO}/third_party
 DOWNLOAD_PROXY ?=
+# Optional directory containing pre-downloaded dependency archives to avoid network fetches.
+DOWNLOAD_CACHE ?=
 DOWNLOAD_ENV := env
 ifneq (${DOWNLOAD_PROXY},)
 DOWNLOAD_ENV := env https_proxy=${DOWNLOAD_PROXY} http_proxy=${DOWNLOAD_PROXY}
@@ -17,11 +19,21 @@ define download_with_fallback
 	urls="$(1)"; \
 	out="$(2)"; \
 	mkdir -p $$(dirname $$out); \
+	if [ -n "${DOWNLOAD_CACHE}" ]; then \
+		for url in $$urls; do \
+			candidate=${DOWNLOAD_CACHE}/$$(basename $$url); \
+			if [ -f $$candidate ]; then \
+				echo "Using cached archive $$candidate -> $$out"; \
+				cp $$candidate $$out; \
+				exit 0; \
+			fi; \
+		done; \
+	fi; \
 	for url in $$urls; do \
-	        echo "Fetching $$url -> $$out"; \
-	        if ${DOWNLOAD_ENV} wget -O $$out $$url; then exit 0; fi; \
-	        if [ -n "${DOWNLOAD_PROXY}" ]; then echo "Proxy download failed for $$url; retrying without proxy"; fi; \
-	        if env -u https_proxy -u http_proxy wget -O $$out $$url; then exit 0; fi; \
+		echo "Fetching $$url -> $$out"; \
+		if ${DOWNLOAD_ENV} wget -O $$out $$url; then exit 0; fi; \
+		if [ -n "${DOWNLOAD_PROXY}" ]; then echo "Proxy download failed for $$url; retrying without proxy"; fi; \
+		if env -u https_proxy -u http_proxy wget -O $$out $$url; then exit 0; fi; \
 	done; \
 	echo "ERROR: unable to download $$urls"; \
 	exit 1
