@@ -1,4 +1,6 @@
 export SIM_REPO := $(CURDIR)
+# Root of the satcomm repository (one level above simulation/).
+REPO_TOP := $(abspath ${SIM_REPO}/..)
 
 ROOTFS ?= $(SIM_REPO)/rootfs
 export ROOTFS
@@ -8,7 +10,7 @@ export PATH := ${SIM_REPO}/build/build/bin:$(PATH)
 THIRD_PARTY := ${SIM_REPO}/third_party
 DOWNLOAD_PROXY ?=
 # Optional directory containing pre-downloaded dependency archives to avoid network fetches.
-DOWNLOAD_CACHE ?=
+DOWNLOAD_CACHE ?= ${REPO_TOP}
 DOWNLOAD_ENV := env
 ifneq (${DOWNLOAD_PROXY},)
 DOWNLOAD_ENV := env https_proxy=${DOWNLOAD_PROXY} http_proxy=${DOWNLOAD_PROXY}
@@ -43,6 +45,8 @@ GRPC_VERSION ?= 1.52.1
 GRPC_ARCHIVE := ${THIRD_PARTY}/grpc-v${GRPC_VERSION}.tar.gz
 GRPC_ARCHIVE_URL ?= https://github.com/grpc/grpc/archive/refs/tags/v${GRPC_VERSION}.tar.gz
 GRPC_ARCHIVE_FALLBACK_URL ?= https://storage.googleapis.com/grpc-bazel-mirror/github.com/grpc/grpc/archive/refs/tags/v${GRPC_VERSION}.tar.gz
+LOCAL_GRPC_ARCHIVE ?= ${REPO_TOP}/grpc-${GRPC_VERSION}.tar.gz
+LOCAL_GRPC_MASTER_ZIP ?= ${REPO_TOP}/grpc-master.zip
 GRPC_SRC_DIR := ${THIRD_PARTY}/grpc-${GRPC_VERSION}
 GRPC_BUILD_DIR := ${SIM_REPO}/build/build_grpc
 CMAKE_PREFIX_LIST := ${ROOTFS}/lib/cmake;/usr/lib/x86_64-linux-gnu/cmake
@@ -63,7 +67,21 @@ builddir:
 	mkdir -p build
 
 ${GRPC_ARCHIVE}:
-	$(call download_with_fallback,${GRPC_ARCHIVE_URL} ${GRPC_ARCHIVE_FALLBACK_URL},${GRPC_ARCHIVE})
+	@mkdir -p $$(dirname ${GRPC_ARCHIVE})
+	@if [ -f ${LOCAL_GRPC_ARCHIVE} ]; then \
+		echo "Using local gRPC archive ${LOCAL_GRPC_ARCHIVE} -> ${GRPC_ARCHIVE}"; \
+		cp ${LOCAL_GRPC_ARCHIVE} ${GRPC_ARCHIVE}; \
+	elif [ -f ${LOCAL_GRPC_MASTER_ZIP} ]; then \
+		echo "Repacking ${LOCAL_GRPC_MASTER_ZIP} into ${GRPC_ARCHIVE}"; \
+		tmpdir=$$(mktemp -d); \
+		unzip -q ${LOCAL_GRPC_MASTER_ZIP} -d $$tmpdir; \
+		srcdir=$$(find $$tmpdir -maxdepth 1 -type d -name "grpc-*" | head -n1); \
+		if [ -z "$$srcdir" ]; then echo "ERROR: Unable to locate grpc sources in ${LOCAL_GRPC_MASTER_ZIP}"; rm -rf $$tmpdir; exit 1; fi; \
+		tar -czf ${GRPC_ARCHIVE} -C $$tmpdir $$(basename $$srcdir); \
+		rm -rf $$tmpdir; \
+	else \
+		$(call download_with_fallback,${GRPC_ARCHIVE_URL} ${GRPC_ARCHIVE_FALLBACK_URL},${GRPC_ARCHIVE}); \
+	fi
 
 ${GRPC_SRC_DIR}/CMakeLists.txt: ${GRPC_ARCHIVE}
 	mkdir -p ${THIRD_PARTY}
@@ -116,10 +134,14 @@ jsoncpp-build: ${JSONCPP_SRC_DIR}/CMakeLists.txt cmake | builddir
 	cd ${JSONCPP_BUILD_DIR} && cmake --build . --target install -- -j $(shell nproc)
 
 cmake: | builddir
-	$(call download_with_fallback,${CMAKE_INSTALLER_URL} ${CMAKE_INSTALLER_FALLBACK_URL},${CMAKE_INSTALLER})
-	chmod a+x ${CMAKE_INSTALLER}
-	cd build && ${CMAKE_INSTALLER} --prefix=${PWD}/build --skip-license
-	rm -f ${CMAKE_INSTALLER}
+	@if command -v cmake >/dev/null 2>&1; then \
+		echo "Using system CMake ($$(cmake --version | head -n1))"; \
+	else \
+		$(call download_with_fallback,${CMAKE_INSTALLER_URL} ${CMAKE_INSTALLER_FALLBACK_URL},${CMAKE_INSTALLER}); \
+		chmod a+x ${CMAKE_INSTALLER}; \
+		cd build && ${CMAKE_INSTALLER} --prefix=${PWD}/build --skip-license; \
+		rm -f ${CMAKE_INSTALLER}; \
+	fi
 
 grpc: | builddir
 	mkdir -p ${ROOTFS}/bin ${ROOTFS}/include ${ROOTFS}/lib ${ROOTFS}/lib/pkgconfig
