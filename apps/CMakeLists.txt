@@ -1,52 +1,17 @@
 cmake_minimum_required(VERSION 3.10.2)
 
-project(HarmanSatCommService LANGUAGES C CXX)
+# Aggregate the various telematics application targets. The project name
+# is referenced by downstream CMake files (e.g. telematics-apps_SOURCE_DIR).
+project(telematics-apps)
 
-set(CMAKE_C_STANDARD 99)
-set(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+# Console app framework used by many samples and tests.
+add_subdirectory(common/console_app_framework)
 
-# TelSDK headers are under /usr/include/telux like Qualcomm's test app. :contentReference[oaicite:13]{index=13}
-include_directories(BEFORE
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${CMAKE_CURRENT_SOURCE_DIR}/include
-  ${CMAKE_CURRENT_SOURCE_DIR}/ConfigLoader
-  /usr/include/telux
-)
+# Reference applications.
+add_subdirectory(reference)
 
-# cJSON sources that your NtnConfigLoader.hpp depends on
-set(CJSON_SRC
-  ${CMAKE_CURRENT_SOURCE_DIR}/ConfigLoader/cJSON.c
-  ${CMAKE_CURRENT_SOURCE_DIR}/ConfigLoader/cJSON_Utils.c
-)
+# Sample applications (includes satcom samples such as HarmanSatCommService).
+add_subdirectory(samples)
 
-# ---------- Shared library ----------
-set(SVC_SRC
-  src/C_SatCommService.cpp
-)
-set(SVC_HDR
-  include/HarmanSatCommService/C_SatCommService.hpp
-)
-
-add_library(harman_satcom_service SHARED ${SVC_SRC} ${SVC_HDR} ${CJSON_SRC})
-target_compile_options(harman_satcom_service PRIVATE -Wall -Wextra -Werror)
-target_link_libraries(harman_satcom_service PRIVATE telux_satcom pthread)
-
-install(TARGETS harman_satcom_service
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        RUNTIME DESTINATION bin)
-install(DIRECTORY include/HarmanSatCommService/ DESTINATION include/HarmanSatCommService)
-
-# ---------- AudioTest app ----------
-add_executable(AudioTest
-  tests/AudioTest.cpp
-  ${CJSON_SRC}
-)
-target_compile_options(AudioTest PRIVATE -Wall -Wextra -Werror)
-target_link_libraries(AudioTest PRIVATE harman_satcom_service telux_satcom pthread)
-
-# (Optional) mimic Qualcomm sample style for install
-install(TARGETS AudioTest RUNTIME DESTINATION bin)
+# Test applications.
+add_subdirectory(tests)
