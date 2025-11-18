@@ -159,7 +159,7 @@ cleanall: clean
 	rm -rf build simulation/protos/proto-src
 
 headers: | builddir
-	cd build && mkdir -p build_telux_headers && cd build_telux_headers && cmake -DCMAKE_INSTALL_PREFIX=${ROOTFS} ../../include && make install
+	cd build && mkdir -p build_telux_headers && cd build_telux_headers && cmake -DCMAKE_INSTALL_PREFIX=${ROOTFS} ${REPO_TOP}/include && make install
 
 jsoncpp: | builddir
 	mkdir -p ${ROOTFS}/include/jsoncpp ${ROOTFS}/lib
@@ -232,7 +232,10 @@ sim: headers grpc jsoncpp | builddir
 	cd build && export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${ROOTFS}/lib/ && export PKG_CONFIG_PATH=${ROOTFS}/lib/pkgconfig:${PKG_CONFIG_PATH} && mkdir -p build_sim && cd build_sim && cmake -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_PREFIX_PATH='${CMAKE_PREFIX_LIST}' -DCMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES=${ROOTFS}/include -DCMAKE_INSTALL_PREFIX=${ROOTFS} ../../simulation && cmake --build . -- -j $(shell nproc) && cmake --build . --target install
 
 apps: sim | builddir
-	cd build && export PKG_CONFIG_PATH=${ROOTFS}/lib/pkgconfig:${PKG_CONFIG_PATH} && mkdir -p build_apps && cd build_apps && cmake -DCMAKE_PREFIX_PATH='${CMAKE_PREFIX_LIST}' -DCMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES=${ROOTFS}/include -DCMAKE_INSTALL_PREFIX=${ROOTFS} -DBUILD_ALL_SAMPLES=ON -DTELSDK_FEATURE_SATCOM=ON ../../apps && cmake --build . -- -j $(shell nproc) && cmake --build . --target install
+        cd build && export PKG_CONFIG_PATH=${ROOTFS}/lib/pkgconfig:${PKG_CONFIG_PATH} && mkdir -p build_apps && cd build_apps && cmake -DCMAKE_PREFIX_PATH='${CMAKE_PREFIX_LIST}' -DCMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES=${ROOTFS}/include -DCMAKE_INSTALL_PREFIX=${ROOTFS} -DBUILD_ALL_SAMPLES=ON -DTELSDK_FEATURE_SATCOM=ON ../../apps && cmake --build . -- -j $(shell nproc) && cmake --build . --target install
+
+harman-satcom-service: sim | builddir
+        cd build && export PKG_CONFIG_PATH=${ROOTFS}/lib/pkgconfig:${PKG_CONFIG_PATH} && mkdir -p build_apps && cd build_apps && cmake -DCMAKE_PREFIX_PATH='${CMAKE_PREFIX_LIST}' -DCMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES=${ROOTFS}/include -DCMAKE_INSTALL_PREFIX=${ROOTFS} -DBUILD_ALL_SAMPLES=ON -DTELSDK_FEATURE_SATCOM=ON ../../apps && cmake --build . --target harman_satcom_service AudioTest -- -j $(shell nproc) && cmake --build . --target install
 
 docker-image: apps
 	cd ${ROOTFS}/.. && docker build --build-arg="ROOTFS=${ROOTFS_BN}" -t telsdk-sim-image -f ${SIM_REPO}/simulation/docker/ubuntu_$${UBUNTU_VERSION}/Dockerfile.run . && echo "Docker image "telsdk-sim-image" is created. Use below command to drop to the shell" && echo "docker run -ti --device=/dev/snd/ --rm -h telsdk_simulation -v telsdk_volume:/data --name telsdk_simulation telsdk-sim-image"
