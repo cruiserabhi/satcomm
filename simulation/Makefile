@@ -3,10 +3,26 @@ export SIM_REPO := $(CURDIR)
 ROOTFS ?= $(SIM_REPO)/rootfs
 export ROOTFS
 export ROOTFS_BN := $(shell basename ${ROOTFS})
+export PATH := ${SIM_REPO}/build/build/bin:$(PATH)
+
+THIRD_PARTY := ${SIM_REPO}/third_party
+GRPC_VERSION ?= 1.52.1
+GRPC_ARCHIVE := ${THIRD_PARTY}/grpc-v${GRPC_VERSION}.tar.gz
+GRPC_SRC_DIR := ${THIRD_PARTY}/grpc-${GRPC_VERSION}
+GRPC_BUILD_DIR := ${SIM_REPO}/build/build_grpc
+CMAKE_PREFIX_LIST := ${ROOTFS}/lib/cmake;/usr/lib/x86_64-linux-gnu/cmake
 
 # Ensure the shared build directory exists before any targets that rely on it.
 builddir:
 	mkdir -p build
+
+${GRPC_ARCHIVE}:
+	mkdir -p ${THIRD_PARTY}
+	wget -O ${GRPC_ARCHIVE} https://github.com/grpc/grpc/archive/refs/tags/v${GRPC_VERSION}.tar.gz
+
+${GRPC_SRC_DIR}/CMakeLists.txt: ${GRPC_ARCHIVE}
+	mkdir -p ${THIRD_PARTY}
+	tar -xzf ${GRPC_ARCHIVE} -C ${THIRD_PARTY}
 
 all: apps
 
@@ -42,22 +58,33 @@ cmake: | builddir
 	cd build && wget https://cmake.org/files/v3.15/cmake-3.15.3-Linux-x86_64.sh && chmod a+x ./cmake-3.15.3-Linux-x86_64.sh && ./cmake-3.15.3-Linux-x86_64.sh --prefix=${PWD}/build --skip-license && rm cmake-3.15.3-Linux-x86_64.sh
 
 grpc: | builddir
-	if ! command -v grpc_cpp_plugin >/dev/null 2>&1; then \
-		echo "grpc_cpp_plugin is missing; please install gRPC C++ development tools"; \
-		exit 1; \
+	mkdir -p ${ROOTFS}/bin ${ROOTFS}/include ${ROOTFS}/lib
+	if command -v grpc_cpp_plugin >/dev/null 2>&1 && pkg-config --exists protobuf grpc grpc++; then \
+		echo "Using system gRPC/protobuf artifacts"; \
+		cp $$(command -v grpc_cpp_plugin) ${ROOTFS}/bin/; \
+		if command -v protoc >/dev/null 2>&1; then cp $$(command -v protoc) ${ROOTFS}/bin/; fi; \
+		if pkg-config --variable=includedir protobuf >/dev/null 2>&1; then cp -r $$(pkg-config --variable=includedir protobuf)/google ${ROOTFS}/include/; fi; \
+		if pkg-config --variable=includedir grpc >/dev/null 2>&1; then cp -r $$(pkg-config --variable=includedir grpc)/grpc ${ROOTFS}/include/; fi; \
+		if pkg-config --variable=includedir grpc++ >/dev/null 2>&1; then cp -r $$(pkg-config --variable=includedir grpc++)/grpcpp ${ROOTFS}/include/; fi; \
+		find $$(pkg-config --variable=libdir protobuf) -maxdepth 1 -name 'libprotobuf*.so*' -exec cp {} ${ROOTFS}/lib/ \; && \
+		find $$(pkg-config --variable=libdir grpc) -maxdepth 1 -name 'libgrpc*.so*' -exec cp {} ${ROOTFS}/lib/ \; && \
+		find $$(pkg-config --variable=libdir grpc++) -maxdepth 1 -name 'libgrpc++*.so*' -exec cp {} ${ROOTFS}/lib/ \; ; \
+	else \
+		$(MAKE) grpc-build; \
 	fi
-	if ! pkg-config --exists protobuf; then \
-		echo "protobuf development files are missing; please install libprotobuf-dev"; \
-		exit 1; \
-	fi
-	mkdir -p ${ROOTFS}/lib
-	find /usr/lib/x86_64-linux-gnu -maxdepth 1 -name 'libprotobuf*.so*' -o -name 'libgrpc*.so*' -exec cp {} ${ROOTFS}/lib/ \;
+
+
+grpc-build: ${GRPC_SRC_DIR}/CMakeLists.txt cmake | builddir
+	mkdir -p ${GRPC_BUILD_DIR}
+	cd ${GRPC_BUILD_DIR} && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${ROOTFS} -DgRPC_INSTALL=ON -DgRPC_BUILD_TESTS=OFF -DgRPC_ABSL_PROVIDER=module -DgRPC_CARES_PROVIDER=module -DgRPC_PROTOBUF_PROVIDER=module -DgRPC_RE2_PROVIDER=module -DgRPC_SSL_PROVIDER=module -DgRPC_ZLIB_PROVIDER=module ${GRPC_SRC_DIR}
+	cd ${GRPC_BUILD_DIR} && cmake --build . --target grpc_cpp_plugin -- -j $(shell nproc)
+	cd ${GRPC_BUILD_DIR} && cmake --build . --target install -- -j $(shell nproc)
 
 sim: headers grpc jsoncpp | builddir
-	cd build && export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${ROOTFS}/lib/ && mkdir -p build_sim && cd build_sim && cmake -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_PREFIX_PATH=/usr/lib/x86_64-linux-gnu/cmake -DCMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES=${ROOTFS}/include -DCMAKE_INSTALL_PREFIX=${ROOTFS} ../../simulation && cmake --build . -- -j $(shell nproc) && cmake --build . --target install
+	cd build && export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${ROOTFS}/lib/ && export PKG_CONFIG_PATH=${ROOTFS}/lib/pkgconfig:${PKG_CONFIG_PATH} && mkdir -p build_sim && cd build_sim && cmake -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_PREFIX_PATH='${CMAKE_PREFIX_LIST}' -DCMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES=${ROOTFS}/include -DCMAKE_INSTALL_PREFIX=${ROOTFS} ../../simulation && cmake --build . -- -j $(shell nproc) && cmake --build . --target install
 
 apps: sim | builddir
-	cd build && mkdir -p build_apps && cd build_apps && cmake -DCMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES=${ROOTFS}/include -DCMAKE_INSTALL_PREFIX=${ROOTFS} -DBUILD_ALL_SAMPLES=ON -DTELSDK_FEATURE_SATCOM=ON ../../apps && cmake --build . -- -j $(shell nproc) && cmake --build . --target install
+	cd build && export PKG_CONFIG_PATH=${ROOTFS}/lib/pkgconfig:${PKG_CONFIG_PATH} && mkdir -p build_apps && cd build_apps && cmake -DCMAKE_PREFIX_PATH='${CMAKE_PREFIX_LIST}' -DCMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES=${ROOTFS}/include -DCMAKE_INSTALL_PREFIX=${ROOTFS} -DBUILD_ALL_SAMPLES=ON -DTELSDK_FEATURE_SATCOM=ON ../../apps && cmake --build . -- -j $(shell nproc) && cmake --build . --target install
 
 docker-image: apps
 	cd ${ROOTFS}/.. && docker build --build-arg="ROOTFS=${ROOTFS_BN}" -t telsdk-sim-image -f ${SIM_REPO}/simulation/docker/ubuntu_$${UBUNTU_VERSION}/Dockerfile.run . && echo "Docker image "telsdk-sim-image" is created. Use below command to drop to the shell" && echo "docker run -ti --device=/dev/snd/ --rm -h telsdk_simulation -v telsdk_volume:/data --name telsdk_simulation telsdk-sim-image"
