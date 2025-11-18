@@ -3,7 +3,7 @@
  * @brief Implementation of C_SatCommService.
  */
 
-#include "HarmanSatCommService/C_SatCommService.hpp"
+#include "C_SatCommService.hpp"
 #include <iostream>  // logging
 
 using namespace telux::satcom;
