@@ -1,0 +1,139 @@
+/**
+@page linux_group Linux groups
+
+Certain APIs of the SDK require the caller to be part of one or more Linux groups. Given below is a summary of APIs and the corresponding group IDs required by the caller. This mapping of API and group Ids might differ based on the software product family. The table below also lists the applicable software product.
+
+<b>Common</b>
+
+@table{3,{\raggedright}p{1.00in},{\raggedright}p{2.80in},{\raggedright}p{2.35in}}
+@trfirsthdg
+@thmultcol{1,|c|} Linux group @thmultcolend @thmultcol{1,c|} Usage @thmultcolend @thmultcollast{1,c|} Applicable software products @thmultcollastend
+@trfirsthdgend
+@trhdg
+@thdg{1,|c|,Linux group} @thdg{1,c|,Usage} @thdglast{1,c|,Applicable software products}
+@trhdgend
+
+@tr @td system @tdend @td Accessing telsdk configuration files (for ex; /etc/tel.conf) @tdend @tdlast All software products with 4.14 or older Linux kernel @tdlastend @trend
+@tr @td diag @tdend @td Logging using diag (qxdm logs) @tdend @tdlast All software products with 4.14 or older Linux kernel @tdlastend @trend
+@tr @td system @tdend @td Logging on file on file system @tdend @tdlast All software products with 4.14 or older Linux kernel @tdlastend @trend
+@tr @td telux @tdend @td Logging on file on file system @tdend @tdlast All software products with 5.4 or newer Linux kernel @tdlastend @trend
+@tableend
+
+<b>Location</b>
+
+@table{3,{\raggedright}p{1.00in},{\raggedright}p{2.80in},{\raggedright}p{2.35in}}
+@trfirsthdg
+@thmultcol{1,|c|} Linux group @thmultcolend @thmultcol{1,c|} Usage @thmultcolend @thmultcollast{1,c|} Applicable software products @thmultcollastend
+@trfirsthdgend
+@trhdg
+@thdg{1,|c|,Linux group} @thdg{1,c|,Usage} @thdglast{1,c|,Applicable software products}
+@trhdgend
+
+@tr @td locclient @tdend @td Needed by APIs in telux::loc::* namespace. @tdend @tdlast All software products @tdlastend @trend
+@tableend
+
+<b>Sensor</b>
+
+@table{3,{\raggedright}p{1.00in},{\raggedright}p{2.80in},{\raggedright}p{2.35in}}
+@trfirsthdg
+@thmultcol{1,|c|} Linux group @thmultcolend @thmultcol{1,c|} Usage @thmultcolend @thmultcollast{1,c|} Applicable software products @thmultcollastend
+@trfirsthdgend
+@trhdg
+@thdg{1,|c|,Linux group} @thdg{1,c|,Usage} @thdglast{1,c|,Applicable software products}
+@trhdgend
+
+@tr @td sensors @tdend @td Needed by APIs in telux::sensor::ISensorManager, telux::sensor::ISensorFeatureManager, telux::sensor::ISensor/telux::sensor::ISensorClient namespace. @tdend @tdlast All software products except SPs for SA415M target @tdlastend @trend
+@tableend
+
+<b>Power</b>
+
+@table{3,{\raggedright}p{1.00in},{\raggedright}p{2.80in},{\raggedright}p{2.35in}}
+@trfirsthdg
+@thmultcol{1,|c|} Linux group @thmultcolend @thmultcol{1,c|} Usage @thmultcolend @thmultcollast{1,c|} Applicable software products @thmultcollastend
+@trfirsthdgend
+@trhdg
+@thdg{1,|c|,Linux group} @thdg{1,c|,Usage} @thdglast{1,c|,Applicable software products}
+@trhdgend
+
+@tr @td net_raw @tdend @td Needed by APIs in telux::power::ITcuActivityManager. @tdend @tdlast All software products @tdlastend @trend
+@tableend
+
+<b>Cv2x</b>
+
+@table{3,{\raggedright}p{1.00in},{\raggedright}p{2.80in},{\raggedright}p{2.35in}}
+@trfirsthdg
+@thmultcol{1,|c|} Linux group @thmultcolend @thmultcol{1,c|} Usage @thmultcolend @thmultcollast{1,c|} Applicable software products @thmultcollastend
+@trfirsthdgend
+@trhdg
+@thdg{1,|c|,Linux group} @thdg{1,c|,Usage} @thdglast{1,c|,Applicable software products}
+@trhdgend
+
+@tr @td radio @tdend @td Required for communication with modem firmware. @tdend @tdlast All software products @tdlastend @trend
+@tableend
+
+<b>Data</b>
+
+@table{3,{\raggedright}p{1.00in},{\raggedright}p{2.80in},{\raggedright}p{2.35in}}
+@trfirsthdg
+@thmultcol{1,|c|} Linux group @thmultcolend @thmultcol{1,c|} Usage @thmultcolend @thmultcollast{1,c|} Applicable software products @thmultcollastend
+@trfirsthdgend
+@trhdg
+@thdg{1,|c|,Linux group} @thdg{1,c|,Usage} @thdglast{1,c|,Applicable software products}
+@trhdgend
+
+@tr @td inet @tdend @td Required for accessing data layers. @tdend @tdlast All software products @tdlastend @trend
+@tableend
+
+<b>Platform</b>
+
+@table{3,{\raggedright}p{1.00in},{\raggedright}p{2.80in},{\raggedright}p{2.35in}}
+@trfirsthdg
+@thmultcol{1,|c|} Linux group @thmultcolend @thmultcol{1,c|} Usage @thmultcolend @thmultcollast{1,c|} Applicable software products @thmultcollastend
+@trfirsthdgend
+@trhdg
+@thdg{1,|c|,Linux group} @thdg{1,c|,Usage} @thdglast{1,c|,Applicable software products}
+@trhdgend
+
+@tr @td system @tdend @td Required for QMI access to fs-hms QMI service (/etc/sec_config) @tdend @tdlast All software products based on sa415m target @tdlastend @trend
+@tableend
+
+<b>Telephony</b>
+
+@table{3,{\raggedright}p{1.00in},{\raggedright}p{2.80in},{\raggedright}p{2.35in}}
+@trfirsthdg
+@thmultcol{1,|c|} Linux group @thmultcolend @thmultcol{1,c|} Usage @thmultcolend @thmultcollast{1,c|} Applicable software products @thmultcollastend
+@trfirsthdgend
+@trhdg
+@thdg{1,|c|,Linux group} @thdg{1,c|,Usage} @thdglast{1,c|,Applicable software products}
+@trhdgend
+
+@tr @td net_raw or radio @tdend @td Required by APIs in telux::tel::IPhoneManager, telux::tel::IPhone, telux::tel::ICallManager, telux::tel::ICall, telux::tel::INetworkSelectionManager and telux::tel::IServingSystemManager. @tdend @tdlast All software products based on mdm9650, mdm9607 and sa415m targets @tdlastend @trend
+@tr @td radio @tdend @td Required by APIs in telux::tel::ISubscriptionManager, telux::tel::ISubscription, telux::tel::ICardManager, telux::tel::ICard, telux::tel::ISapCardManager, telux::tel::ISimProfileManager, telux::tel::ICellBroadcastManager, telux::tel::IRemoteSimManager and telux::tel::IMultiSimManager. @tdend @tdlast All software products based on mdm9650, mdm9607 and sa415m targets @tdlastend @trend
+@tableend
+
+<b>Security</b>
+
+@table{3,{\raggedright}p{1.00in},{\raggedright}p{2.80in},{\raggedright}p{2.35in}}
+@trfirsthdg
+@thmultcol{1,|c|} Linux group @thmultcolend @thmultcol{1,c|} Usage @thmultcolend @thmultcollast{1,c|} Applicable software products @thmultcollastend
+@trfirsthdgend
+@trhdg
+@thdg{1,|c|,Linux group} @thdg{1,c|,Usage} @thdglast{1,c|,Applicable software products}
+@trhdgend
+
+@tr @td mvm @tdend @td Required for accessing crypto accelerator. @tdend @tdlast All software products @tdlastend @trend
+@tableend
+
+<b>Audio</b>
+
+Does not require application to join any particular group.
+
+<b>Thermal</b>
+
+Does not require application to join any particular group.
+
+<b>Config</b>
+
+Does not require application to join any particular group.
+
+*/

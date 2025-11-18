@@ -1,0 +1,14 @@
+{
+    "ITcuActivityManager": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 400,
+        "DefaultCallbackDelay" : 400,
+        "setActivityState": {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "setModemActivityState": {
+            "status": "SUCCESS"
+        }
+    }
+}

@@ -1,0 +1,34 @@
+{
+  "version": "1.0",
+  "satcom": {
+    "init_timeout_ms": 2500
+  },
+  "ntn": {
+    "enable": true,
+    "slot_id": 1,
+    "require_profile_active": false,
+    "system_selection": {
+      "service_domain_preference": "PS_ONLY",
+      "rat_preferences": {
+        "modes": [
+          "PREF_NB1_NTN"
+        ],
+        "raw_bitmask_override": null
+      },
+      "bands": {
+        "gsm_bands": [],
+        "wcdma_bands": [],
+        "lte_bands": [],
+        "nr_nsa_bands": [],
+        "nr_sa_bands": []
+      }
+    }
+  },
+  "data_plane": {
+    "app_id": 0,
+    "max_tx_pdu_override": null
+  },
+  "diagnostics": {
+    "log_level": "WARN"
+  }
+}

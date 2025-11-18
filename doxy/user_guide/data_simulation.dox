@@ -1,0 +1,109 @@
+/**
+@page data_simulation Data Simulation
+<br>
+- - -
+@section data_overview Overview of Data Simulation
+- - -
+This page and the sub-pages provide information about usage of simulation for the data
+sub-system that are part of the telux::data namespace of the Telematics SDK.
+
+@anchor fig_data_sim_overview
+@latexonly
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.60]{simulation_data_overview.PNG}
+  \renewcommand{\thefigure}{\thechapter-\arabic{figure}}
+  \caption{Data Simulation Framework}
+  \label{fig_data_sim_overview}
+\end{figure}
+@endlatexonly
+
+@html_image{simulation_data_overview.png,"",50,50,Data Simulation Framework}
+
+<br>
+
+- - -
+@section mngr_support Managers Supported
+- - -
+The following managers are currently available in the simulation:
+1. DataConnectionManager
+2. DataProfileManager
+3. DataFilterManager
+4. DataSettingsManager
+5. ServingSystemManager
+6. SocksManager
+7. NatManager
+8. L2tpManager
+9. FirewallManager
+
+<br>
+- - -
+@section data_resp Data APIs Response handling
+- - -
+
+The framework allows responses of each API to be configured using a JSON file.<br>
+Each manager has its own JSON configuration file present under <i>simulation/json/api/data/</i>, For example <br><br>
+<b>Data Connection Manager:</b> configured via simulation/json/api/data/IDataConnectionManager.json has API command response for telux::data::IDataConnectionManager::getDefaultProfile<br>
+<pre>
+"getDefaultProfile": {
+    "callbackDelay": 400,
+    "error": "SUCCESS",
+    "status": "SUCCESS"
+},
+</pre>
+The JSON file holds the default values and could be updated dynamically by the users of the simulation.
+
+<br>
+
+- - -
+@section net_config Network Interface Configuration
+- - -
+To simulate data calls, the framework requires physical interfaces provided by the host or docker environment, to be configured. Each data call would be mapped to one physical interface.
+<br>
+
+To configure which interface should be used, in tel.conf update the following configuration:
+sim.data.physical_interface_name = eth0, eth1
+Here the first data call that is brought up will be mapped to eth0 and second will be mapped to eth 1. If the client attempts to bring up a third data call it will fail because no more physical interfaces are available.
+
+If a host/docker is limited in the number of interfaces it has, one could use the following commands to add virtual interfaces.
+<br>
+<br>
+@subsection single_iface If the host machine does not have multiple interfaces available:
+
+Considering the host machine has only eth0 interface available, the client can add the virtual interfaces using the command <i>ip addr add <IP_ADDRESS>/subnet dev eth0 label eth0:1</i>.
+Now user can update <i>sim.data.physical_interface_name = eth0, eth0:1</i> in <i>/etc/telux/tel.conf</i>.
+The first datacall would be started with interface eth0 and the second datacall would be started with interface eth0:1.
+Any further attempt to start the datacall would result in failure to start datacall and telux::data::IDataCall object will return NET_NO_NET.
+<br><br>
+
+@subsection docker_v6_config IPv6 support inside docker container
+Docker does not have IPv6 support by default. Users of the simulation can follow the steps below to enable IPv6 inside docker container.
+\code{.sh}
+$ vi /etc/docker/daemon.json
+
+"ipv6": true,
+"fixed-cidr-v6": "<SUBNET>",
+"dns": [<dnsAddress1>,<dnsAddress2>,<dnsAddress3>,<dnsAddress4>],
+"experimental": true,
+"ip6tables": true,
+
+$ systemctl restart docker
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+Once above settings are done in daemon.json, we can enable IPv6 support with the following options, while starting the docker container.
+<br>
+
+<h3><i>--cap-add=NET_ADMIN --sysctl net.ipv6.conf.all.disable_ipv6=0</i></h3>
+<br>
+
+- - -
+@section notes Additional notes
+- - -
+1. To simulate data calls, the framework requires physical interfaces provided by the host or docker environment, to be configured.
+2. Listener APIs under IServingSystemListener are not yet supported in simulation.
+3. SSR use-cases are not yet supported.
+
+*/

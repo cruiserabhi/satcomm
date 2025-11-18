@@ -1,0 +1,11 @@
+{
+    "ISocksManager": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 400,
+        "DefaultCallbackDelay" : 400,
+        "enableSocks": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        }
+    }
+}

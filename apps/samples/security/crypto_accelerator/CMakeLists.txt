@@ -1,0 +1,6 @@
+add_subdirectory(ecc_verify_sync)
+add_subdirectory(ecc_verify_async_poll)
+add_subdirectory(ecc_verify_async_listener)
+add_subdirectory(ecqv_calc_sync)
+add_subdirectory(ecqv_calc_async_poll)
+add_subdirectory(ecqv_calc_async_listener)

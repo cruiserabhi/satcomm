@@ -1,0 +1,112 @@
+{
+    "IServingSystemManager" :
+    {
+        "RATPreference" : "1 2 3",
+        "_comment_RATPreference" : "Refer telux::tel::RatPrefType  for more details",
+        "ServiceDomainPreference" : 2,
+        "_comment_ServiceDomainPreference" : "Refer telux::tel::ServiceDomainPreference for more details",
+        "DcStatus" :
+        {
+            "endcAvailability" : 0,
+            "_comment_endcAvailability" : "Refer telux::tel::EndcAvailability for more details",
+            "dcnrRestriction" : 1,
+            "_comment_dcnrRestriction" : "Refer telux::tel::DcnrRestriction  for more details"
+        },
+        "NetworkTimeInfo" :
+
+        {
+            "year" : 2024,
+            "month" : 1,
+            "day" : 12,
+            "hour" : 18,
+            "minute" : 30,
+            "second" : 10,
+            "dayOfWeek" : 4,
+            "timeZone" :10,
+            "dstAdj" : 0,
+            "nitzTime" : "2024/01/12,01::10+01",
+            "_comment_NetworkTimeInfo" : "Refer telux::tel::NetworkTimeInfo for more details"
+        },
+        "RFBandInfo" :
+        {
+            "rFBand" : 1,
+            "_comment_rFBand" : "Refer telux::tel::RFBand for more details",
+            "channel" : 1,
+            "bandwidth" : 1,
+            "_comment_bandwidth" : "Refer telux::tel::RFBandWidth for more details"
+        },
+        "ServingSystemInfo" :
+        {
+            "rat" : 14,
+            "_comment_rat" : "Refer telux::tel::RadioTechnology for more details",
+            "domain" : 4,
+            "_comment_domain" : "Refer telux::tel::ServiceDomain for more details",
+            "registrationState" : 2,
+            "_comment_registrationState" : "Refer telux::tel::ServiceRegistrationState
+                                            for more details"
+        },
+        "NetworkRejectInfo" :
+        {
+            "ServingSystemInfo" :
+            {
+                "rat" : 14,
+                "_comment_rat" : "Refer telux::tel::RadioTechnology for more details",
+                "domain" : 3,
+                "_comment_domain" : "Refer telux::tel::ServiceDomain for more details"
+            },
+            "rejectCause" : 15,
+            "_comment_rejectCause" : "Refer to 3GPP TS 24.008, 3GPP TS 24.301 and 3GPP TS 24.501",
+            "mcc" : "310",
+            "mnc" : "260"
+        },
+        "CallBarringInfo" :
+        {
+            "infoList" :
+            [
+                 {
+                     "rat" : 20,
+                     "_comment_rat" : "Refer telux::tel::RadioTechnology for more details",
+                     "domain" : 2,
+                     "_comment_domain" : "Refer telux::tel::ServiceDomain for more details",
+                     "callType" : 3,
+                     "_comment_callType" : "Refer to telux::tel::CallsAllowedInCell for more details"
+                 }
+            ]
+        },
+        "SmsCapability" :
+        {
+            "rat" : 14,
+            "_comment_rat" : "Refer telux::tel::RadioTechnology for more details",
+            "domain" : 2,
+            "_comment_domain" : "Refer telux::tel::SmsDomain for more details",
+            "ntnSmsStatus" : 0,
+            "_comment_ntnSmsStatus" : "Refer telux::tel::NtnSmsStatus for more details"
+        },
+        "LteCsCapability" : 0,
+        "_comment_LteCsCapability" : "Refer telux::tel::LteCsCapability for more details",
+        "BandPreference" :
+        {
+            "gsmBands" : "1 2 3",
+            "_comment_gsmBands" : "Refer telux::tel::GsmRFBand for more details",
+            "wcdmaBands" : "5 6 7",
+            "_comment_wcdmaBands" : "Refer telux::tel::WcdmaRFBand for more details",
+            "lteBands" : "10 11 12",
+            "_comment_lteBands" : "Refer telux::tel::LteRFBand for more details",
+            "nsaBands" : "99 102",
+            "_comment_nsaBands" : "Refer telux::tel::NrRFBand for more details",
+            "saBands" : "96 259",
+            "_comment_saBands" : "Refer telux::tel::NrRFBand for more details"
+        },
+        "BandCapability" :
+        {
+            "gsmBands" : "1 2 3 5 6 7 8 9",
+            "_comment_gsmBands" : "Refer telux::tel::GsmRFBand for more details",
+            "wcdmaBands" : "1 2 3 5 6 7 8 9",
+            "_comment_wcdmaBands" : "Refer telux::tel::WcdmaRFBand for more details",
+            "lteBands" : "1 2 3 5 6 7 8 9 10 11 12",
+            "_comment_lteBands" : "Refer telux::tel::LteRFBand for more details",
+            "nrBands" : "1 2 3 5 7 8 96 99 102 259",
+            "_comment_nrBands" : "Refer telux::tel::NrRFBand for more details"
+        }
+    }
+}

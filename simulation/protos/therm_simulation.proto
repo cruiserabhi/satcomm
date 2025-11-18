@@ -1,0 +1,143 @@
+/*
+ * Copyright (c) 2023-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
+
+syntax = "proto3";
+
+package thermStub;
+import "google/protobuf/empty.proto";
+import "common_simulation.proto";
+
+/*******************************************************************
+ * Services Definition                                             *
+ *******************************************************************/
+
+/*
+ * This service is used to execute Thermal related APIs.
+ */
+service Thermal {
+    rpc InitService (google.protobuf.Empty) returns (commonStub.GetServiceStatusReply) {}
+    rpc GetServiceStatus(google.protobuf.Empty) returns (commonStub.GetServiceStatusReply) {}
+
+    rpc GetThermalZones (GetThermalZonesRequest) returns (GetThermalZonesReply) {}
+    rpc GetCoolingDevices (GetCoolingDevicesRequest) returns (GetCoolingDevicesReply) {}
+    rpc GetThermalZoneById (GetThermalZoneByIdRequest) returns (GetThermalZoneByIdReply) {}
+    rpc GetCoolingDeviceById (GetCoolingDeviceByIdRequest) returns (GetCoolingDeviceByIdReply) {}
+
+    rpc RegisterOnCoolingDeviceLevelChange (google.protobuf.Empty)
+        returns (stream RegisterOnCoolingDeviceLevelChangeReply) {}
+    rpc DeRegisterOnCoolingDeviceLevelChange (commonStub.DeRegisterNotificationRequest)
+        returns (google.protobuf.Empty) {}
+
+    rpc RegisterOnTripEvent (google.protobuf.Empty) returns (stream RegisterOnTripEventReply) {}
+    rpc DeRegisterOnTripEvent (commonStub.DeRegisterNotificationRequest)
+        returns (google.protobuf.Empty) {}
+}
+
+/*******************************************************************
+ * Messages Definition                                             *
+ *******************************************************************/
+
+// Mapped to telux::thermStub::ThermalManager::TripType
+message TripPoint {
+    enum TripType {
+        UNKNOWN = 0;
+        CRITICAL = 1;
+        HOT = 2;
+        PASSIVE = 3;
+        ACTIVE = 4;
+        CONFIGURABLE_HIGH = 5;
+        CONFIGURABLE_LOW = 6;
+    };
+    TripType trip_type = 1;
+    int32 threshold_temp = 2;
+    int32 hysteresis = 3;
+    int32 trip_id = 4;
+    int32 tzone_id = 5;
+}
+
+message BoundCoolingDevice {
+    int32 cooling_device_id = 1;
+    repeated TripPoint trip_points = 2;
+}
+
+//Thermal Zone info
+message ThermalZone {
+    int32 id = 1;
+    string type = 2;
+    int32 current_temp = 3;
+    int32 passive_temp = 4;
+    repeated TripPoint trip_points = 5;
+    repeated BoundCoolingDevice bound_cooling_devices = 6;
+}
+
+message GetThermalZonesRequest {
+    ProcType oper_type = 1;
+}
+
+message GetThermalZonesReply {
+    repeated ThermalZone thermal_zones = 1;
+}
+
+//Cooling Device info
+message CoolingDevice {
+    int32 id = 1;
+    string type = 2;
+    int32 max_cooling_state = 3;
+    int32 current_cooling_state = 4;
+}
+
+message GetCoolingDevicesRequest {
+    ProcType oper_type = 1;
+}
+
+message GetCoolingDevicesReply {
+    repeated CoolingDevice cooling_devices = 1;
+}
+
+message GetThermalZoneByIdRequest {
+    ProcType oper_type = 1;
+    int32 id = 2;
+}
+
+message GetThermalZoneByIdReply {
+    ThermalZone thermal_zone = 1;
+}
+
+message GetCoolingDeviceByIdRequest {
+    ProcType oper_type = 1;
+    int32 id = 2;
+}
+
+message GetCoolingDeviceByIdReply {
+    CoolingDevice cooling_device = 1;
+}
+
+enum ProcType {
+    LOCAL_PROC = 0;
+    REMOTE_PROC = 1;
+}
+
+enum ThermalNotificationType {
+    TNT_TRIP_UPDATE = 0;
+    TNT_CDEV_LEVEL_UPDATE = 1;
+    TNT_MAX_TYPE = 2;
+}
+
+enum TripEvent {
+    CROSSED_UNDER = 0;
+    NONE = -1;
+    CROSSED_OVER = 1;
+}
+
+message RegisterOnCoolingDeviceLevelChangeReply {
+    int32 client_id = 1;
+    CoolingDevice cooling_device = 2;
+}
+
+message RegisterOnTripEventReply {
+    int32 client_id = 1;
+    TripPoint trip_point = 2;
+    TripEvent trip_event = 3;
+}

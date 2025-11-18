@@ -1,0 +1,30 @@
+{
+    "IDataProfileManager": {
+        "requestProfileList": {
+            "profiles": [
+                {
+                    "profileName":"profile1",
+                    "profileId":1,
+                    "apn":"ims",
+                    "apnTypes":"0000000000000001",
+                    "techPref":"TP_3GPP",
+                    "ipFamilyType":"IPV4",
+                    "authProtocolType":"AUTH_PAP",
+                    "username":"",
+                    "password":""
+                },
+                {
+                    "profileName":"profile2",
+                    "profileId":2,
+                    "apn":"w1v4v6.com",
+                    "apnTypes":"0000000000000010",
+                    "techPref":"TP_3GPP",
+                    "ipFamilyType":"IPV4V6",
+                    "authProtocolType":"AUTH_PAP",
+                    "username":"",
+                    "password":""
+                }
+            ]
+        }
+    }
+}

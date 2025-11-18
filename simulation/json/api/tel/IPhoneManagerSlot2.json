@@ -1,0 +1,51 @@
+{
+    "IPhoneManager" :
+    {
+        "DefaultCallbackDelay" : 400,
+        "requestVoiceServiceState" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "setRadioPower" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestCellInfo" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "setCellInfoListRate" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestSignalStrength" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "setECallOperatingMode" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestECallOperatingMode" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestOperatorInfo" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "configureSignalStrength" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        }
+    }
+}

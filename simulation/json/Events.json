@@ -1,0 +1,431 @@
+{
+    "json_update": {
+        "modify":[
+            "telsdk_event_injector -f json_update -e modify <path> <subsystem>.<api>.<attribute> <val>",
+            "path:        path of the JSON to be updated.",
+            "subsystem:   subsystem for which API behavior needs to be modified.",
+            "api:         api for which a particular attribute has to be updated.",
+            "attribute:   attribute to be updated.",
+            "val:         value to be set."
+        ]
+    },
+    "tel_sub": {
+        "subscriptionInfo":[
+            "telsdk_event_injector -f tel_sub -e subscriptionInfoChanged <slotId> <carrierName> <phoneNumber> <iccId> <mcc> <mnc> <imsi> <gid1> <gid2>",
+            "slotId:      valid slot_ids are 1 & 2 only.",
+            "carrierName:  valid carrierName.",
+            "phoneNumber:  valid phoneNumber.",
+            "iccId:        valid iccId",
+            "mcc:          valid mcc",
+            "mnc:          valid mnc",
+            "imsi:         valid imsi",
+            "gid1:         valid gid1",
+            "gid2:         valid gid2"
+        ]
+    },
+    "tel_card": {
+        "cardInfo":[
+            "telsdk_event_injector -f tel_card -e cardInfoChanged <slotId> <cardPower> <isNtnProfileActive>",
+            "slotId:       valid slotIds are 1 & 2 only.",
+            "cardPower:    valid 1-Power ON, 0-Power OFF.",
+            "isNtnProfileActive: valid isNtnProfileActive are 0 - not active and 1 - active only."
+        ],
+        "simRefresh":[
+            "telsdk_event_injector -f tel_card -e simRefresh <mode> <fileId> <filePath> <sessionId> <aid>",
+            "mode:      0-RESET, 1-INIT, 2-INIT_FCN, 3-FCN, 4- INIT_FULL_FCN, 5-RESET_APP, 6-RESET_3G.",
+            "fileId:    Elementary file id in SIM.",
+            "filePath:  Elementary file path.",
+            "sessionId: 0-PRIMARY, 2-SECONDARY, 4-NONPROVISIONING_SLOT1, 5-NONPROVISIONING_SLOT2, 6-CARD_ON_SLOT1, 7-CARD_ON_SLOT2",
+            "aid:       AID (Application Identifier) applicable for NONPROVISIONING session type."
+        ]
+    },
+    "tel_sms": {
+        "memoryfull":[
+            "telsdk_event_injector -f tel_sms -e memoryfull <slotId> <storageType>",
+            "slotId:       valid slotIds are 1 & 2 only.",
+            "storageType:  valid storage types are NONE , SIM"
+        ],
+        "incomingsms":[
+            "telsdk_event_injector -f tel_sms -e incomingsms <slotId> <numberOfSegments> <refNumber> <segmentNumber> <encoding> <isMetaInfoValid> <pdu> <sender> <text>",
+            "slotId:           valid slotIds are 1 & 2 only",
+            "numberOfSegments: valid number of segments",
+            "refNumber:        valid refNumber",
+            "segmentNumber:    valid segmentNumber",
+            "encoding:         valid encoding",
+            "isMetaInfoValid:  valid isMetaInfoValid",
+            "pdu:              valid pdu",
+            "sender:           valid sender",
+            "text:             valid text"
+        ]
+    },
+    "loc_config":{
+        "xtra_status":[
+            "telsdk_event_injector -f loc_config -e xtra_status <validity> <dataStatus>",
+            "validity         Number of hours that xtra assistance data will remain valid",
+            "dataStatus       Valid status correspond to enum values of telux::loc::XtraDataStatus, eg: 1,2,3."
+        ],
+        "constellation_update":[
+            "telsdk_event_injector -f loc_config -e constellation_update <mask>",
+            "mask             A mask to enable different signals. Refer to telux::loc::GnssSignalType for the signals that can be enabled. An example of a valid mask is 0x1FFFFF."
+        ]
+    },
+    "loc_mgr":{
+        "capabilities_update":[
+            "telsdk_event_injector -f loc_mgr -e capabilities_update <action> <mask>",
+            "action: valid values - add/remove. Event to be used to add or remove capabilities that are indicated via @refILocationListener::onCapabilitiesInfo",
+            "mask: Integer mask for different capabilities. Refer to telux::loc::LocCapabilityType for the capabilities that can be added/removed."
+        ],
+        "sysinfo_update_current":[
+            "telsdk_event_injector -f loc_mgr -e sysinfo_update_current <current seconds> ",
+            "current: Current leap seconds, in unit of seconds"
+        ],
+        "sysinfo_update_leapsecond" :[
+            "telsdk_event_injector -f loc_mgr -e sysinfo_update_leapsecond <system_week> <system_msec> <leap_seconds_before_change> <leap_seconds_after_change>",
+            "system_week:                    Extended week number at reference tick",
+            "system_msec:                    Time into the current week at reference tick",
+            "leap_seconds_before_change:     Number of leap seconds prior to the leap second change event",
+            "leap_seconds_after_change:      Number of leap seconds after the leap second change event"
+        ],
+        "disaster_crisis_report" : [
+            "telsdk_event_injector -f loc_mgr -e disaster_crisis_report <path>",
+            "path:                    path to the json file containing disaster and crisis report, for example: system-info/loc/ILocationManager.json"
+        ]
+    },
+    "throttle_mgr": {
+        "filter_update":[
+            "telsdk_event_injector -f throttle_mgr -e filter_update <filterNumber>",
+            "filterNumber: new verification filter"
+        ],
+        "sanity_update":[
+            "telsdk_event_injector -f throttle_mgr -e sanity_update <sanityState>",
+            "sanityState: true if in good state, otherwise false"
+        ]
+    },
+    "sensor_feature": {
+        "sensor_event":[
+            "telsdk_event_injector -f sensor_feature -e sensor_event <featureName> <eventId>",
+            "featureName       string, Valid features are available from JSON configuration.",
+            "eventId           Integer, valid event Id are available from csv data file"
+        ]
+    },
+    "sensor_mgr": {
+        "selfTestFailed":[
+            "telsdk_event_injector -f sensor_mgr -e selfTestFailed <sensorMask>",
+            "sensorMask         Integer mask to represent self test failure for multiple sensors.",
+                               "Accelerometer = (1 << 0)",
+                               "Gyroscope = (1 << 1)"
+        ]
+    },
+    "audio": {
+        "ssr":[
+            "telsdk_event_injector -f audio -e ssr <serviceStatus>",
+            "serviceStatus:  valid service status are SERVICE_AVAILABLE, SERVICE_UNAVAILABLE & SERVICE_FAILED."
+        ],
+        "dtmf_tone":[
+            "telsdk_event_injector -f audio -e dtmf_tone <lowFreq> <highFreq>",
+            "lowFreq: valid lowFreqs are 697, 770, 852 & 941 only.",
+            "highFreq: valid highFreqs are 1209, 1336, 1477 & 1633 only"
+        ]
+    },
+    "tel_call": {
+        "msdUpdateRequest":[
+            "telsdk_event_injector -f tel_call -e msdUpdateRequest <slotId>",
+            "slotId:       valid slotIds are 1 & 2 only."
+        ],
+        "incomingCall":[
+            "telsdk_event_injector -f tel_call -e incomingCall <slotId> <phonenumber> <rttMode>",
+            "slotId:           valid slotIds are 1 & 2 only.",
+            "phonenumber:      valid phonenumber ",
+            "rttMode:          valid rttMode are 0 - DISABLED and 1 - FULL only"
+        ],
+        "hangupCall":[
+            "telsdk_event_injector -f tel_call -e hangupCall <slotId> <callId>",
+            "slotId:           valid slotIds are 1 & 2 only." ,
+            "callId:           valid callId"
+        ],
+        "modifyCallRequest" : [
+            "telsdk_event_injector -f tel_call -e modifyCallRequest <slotId> <callId>",
+            "slotId:           valid slotIds are 1 & 2 only." ,
+            "callId:           valid callId"
+        ],
+        "rttMessageRequest" : [
+            "telsdk_event_injector -f tel_call -e rttMessageRequest <slotId> <message>",
+            "slotId:           valid slotIds are 1 & 2 only." ,
+            "message:          valid message"
+        ]
+    },
+    "tel_phone": {
+        "signalStrengthUpdate": [
+            "telsdk_event_injector -f tel_phone -e signalStrengthUpdate <slotId> ,<Rat1> <p1> <p2> <p3> <...> ,<Rat2> <p1> <p2> <p3> <...>",
+            "slotId:           integer, valid slotIds are 1 & 2 only.",
+            "Note: Signal Strength is separated by comma and each RAT signal info is represented as below",
+            "rat:     string, RAT type. RAT for retrieving Signal Strength information. valid values are GSM, LTE, WCDMA, NR5G, NB1_NTN.",
+            "In case of RAT is GSM,   integer, p1->gsmSignalStrength, p2->gsmBitErrorRate.",
+            "In case of RAT is LTE,   integer, p1->lteSignalStrength, p2->lteRsrp, p3->lteRsrq, p4->lteRssnr, p5->lteCqi, p6->timingAdvance.",
+            "In case of RAT is WCDMA, integer, p1->signalstrength, p2-> bitErrorRate, p3->ecio, p4->rscp.",
+            "In case of RAT is NR5G,  integer, p1->rsrp, p2->rsrq, p3->rssnr.",
+            "In case of RAT is NB1_NTN,  integer, p1->signalStrength, p2->rsrp, p3->rsrq, p4->rssnr.",
+            "CDMA and TDSCDMA are deprecated.",
+            "example: telsdk_event_injector -f tel_phone -e \"signalStrengthUpdate 1 ,GSM 28 3 ,WCDMA 29 6 -10 -54 ,LTE 23 -50 -5 200 13 11 ,NR5G -50 15 300 ,NB1_NTN 23 -50 -5 200\""
+        ],
+        "cellInfoListUpdate": [
+            "telsdk_event_injector -f tel_phone -e cellInfoListUpdate <slotId> ,<cellType1> <isRegistered> <p1> <p2> <p3> <....> ,<cellType2> <isRegistered> <p1> <p2> <p3> <....>",
+            "slotId:       integer, valid slotIds are 1 & 2 only.",
+            "Note: Cell info list is separated by comma and each RAT cell info is represented as below",
+            "cellType:     integer, Cell type. Valid cellTypes are GSM-1, LTE-3, WCDMA-4, NR5G-6, NB1_NTN-7 (CDMA and TDSCDMA not supported)",
+            "isRegistered: integer, Registered cell or not, Valid values are 1 or 0",
+            "GSM cell info:  <cellType> <isRegistered> <p1->mcc> <p2->mnc> <p3->lac> <p4->cid> <p5->arfcn> <p6->bsic> <p7->gsmSignalStrength> <p8->gsmBitErrorRate>",
+            "WCDMA cell info:  <cellType> <isRegistered> <p1->mcc> <p2->mnc> <p3->lac> <p4->cid> <p5->psc> <p6->uarfcn> <p7->signalStrength> <p8->bitErrorRate> <p9->ecio> <p10->rscp>",
+            "LTE cell info:  <cellType> <isRegistered> <p1->mcc> <p2->mnc> <p3->ci> <p4->pci> <p5->tac> <p6->earfcn> <p7->lteSignalStrength> <p8->lteRsrp> <p9->lteRsrq> <p10->lteRssnr> <p11->lteCqi> <p12->timingAdvance>",
+            "NR5G cell info:  <cellType> <isRegistered> <p1->mcc> <p2->mnc> <p3->ci> <p4->pci> <p5->tac> <p6->arfcn> <p7->rsrp> <p8->rsrq> <p9->rssnr>",
+            "NB1_NTN cell info:  <cellType> <isRegistered> <p1->mcc> <p2->mnc> <p3->ci> <p4->tac> <p5->earfcn> <p6->signalStrength> <p7->rsrp> <p8->rsrq> <p9->rssnr>",
+            "example: telsdk_event_injector -f tel_phone -e \"cellInfoListUpdate 1 ,1 1 310 00 70 81 10 1 28 5,4 0 311 00 70 81 10 1 30 3 -10 -54,3 0 312 00 10 11 13 14 23 -50 -5 200 13 11,6 0 313 00 10 20 30 40 -50 15 300,7 0 311 00 70 10 1 10 -10 -54 200\""
+        ],
+        "voiceServiceStateUpdate": [
+            "telsdk_event_injector -f tel_phone -e voiceServiceStateUpdate <slotId> <voiceServiceState> <voiceServiceDenialCause> <radioTech>",
+            "slotId:                   integer, valid slotIds are 1 & 2 only.",
+            "voiceServiceState:        integer, Voice service state. Refer SDK documentation enum VoiceServiceState. For example REG_HOME = 1 and REG_DENIED = 3 ",
+            "voiceServiceDenialCause:  integer, Voice service denial failure cause. Refer SDK documentation enum VoiceServiceDenialCause. For example NETWORK_FAILURE = 17",
+            "radioTech:                integer, Radio technology for Voice service state. Refer SDK documentation enum RadioTechnology. For example RADIO_TECH_LTE = 14",
+            "example: telsdk_event_injector -f tel_phone -e \"voiceServiceStateUpdate 1 1 17 14\""
+
+        ],
+        "operatingModeUpdate":[
+            "telsdk_event_injector -f tel_phone -e operatingModeUpdate <operatingMode>",
+            "operatingMode:   integer, valid 0-ONLINE, 1-AIRPLANE MODE, 2-FACTORY TEST, 3-OFFLINE, 4-RESETTING, 5-SHUTTING DOWN, 6-PERSISTENT LOW POWER."
+        ],
+        "eCallOperatingModeUpdate": [
+            "telsdk_event_injector -f tel_phone -e eCallOperatingModeUpdate <slotId> <ecallMode> <ecallModeReason>",
+            "slotId:            integer, valid slotIds are 1 & 2 only.",
+            "ecallMode:         integer, valid 0-NORMAL, 1-ECALL_ONLY, 2-NONE. ",
+            "ecallModeReason:   integer, valid 0-NORMAL, 1- ERA_GLONASS."
+        ],
+        "operatorInfoUpdate": [
+            "telsdk_event_injector -f tel_phone -e operatorInfoUpdate <slotId> <longName> <shortName> <plmn> <isHome>",
+            "slotId:            integer, valid slotIds are 1 & 2 only.",
+            "longName:          string, Valid operator long name",
+            "shortName:         string, Valid operator short name.",
+            "plmn:              string, Valid plmn name.",
+            "isHome:            bool, Valid value is 1 or 0 signifies PLMN is in home network or not. "
+        ]
+    },
+    "tel_serv": {
+        "systemSelectionPreferenceUpdate":[
+            "telsdk_event_injector -f tel_serv -e systemSelectionPreferenceUpdate <slotId> <serviceDomainPreference> <ratPreferences> ,<gsmBands> ,<wcdmaBands> ,<lteBands> ,<nsaBands> ,<saBands>",
+            "slotId:        integer, valid slotIds are 1 & 2 only.",
+            "serviceDomainPreference: integer, valid serviceDomainPreference are UNKNOWN = -1, CS_ONLY = 0, PS_ONLY = 1, CS_PS = 2 Refer for more details telux::tel::ServiceDomainPreference",
+            "ratPreferences: integer, valid ratPreference are 0 - PREF_CDMA_1X , 1 - PREF_CDMA_EVDO, 2 - PREF_GSM, 3 - PREF_WCDMA, 4 - PREF_LTE, 5 -PREF_TDSCDMA, 6 - PREF_NR5G, 7 - PREF_NB1_NTN, 8 - PREF_NR5G_NSA, 9 - PREF_NR5G_SA  Refer for more details telux::tel::RatPrefType ",
+            "gsmBands: integer, gsm bands preference. Refer for more details telux::tel::GsmRFBand",
+            "wcdmaBands: integer, wcdma Bands preference. Refer for more details telux::tel::WcdmaRFBand",
+            "lteBands: integer, lte bands preference. Refer for more details telux::tel::LteRFBand",
+            "nsaBands: integer, nsa bands preference. Refer for more details telux::tel::NrRFBand",
+            "saBands: integer, sa bands preference. Refer for more details telux::tel::NrRFBand",
+            "Example: telsdk_event_injector -f tel_serv -e systemSelectionPreferenceUpdate 1 0 012 ,1 2 3 ,4 5 6 ,7 8 9 ,10 11 12 ,96 102"
+        ],
+        "systemInfoUpdate":[
+            "telsdk_event_injector -f tel_serv -e systemInfoUpdate <slotId> <currentServingRat> <currentServingDomain> <currentRegistrationState> <endcAvailability> <dcnrRestriction> <smsRat> <smsDomain> <ntnSmsStatus> <lteCapability> ,<CallAllowedRat_i> <CallAllowedDomain_i> <CallAllowedType_i>",
+            "slotId:            integer, valid slotIds are 1 & 2 only." ,
+            "currentServingRat: integer, valid currentServingRat Refer for more details telux::tel::RadioTechnology ",
+            "currentServingDomain: integer, valid currentServingDomain Refer for more details telux::tel::ServiceDomain",
+            "currentRegistrationState: integer, valid currentRegistrationState Refer for more details telux::tel::ServiceRegistrationState",
+            "endcAvailability:  integer, valid UNKNOWN = -1, AVAILABLE = 0, UNAVAILABLE = 1 Refer for more details telux::tel::endcAvailability" ,
+            "dcnrRestriction:   integer, valid UNKNOWN = -1, RESTRICTED = 0, UNRESTRICTED = 1 Refer for more details telux::tel::dcnrRestriction",
+            "smsRat:  integer, valid smsRat refer for more details telux::tel::RadioTechnology" ,
+            "smsDomain:   integer, valid UNKNOWN = -1, NO_SMS = 0, SMS_ON_IMS = 1, SMS_ON_3GPP = 2. Refer for more details telux::tel::SmsDomain",
+            "ntnSmsStatus: integer, valid UNKNOWN = -1, NOT_AVAILABLE = 0, TEMP_FAILURE = 1, AVAILABLE = 2. Refer for more details telux::tel::NtnSmsStatus",
+            "lteCapability:   integer, refer for more details telux::tel::LteCsCapability",
+            "CallAllowedRat_i:  integer, Current cell radio technology. Refer SDK documentation enum RadioTechnology. For example RADIO_TECH_LTE = 14",
+            "CallAllowedDomain_i:  integer, Current cell service domain registered on system. Valid value is telux::tel::ServiceDomain::CS_ONLY = 1 or telux::tel::ServiceDomain::PS_ONLY = 2",
+            "CallAllowedType_i:  integer, Current call allowed type in cell. Refer SDK documentation enum CallsAllowedInCell. For example ALL_CALLS = 3",
+            "Example: telsdk_event_injector -f tel_serv -e systemInfoUpdate 1 14 3 2 0 1 14 0 1 0 ,14 2 3"
+        ],
+        "networkTimeUpdate":[
+            "telsdk_event_injector -f tel_serv -e networkTimeUpdate <slotId> <year> <month> <day> <hour> <minute> <second> <dayOfWeek> <timeZone> <dstAdj> <nitzTime>",
+            "slotId:    integer, valid slotIds are 1 & 2 only." ,
+            "year:      integer, valid year Refer for more details telux::tel::NetworkTimeInfo ",
+            "month:     integer, valid month Refer for more details telux::tel::NetworkTimeInfo",
+            "day:       integer, valid day Refer for more details telux::tel::NetworkTimeInfo ",
+            "hour:      integer, valid hour Refer for more details telux::tel::NetworkTimeInfo ",
+            "minute:    integer, valid minute Refer for more details telux::tel::NetworkTimeInfo ",
+            "second:    integer, valid second Refer for more details telux::tel::NetworkTimeInfo ",
+            "dayOfWeek: integer, valid dayOfWeek Refer for more details telux::tel::NetworkTimeInfo ",
+            "timeZone:  integer, valid timeZone Refer for more details telux::tel::NetworkTimeInfo ",
+            "dstAdj:    integer, valid dstAdj Refer for more details telux::tel::NetworkTimeInfo ",
+            "nitzTime:  string, valid nitzTime Refer for more details telux::tel::NetworkTimeInfo "
+        ],
+        "rFBandInfoUpdate":[
+            "telsdk_event_injector -f tel_serv -e rFBandInfoUpdate <slotId> <band> <channel> <bandWidth>",
+            "slotId:    integer, valid slotIds are 1 & 2 only." ,
+            "band:      integer, valid band Refer for more details telux::tel::RFBand" ,
+            "channel:   integer, valid channel Refer for more details telux::tel::RFBandInfo",
+            "bandWidth: integer, valid bandWidth Refer for more details telux::tel::RFBandWidth"
+        ],
+        "networkRejectionUpdate":[
+            "telsdk_event_injector -f tel_serv -e networkRejectionUpdate <slotId> <rejectSrvInfoRat> <rejectSrvInfoDomain> <rejectCause> <mcc> <mnc>",
+            "slotId:                integer, valid slotIds are 1 & 2 only." ,
+            "rejectSrvInfoRat :    integer, valid servingSystemInfo Refer for more details telux::tel::ServingSystemInfo ",
+            "rejectSrvInfoDomain : integer, valid servingSystemInfo Refer for more details telux::tel::ServingSystemInfo ",
+            "rejectCause :          integer, valid rejectCause Refer for more details telux::tel::NetworkRejectInfo ",
+            "mcc :                  string, valid mcc Refer for more details telux::tel::NetworkRejectInfo ",
+            "mnc :                  string, valid mnc Refer for more details telux::tel::NetworkRejectInfo "
+        ]
+    },
+    "therm": {
+        "ssr":[
+            "telsdk_event_injector -f therm -e ssr <serviceStatus>",
+            "serviceStatus:  valid service status are SERVICE_AVAILABLE, SERVICE_UNAVAILABLE & SERVICE_FAILED."
+        ],
+        "setTemp":[
+            "telsdk_event_injector -f therm -e setTemp <tZoneId> <temp>",
+            "tZoneId:     thermal zone id.",
+            "temp:        temperature in millidegree Celsius."
+        ]
+    },
+    "power_mgr": {
+        "machine_availability":[
+            "telsdk_event_injector -f power_mgr -e machine_availability <availability>",
+            "availability: valid values - UNAVAILABLE/AVAILABLE. Event to notify client via @ref ITcuActivityListener::onMachineUpdate, if the machine is available or not"
+        ]
+    },
+    "tel_ims_settings": {
+        "imsServiceConfigsUpdate":[
+            "telsdk_event_injector -f tel_ims_setting -e imsServiceConfigsUpdate <slotId> <imsServiceEnabled> <voImsEnabled> <smsEnabled> <rttEnabled>",
+            "slotId:                integer, valid slotIds are 1 & 2 only." ,
+            "imsServiceEnabled:     integer, default value is 0, valid imsServiceEnabled Refer for more details telux::tel::ImsServiceConfig",
+            "voImsEnabled:          integer, default value is 0, valid voImsEnabled Refer for more details telux::tel::ImsServiceConfig",
+            "smsEnabled:            integer, default value is 0, valid smsEnabled Refer for more details telux::tel::ImsServiceConfig",
+            "rttEnabled:            integer, default value is 0, valid rttEnabled Refer for more details telux::tel::ImsServiceConfig"
+        ],
+        "imsSipUserAgentUpdate":[
+            "telsdk_event_injector -f tel_ims_setting -e imsSipUserAgentUpdate <slotId> <sipUserAgent>",
+            "slotId:                integer, valid slotIds are 1 & 2 only." ,
+            "sipUserAgent:          string, valid sip user agent"
+        ]
+    },
+    "tel_network_select": {
+        "selectionModeUpdate": [
+            "telsdk_event_injector -f tel_network_select -e selectionModeUpdate <slotId> <selectionMode> <mcc> <mnc>",
+            "slotId:            integer, valid slotIds are 1 & 2 only.",
+            "selectionMode:     integer, valid -1-UNKNOWN, 0-AUTOMATIC, 1-MANUAL.",
+            "mcc :              string, valid mcc Refer for more details telux::tel::NetworkModeInfo.",
+            "mnc :              string, valid mnc Refer for more details telux::tel::NetworkModeInfo."
+        ],
+        "networkScanResultsUpdate": [
+            "telsdk_event_injector -f tel_network_select -e networkScanResultsUpdate <slotId> ,<scanStatus> ,<operatorName1> <mcc> <mnc> <rat> <inUseStatus> <roamingStatus> <forbiddenStatus> <preferredStatus> ,<operatorName2> <mcc> <mnc> <rat> <inUseStatus> <roamingStatus> <forbiddenStatus> <preferredStatus>",
+            "slotId:           integer, valid slotIds are 1 & 2 only.",
+            "scanStatus:       integer, valid 0-COMPLETE, 1-PARTIAL, 2-FAILED.",
+            "operatorName:     string, valid operator name",
+            "mcc :             string, valid mcc Refer for more details telux::tel::OperatorInfo.",
+            "mnc :             string, valid mnc Refer for more details telux::tel::OperatorInfo.",
+            "rat:              integer, Radio technology for Voice service state. Refer SDK documentation enum RadioTechnology. For example RADIO_TECH_LTE = 14",
+            "inUseStatus:      integer, valid 0-UNKNOWN, 1-CURRENT_SERVING, 2-AVAILABLE.",
+            "roamingStatus:    integer, valid 0-UNKNOWN, 1-HOME, 2-ROAM.",
+            "forbiddenStatus:  integer, valid 0-UNKNOWN, 1-FORBIDDEN, 2-NOT_FORBIDDEN.",
+            "preferredStatus:  integer, valid 0-UNKNOWN, 1-PREFERRED, 2-NOT_PREFERRED."
+        ]
+    },
+    "tel_ims_serv": {
+        "regStatusUpdate": [
+            "telsdk_event_injector -f tel_ims_serv -e regStatusUpdate <slotId> <regStatus> <rat> <errorCode> <errorString>",
+            "slotId:            integer, valid slotIds are 1 & 2 only.",
+            "regStatus:         integer, valid -1-UNKOWN_STATE, 0-NOT_REGISTERED, 1-REGISTERING, 2-REGISTERED, 3-LIMITED_REGISTERED.",
+            "rat:               integer, Radio technology for Voice service state. Refer SDK documentation enum RadioTechnology. For example RADIO_TECH_LTE = 14",
+            "errorCode:         integer, only valid when the IMS in NOT_REGISTERED status. More details refer to SIP-RFC3261 section 13.2.2.2 and section 13.2.2.3.",
+            "errorString:       string, only valid when the IMS in NOT_REGISTERED status. More details refer to SIP-RFC3261 section 13.2.2.2 and section 13.2.2.3."
+        ],
+        "serviceInfoUpdate": [
+            "telsdk_event_injector -f tel_ims_serv -e serviceInfoUpdate <slotId> <smsStatus> <voiceStatus>",
+            "slotId:            integer, valid slotIds are 1 & 2 only.",
+            "smsStatus:         integer, valid -1-UNKNOWN, 0-NO_SERVICE, 1-LIMITED_SERVICE, 2-FULL_SERVICE.",
+            "voiceStatus:       integer, valid -1-UNKNOWN, 0-NO_SERVICE, 1-LIMITED_SERVICE, 2-FULL_SERVICE."
+        ],
+        "pdpStatusInfoUpdate": [
+            "telsdk_event_injector -f tel_ims_serv -e pdpStatusInfoUpdate <slotId> <isConnected> <pdpFailure> <dataCallEndReason> <apnName>",
+            "slotId:               integer, valid slotIds are 1 & 2 only.",
+            "isConnected:          bool, valid value is 1 or 0 signifies PDP is connected or not",
+            "pdpFailure:           integer, PDP failure error code. Refer for more details telux::tel::PdpFailureCode.",
+            "dataCallEndReason:    integer, PDP call end reason type. Refer for more details telux::common::EndReasonType.",
+            "apnName:              string, IMS registration APN name. Refer for more details telux::tel::ImsPdpStatusInfo."
+        ]
+    },
+    "dual_data": {
+        "capabilityChange" : [
+            "telsdk_event_injector -f dual_data -e capabilityChange <enable>",
+            "enable:   bool, 1 :dppd capable, 0 :not dppd capable"
+        ],
+        "recommendationChange" : [
+            "telsdk_event_injector -f dual_data -e recommendationChange <recommendation>",
+            "recommendation:  string, ALLOWED :dual data is allowed, NOT_ALLOWED :dual data is not allowed, NOT_RECOMMENDED :dual data is not recommended"
+        ]
+    },
+    "data_connection": {
+        "throttle_apn_event" : [
+            "telsdk_event_injector -f data_connection -e throttle_apn_event <state>",
+            "state:   RESET | START | STOP"
+        ]
+    },
+    "fs_manager": {
+        "efsBackup":[
+            "telsdk_event_injector -f fs_manager -e efsBackup <eventName> <status>",
+            "eventName:     EFS_BACKUP_START/EFS_BACKUP_END",
+            "status:        SUCCESS/FAILURE"
+        ],
+        "efsRestore":[
+            "telsdk_event_injector -f fs_manager -e efsRestore <eventName> <status>",
+            "eventName:     EFS_RESTORE_START/EFS_RESTORE_END",
+            "status:        SUCCESS/FAILURE"
+        ],
+        "otaAbSync":[
+            "telsdk_event_injector -f fs_manager -e otaAbSync <eventName> <status>",
+            "eventName:     MRC_OTA_START/MRC_OTA_RESUME/MRC_OTA_END/MRC_ABSYNC",
+            "status:        SUCCESS/FAILURE"
+        ]
+    },
+    "subsystem_manager": {
+        "subsystem_status":[
+            "telsdk_event_injector -f subsystem_manager -e operational_status <SUBSYSTEM> <PROC_TYPE> <STATUS>",
+            "SUBSYSTEM:     integer, valid 0-NONE, 1-APSS, 2-MPSS",
+            "PROC_TYPE:     integer, valid 0-LOCAL_PROC, 1-REMOTE_PROC",
+            "STATUS:        OPERATIONAL/NONOPERATIONAL"
+        ]
+    },
+    "cv2x_radio_manager": {
+        "status" : [
+            "telsdk_event_injector -f cv2x_radio_manager -e status <rxStatus> <txStatus> <rxCause> <txCause>",
+            "rxStatus: string, cv2x rx status, either 1 of valid strings: inactive, active or suspended",
+            "txStatus: string,  cv2x tx status, either 1 of valid strings: inactive, active or suspended",
+            "rxCause:  integer, rxStatus inactive/suspended reason, not required if rxStatus is active",
+            "txCause:  integer, txStatus inactive/suspended reason, not required if txStatus is active"
+        ],
+        "slss_rx_info" : [
+            "telsdk_event_injector -f cv2x_radio_manager -e slss_rx_info <slssid> <incoverage> <pattern> <rsrp> <selected>",
+            "slssid:     integer, equal or more than 0",
+            "incoverage: bool,  valid values: 0 or 1",
+            "pattern:    integer,  0-OFFSET_IND_1, 1-OFFSET_IND_2, 2-OFFSET_IND_3, 3-ODD_RESERVED, 4-EVEN_RESERVED, 5-UNKNOWN",
+            "rsrp:       integer,  end user reponsiblity make sure valid value input",
+            "selected:   bool,  valid values: 0 or 1"
+        ]
+    },
+    "cv2x_radio": {
+        "src_l2_id" : [
+            "telsdk_event_injector -f cv2x_radio -e src_l2_id"
+        ],
+        "mac_addr_clone_attack" : [
+            "telsdk_event_injector -f cv2x_radio -e mac_addr_clone_attack <detected>",
+            "detected:  bool,  valid values: 0 or 1"
+        ],
+        "sps_schedule_change" : [
+            "telsdk_event_injector -f cv2x_radio -e sps_schedule_change <spsid> <utctime> <periodicity>",
+            "spsid:       integer, sps id, end user reponsiblity input legal value",
+            "utctime:     integer64, new specduling utc time",
+            "periodicity: integer,  periodicity, end user reponsiblity input legal value"
+        ],
+        "capabilities" : [
+            "telsdk_event_injector -f cv2x_radio -e capabilities <minFreqPool0> <maxFreqPool0> <optionalMinFreqPool1> <optionalMaxFreqPool1>",
+            "minFreqPool0:         integer, minimum EARFCN of pool 0, end user reponsiblity input legal value",
+            "maxFreqPool0:         integer, maxmum  EARFCN of pool 0, end user reponsiblity input legal value",
+            "optionalMinFreqPool1: integer, optional, Minimum EARFCN of pool 1, end user reponsiblity input legal value",
+            "optionalMaxFreqPool1: integer, optional, Maxmum  EARFCN of pool 1, end user reponsiblity input legal value"
+        ]
+    }
+}

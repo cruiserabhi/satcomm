@@ -1,0 +1,204 @@
+/**
+@page audio_simulation Audio Simulation
+<br>
+- - -
+@section audio_overview Overview of Audio Simulation
+- - -
+This page and the subpages provide information about Audio subsystem simulation.
+Audio simulation utilizes the Advanced Linux Sound Architecture (ALSA) library and Linux sound devices for its operations.
+The ALSA framework provides comprehensive audio functionality for Linux which includes recording and playing of audio streams using
+the host machine speakers and mic. <br>
+
+Audio simulation supports the following features. <br>
+
+@table{2,{\raggedright}p{2.00in},{\raggedright}p{4.80in}}
+@trfirsthdg
+@thmultcol{1,|c|} Audio feature @thmultcolend @thmultcollast{1,c|} Description @thmultcollastend
+@trfirsthdgend
+@trhdg
+@thdg{1,|c|,Audio feature} @thdglast{1,c|,Description}
+@trhdgend
+
+@tr @td Voice Call @tdend @tdlast Predefined canned responses supported. @tdlastend @trend
+@tr @td Playback @tdend @tdlast ALSA library responses supported. @tdlastend @trend
+@tr @td Capture  @tdend @tdlast ALSA library responses supported. @tdlastend @trend
+@tr @td Loopback @tdend @tdlast ALSA library responses supported. @tdlastend @trend
+@tr @td Tone     @tdend @tdlast ALSA library responses supported. @tdlastend @trend
+@tr @td Endless Playback @tdend @tdlast ALSA library responses supported. @tdlastend @trend
+@tr @td Incall playback @tdend @tdlast Predefined canned responses supported. @tdlastend @trend
+@tr @td Incall capture  @tdend @tdlast Predefined canned responses supported. @tdlastend @trend
+@tr @td HPCM  @tdend @tdlast Predefined canned responses supported. @tdlastend @trend
+@tr @td Transcoder  @tdend @tdlast Predefined canned responses supported. @tdlastend @trend
+
+@tableend
+
+<br>
+
+@anchor fig_audio_sim_overview
+@latexonly
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{simulation_audio_overview.PNG}
+  \renewcommand{\thefigure}{\thechapter-\arabic{figure}}
+  \caption{Audio Simulation Framework}
+  \label{fig_audio_sim_overview}
+\end{figure}
+@endlatexonly
+
+@html_image{simulation_audio_overview.png,"",50,50,Audio Simulation Framework}
+
+<br>
+- - -
+@section audio_req Audio simulation system requirements
+- - -
+
+<h3 id="packages">Linux audio packages</h3>
+- The following linux audio packages are required:
+\code{.sh}
+alsa alsa-utils alsa-tools pulseaudio pulseaudio-utils libasound2-dev
+\endcode
+
+- For example on Ubuntu 18.04, these packages can be installed using the below command:
+\code{.sh}
+apt-get -y alsa alsa-utils alsa-tools pulseaudio pulseaudio-utils libasound2-dev
+\endcode
+
+- References:<br>
+a. [ALSA](https://alsa-project.org/main/index.php/Main_Page)<br>
+b. [PulseAudio](https://wiki.ubuntu.com/PulseAudio/)<br>
+
+<h3 id="SoundCard">SoundCard</h3>
+
+A sound card (also known as an audio card) is an internal expansion card that provides input and output of audio signals to and from a computer under the control of computer programs.
+Tests should be performed to make sure both ALSA and PulseAudio are properly recognizing host machine's audio hardware. Notable places to check:<br>
+
+- Check to determine if the soundcards are detected by the system:<br>
+\code{.sh}
+cat /proc/asound/cards
+\endcode
+
+- Check to determine if the soundcards are detected by ALSA:<br>
+\code{.sh}
+aplay -l
+arecord -l
+\endcode
+
+- Check to determine if the soundcards are detected by PulseAudio:<br>
+\code{.sh}
+pactl list
+\endcode
+
+- If no soundcards are listed, virtual devices can be emulated using the following steps on the host-machine and docker. <br>
+\code{.sh}
+# Start the pulseaudio server
+pulseaudio -D --exit-idle-time=-1
+
+# Load the virtual sink and set it as default
+pacmd load-module module-virtual-sink sink_name=v1
+pacmd set-default-sink v1
+
+# set the monitor of v1 sink to be the default source
+pacmd set-default-source v1.monitor
+\endcode
+
+<br>
+
+<h3 id="ALSA_dev">ALSA devices</h3>
+
+Audio simulation supports configurability for ALSA devices and amixer control devices. User configurable settings available in <i>/etc/telux/tel.conf</i> are listed below.<br>
+
+@table{2,{\raggedright}p{1.00in},{\raggedright}p{2.80in}}
+@tr @td PCM_DEVICE @tdend @tdlast This is used to configure ALSA devices. <br> To list all the ALSA devices, use below commands:<br><br> 1. aplay -l <br> 2. arecord -l <br><br> Example: PCM_DEVICE = h3:0 <br><br> @tdlastend @trend
+@tr @td SND_CARD_CTL_DEVICE @tdend @tdlast This is used to configure soundcard control-device. <br> A ctl device ("control-device") on a soundcard is used to help the user control several aspects of
+the soundcard's behaviour. The main use is to control the mixer. To list all the soundcards, use below commands:<br><br> 1. aplay -l <br> 2. arecord -l <br><br> Example: SND_CARD_CTL_DEVICE = h3 <br><br>@tdlastend @trend
+
+@tableend
+
+<br>
+- - -
+@section audio_supp_interfaces Supported interfaces
+- - -
+
+IAudioBuffer, IAudioCaptureStream, IAudioDevice, IAudioLoopbackStream, IAudioManager,
+IAudioPlayStream, IAudioStream, IAudioToneGeneratorStream, IAudioVoiceStream, IStreamBuffer.<br>
+
+<br>
+- - -
+@section audio_resp Audio API response handling
+- - -
+
+An audio API response can be configured through a JSON file.
+Audio manager has its own JSON configuration file present under <i>simulation/json/api/audio/</i>. <br>
+Clients can configure the inputs for JSON attributes of API request statuses and response error codes.
+If the client configures the API behavior to mimic an error scenario by setting the response error code
+to anything other than "SUCCESS", the audio server's response will be modified to simulate the erroneous behavior.<br>
+
+@subsection audio_exp_1 Example 1:
+
+API command response for telux::audio::IAudioManager::getStreamTypes<br>
+<pre>
+"getStreamTypes": {
+    "callbackDelay": 400,
+    "status" : "SUCCESS",
+    "error" : "SUCCESS"
+},
+</pre>
+
+When the async response to a IAudioManager::getStreamTypes request is ready and the "error" field is set to SUCCESS,
+the server sends the response to the client without making any modifications.<br>
+
+@subsection audio_exp_2 Example 2:
+
+API command response for telux::audio::IAudioManager::createStream<br>
+<pre>
+"createStream": {
+    "callbackDelay": 400,
+    "status": "SUCCESS",
+    "error": "INTERNAL_ERR"
+},
+</pre>
+
+When the async response to a IAudioManager::createStream request is ready and the "error" field is set to INTERNAL_ERR,
+the errorCode in the server’s response is modified and overwritten with the JSON value from the error field.
+
+<br>
+- - -
+@section audio_events Audio event handling and notifications
+- - -
+
+@subsection audio_event_1 DTMF Detection:
+
+DTMF tone on the voice call downlink path can be detected and reported to the application.
+The application needs to register a listener using the IAudioVoiceStream::registerListener API.
+The IVoiceListener::onDtmfToneDetection() method is invoked to notify of the detected DTMF tone.
+In a simulated environment telsdk_event_injector is used to inject the DTMF tone in the downlink path. <br>
+
+Sample input:<br>
+\code{.sh}
+telsdk_event_injector -f audio -e dtmf_tone 697 1209
+\endcode
+
+<br>
+
+@subsection audio_event_2 Modem SSR:
+
+In this scenario the modem crashes and the audio lower-layer notifies the server that the modem has crashed. The server
+needs to notify all clients about the modem crash and clean all underlying resources used.
+To receive this event notification, the client needs to register a listener using the IAudioManager::registerListener API.
+The IAudioListener::onServiceStatusChange() method  is invoked to notify of the new status. <br>
+In a simulated environment telsdk_event_injector is used to inject a modem SSR event.
+
+Sample input:<br>
+\code{.sh}
+telsdk_event_injector -f audio -e ssr SERVICE_AVAILABLE
+\endcode
+
+<br>
+- - -
+@section audio_notes Additional notes:
+- - -
+
+1. Device switching for all streams only supports canned responses.
+2. For compressed playback, TelSDK API behavior is simulated using PCM playback internally since ALSA doesn't support AMR codec. The call flow and API behavior remain similar to on-target compressed playback.
+
+*/

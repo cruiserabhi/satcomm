@@ -1,0 +1,82 @@
+/*
+ * Copyright (c) 2022-2023 Qualcomm Innovation Center, Inc. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted (subject to the limitations in the
+ * disclaimer below) provided that the following conditions are met:
+ *
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *
+ *     * Redistributions in binary form must reproduce the above
+ *       copyright notice, this list of conditions and the following
+ *       disclaimer in the documentation and/or other materials provided
+ *       with the distribution.
+ *
+ *     * Neither the name of Qualcomm Innovation Center, Inc. nor the names of its
+ *       contributors may be used to endorse or promote products derived
+ *       from this software without specific prior written permission.
+ *
+ * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE
+ * GRANTED BY THIS LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT
+ * HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ * GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+ * IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+ * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#ifndef WLANAPINTERFACEMANAGERMENU_HPP
+#define WLANAPINTERFACEMANAGERMENU_HPP
+
+#include <iostream>
+#include <memory>
+
+#include <telux/wlan/WlanFactory.hpp>
+#include <telux/wlan/ApInterfaceManager.hpp>
+
+#include "console_app_framework/ConsoleApp.hpp"
+#include "WlanUtils.hpp"
+#include "../../common/utils/Utils.hpp"
+
+class WlanApInterfaceManagerMenu : public ConsoleApp ,
+                                   public telux::wlan::IApListener,
+                                   public std::enable_shared_from_this<WlanApInterfaceManagerMenu> {
+ public:
+    WlanApInterfaceManagerMenu(std::string appName, std::string cursor);
+    ~WlanApInterfaceManagerMenu();
+
+    /**
+     * Initialize commands
+     */
+    bool init();
+    void showMenu();
+
+    void setConfig(std::vector<std::string> userInput);
+    void setSecurityConfig(std::vector<std::string> userInput);
+    void setSsid(std::vector<std::string> userInput);
+    void setVisibility(std::vector<std::string> userInput);
+    void configureElementInfo(std::vector<std::string> userInput);
+    void setPassPhrase(std::vector<std::string> userInput);
+    void getConfig(std::vector<std::string> userInput);
+    void getConnectedDevices(std::vector<std::string> userInput);
+    void getStatus(std::vector<std::string> userInput);
+    void manageApService(std::vector<std::string> userInput);
+
+    void onApBandChanged(telux::wlan::BandType radio) override;
+    void onApDeviceStatusChanged(telux::wlan::ApDeviceConnectionEvent event,
+        std::vector<telux::wlan::DeviceIndInfo> info) override;
+    void onApConfigChanged(telux::wlan::Id apId) override;
+ private:
+    bool menuOptionsAdded_;
+    std::shared_ptr<telux::wlan::IApInterfaceManager> wlanApInterfaceManager_ = nullptr;
+    void populateApConfigNet(telux::wlan::ApNetConfig& netConfig);
+    void populateApElementInfo(telux::wlan::ApElementInfoConfig& ElementInfoConfig);
+};
+#endif

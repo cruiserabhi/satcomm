@@ -1,0 +1,3700 @@
+/*
+ *  Copyright (c) 2023-2024, 2025 Qualcomm Innovation Center, Inc. All rights reserved.
+ *  SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
+
+ syntax = "proto3";
+
+ package telStub;
+ import "google/protobuf/empty.proto";
+ import "common_simulation.proto";
+
+ /*******************************************************************
+  * Services Definition                                             *
+  *******************************************************************/
+ service CardService {
+     rpc InitService(google.protobuf.Empty) returns (commonStub.GetServiceStatusReply) {}
+     rpc GetServiceStatus(google.protobuf.Empty) returns (commonStub.GetServiceStatusReply) {}
+     rpc IsSubsystemReady(google.protobuf.Empty) returns (commonStub.IsSubsystemReadyReply) {}
+     rpc CleanUpService(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+     rpc GetCardState(GetCardStateRequest) returns (GetCardStateReply) {}
+     rpc GetSupportedApps(GetSupportedAppsRequest) returns (GetSupportedAppsReply) {}
+     rpc ReadEFLinearFixed(ReadEFLinearFixedRequest) returns (ReadEFLinearFixedReply) {}
+     rpc ReadEFLinearFixedAll(ReadEFLinearFixedAllRequest) returns (ReadEFLinearFixedAllReply) {}
+     rpc ReadEFTransparent(ReadEFTransparentRequest) returns (ReadEFTransparentReply) {}
+     rpc WriteEFLinearFixed(WriteEFLinearFixedRequest) returns (WriteEFLinearFixedReply) {}
+     rpc WriteEFTransparent(WriteEFTransparentRequest) returns (WriteEFTransparentReply) {}
+     rpc RequestEFAttributes(EFAttributesRequest) returns (RequestEFAttributesReply) {}
+     rpc OpenLogicalChannel(OpenLogicalChannelRequest) returns (OpenLogicalChannelReply) {}
+     rpc CloseLogicalChannel(CloseLogicalChannelRequest) returns (CloseLogicalChannelReply) {}
+     rpc TransmitAPDU(TransmitAPDURequest) returns (TransmitAPDUReply) {}
+     rpc TransmitBasicAPDU(TransmitBasicAPDURequest) returns (TransmitBasicAPDUReply) {}
+     rpc SetCardLock(SetCardLockRequest) returns (SetCardLockReply) {}
+     rpc QueryPin1Lock(QueryPin1LockRequest) returns (QueryPin1LockReply) {}
+     rpc ChangePinLock(ChangePinLockRequest) returns (ChangePinLockReply) {}
+     rpc UnlockByPin(UnlockByPinRequest) returns (UnlockByPinReply) {}
+     rpc UnlockByPuk(UnlockByPukRequest) returns (UnlockByPukReply) {}
+     rpc QueryFdnLock(QueryFdnLockRequest) returns (QueryFdnLockReply) {}
+     rpc updateSimStatus(updateSimStatusRequest) returns (updateSimStatusReply){}
+     rpc CardPower(CardPowerRequest) returns (CardPowerResponse) {}
+     rpc exchangeSimIO(exchangeSimIORequest) returns (exchangeSimIOReply) {}
+     rpc requestEid(requestEidRequest) returns (requestEidReply) {}
+     rpc IsNtnProfileActive(IsNtnProfileActiveRequest) returns (IsNtnProfileActiveReply) {}
+     rpc setupRefreshConfig(RefreshConfigReq) returns (TelCommonReply) {}
+     rpc allowCardRefresh(AllowCardRefreshReq) returns (TelCommonReply) {}
+     rpc confirmRefreshHandlingCompleted(ConfirmRefreshHandlingCompleteReq) returns (TelCommonReply) {}
+     rpc requestLastRefreshEvent(RequestLastRefreshEventReq) returns (RequestLastRefreshEventResp) {}
+ }
+
+ service SubscriptionService {
+     rpc InitService(google.protobuf.Empty) returns (commonStub.GetServiceStatusReply) {}
+     rpc GetServiceStatus(google.protobuf.Empty) returns (commonStub.GetServiceStatusReply) {}
+     rpc IsSubsystemReady(google.protobuf.Empty) returns (commonStub.IsSubsystemReadyReply) {}
+     rpc GetSubscription(GetSubscriptionRequest) returns (Subscription) {}
+     rpc GetAllSubscription(google.protobuf.Empty) returns (GetAllSubscriptionsReply) {}
+ }
+
+ service PhoneService {
+     rpc InitService(google.protobuf.Empty) returns (commonStub.GetServiceStatusReply) {}
+     rpc GetServiceStatus(google.protobuf.Empty) returns (commonStub.GetServiceStatusReply) {}
+     rpc IsSubsystemReady(google.protobuf.Empty) returns (commonStub.IsSubsystemReadyReply) {}
+     rpc GetPhoneIds(google.protobuf.Empty) returns (GetPhoneIdsReply) {}
+     rpc GetPhoneId(google.protobuf.Empty) returns (GetPhoneIdReply) {}
+     rpc GetCellularCapabilities(google.protobuf.Empty) returns (CellularCapabilityInfoReply){}
+     rpc SetOperatingMode(SetOperatingModeRequest) returns (SetOperatingModeReply) {}
+     rpc GetOperatingMode(google.protobuf.Empty) returns (GetOperatingModeReply) {}
+     rpc ResetWwan(google.protobuf.Empty) returns (ResetWwanReply) {}
+     rpc RequestVoiceServiceState(RequestVoiceServiceStateRequest) returns
+         (RequestVoiceServiceStateReply) {}
+     rpc SetRadioPower(SetRadioPowerRequest) returns (SetRadioPowerReply) {}
+     rpc RequestCellInfoList(RequestCellInfoListRequest) returns (RequestCellInfoListReply) {}
+     rpc SetCellInfoListRate(SetCellInfoListRateRequest) returns (SetCellInfoListRateReply) {}
+     rpc GetSignalStrength(GetSignalStrengthRequest) returns (GetSignalStrengthReply) {}
+     rpc SetECallOperatingMode(SetECallOperatingModeRequest) returns (SetECallOperatingModeReply) {}
+     rpc GetECallOperatingMode(GetECallOperatingModeRequest) returns (GetECallOperatingModeReply) {}
+     rpc RequestOperatorInfo(RequestOperatorInfoRequest) returns (RequestOperatorInfoReply) {}
+     rpc ConfigureSignalStrength(ConfigureSignalStrengthRequest) returns
+         (ConfigureSignalStrengthReply) {}
+     rpc ConfigureSignalStrengthEx(ConfigureSignalStrengthExRequest) returns
+         (ConfigureSignalStrengthExReply) {}
+ }
+ service SmsService {
+     rpc InitService (commonStub.GetServiceStatusRequest) returns (commonStub.GetServiceStatusReply) {}
+     rpc GetServiceStatus(commonStub.GetServiceStatusRequest) returns (commonStub.GetServiceStatusReply) {}
+     rpc SendSmsWithoutSmsc (SendSmsWithoutSmscRequest) returns (SendSmsWithoutSmscReply) {}
+     rpc GetSmscAddress (GetSmscAddressRequest) returns (GetSmscAddressReply) {}
+     rpc SetSmscAddress (SetSmscAddressRequest) returns (SetSmscAddressReply) {}
+     rpc GetMessageAttributes (GetMessageAttributesRequest) returns (GetMessageAttributesReply) {}
+     rpc SendSms (SendSmsRequest) returns (SendSmsReply) {}
+     rpc SendRawSms (SendRawSmsRequest) returns (SendRawSmsReply) {}
+     rpc RequestSmsMessageList (RequestSmsMessageListRequest) returns (RequestSmsMessageListReply){}
+     rpc ReadMessage (ReadMessageRequest) returns (ReadMessageReply) {}
+     rpc DeleteMessage (DeleteMessageRequest) returns (DeleteMessageRequestReply) {}
+     rpc RequestPreferredStorage (RequestPreferredStorageRequest)
+        returns (RequestPreferredStorageReply) {}
+     rpc SetPreferredStorage (SetPreferredStorageRequest) returns (SetPreferredStorageReply) {}
+     rpc SetTag (SetTagRequest) returns (SetTagReply) {}
+     rpc RequestStorageDetails (RequestStorageDetailsRequest)
+        returns (RequestStorageDetailsReply) {}
+     rpc IsMemoryFull (IsMemoryFullRequest) returns (IsMemoryFullReply) {}
+ }
+ service DialerService {
+     rpc InitService(google.protobuf.Empty) returns (commonStub.GetServiceStatusReply) {}
+     rpc GetServiceStatus(google.protobuf.Empty) returns (commonStub.GetServiceStatusReply) {}
+     rpc MakeECall(MakeECallRequest) returns (MakeECallReply) {}
+     rpc Hangup(HangupRequest) returns (HangupReply) {}
+     rpc UpdateECallMsd(UpdateECallMsdRequest) returns (UpdateECallMsdResponse) {}
+     rpc RequestECallHlapTimerStatus(RequestECallHlapTimerStatusRequest) returns
+         (RequestECallHlapTimerStatusReply) {}
+     rpc CleanUpService(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+     rpc SetConfig(SetConfigRequest) returns (SetConfigReply) {}
+     rpc GetConfig(google.protobuf.Empty) returns (GetConfigResponse) {}
+     rpc UpdateEcallHlapTimer(UpdateEcallHlapTimerRequest) returns (UpdateEcallHlapTimerResponse) {}
+     rpc RequestEcallHlapTimer(RequestEcallHlapTimerRequest) returns (RequestEcallHlapTimerReply) {}
+     rpc RequestEcbm(RequestEcbmRequest) returns (RequestEcbmReply) {}
+     rpc ExitEcbm(ExitEcbmRequest) returns (ExitEcbmReply) {}
+     rpc MakeCall(MakeCallRequest) returns (MakeCallReply) {}
+     rpc Reject(RejectRequest) returns (RejectReply) {}
+     rpc RejectWithSMS(RejectWithSMSRequest) returns (RejectWithSMSReply) {}
+     rpc Answer(AnswerRequest) returns (AnswerReply) {}
+     rpc HangupForegroundResumeBackground(HangupForegroundResumeBackgroundRequest) returns
+         (HangupForegroundResumeBackgroundReply) {}
+     rpc HangupWaitingOrBackground(HangupWaitingOrBackgroundRequest) returns
+         (HangupWaitingOrBackgroundReply) {}
+     rpc Resume(ResumeRequest) returns (ResumeReply) {}
+     rpc Swap(SwapRequest) returns (SwapReply) {}
+     rpc Hold(HoldRequest) returns (HoldReply) {}
+     rpc RequestNetworkDeregistration(RequestNetworkDeregistrationRequest) returns
+         (RequestNetworkDeregistrationReply) {}
+     rpc ModifyOrRespondToModifyCall(ModifyOrRespondToModifyCallRequest) returns
+         (ModifyOrRespondToModifyCallReply) {}
+     rpc SendRtt(SendRttRequest) returns (SendRttReply) {}
+     rpc updateCalls(UpdateCurrentCallsRequest) returns (google.protobuf.Empty) {}
+     rpc ConfigureECallRedial(ConfigureECallRedialRequest) returns (ConfigureECallRedialResponse) {}
+ }
+
+ service ImsServingSystem {
+    rpc InitService (commonStub.GetServiceStatusRequest) returns (commonStub.GetServiceStatusReply) {}
+    rpc GetServiceStatus(commonStub.GetServiceStatusRequest) returns (commonStub.GetServiceStatusReply) {}
+    rpc CleanUpService (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc RequestRegistrationInfo (RequestRegistrationInfoRequest) returns
+       (RequestRegistrationInfoReply) {}
+    rpc RequestServiceInfo (RequestServiceInfoRequest) returns (RequestServiceInfoReply) {}
+    rpc RequestPdpStatus (RequestPdpStatusRequest) returns (RequestPdpStatusReply) {}
+ }
+
+ service ServingSystemService {
+     rpc InitService (commonStub.GetServiceStatusRequest) returns (commonStub.GetServiceStatusReply) {}
+     rpc GetServiceStatus(commonStub.GetServiceStatusRequest) returns (commonStub.GetServiceStatusReply) {}
+     rpc CleanUpService (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+     rpc RequestRATPreference (RequestRATPreferenceRequest) returns (RequestRATPreferenceReply) {}
+     rpc SetRATPreference (SetRATPreferenceRequest) returns (SetRATPreferenceReply) {}
+     rpc RequestServiceDomainPreference (RequestServiceDomainPreferenceRequest)
+         returns (RequestServiceDomainPreferenceReply) {}
+     rpc SetServiceDomainPreference (SetServiceDomainPreferenceRequest)
+         returns (SetServiceDomainPreferenceReply) {}
+     rpc GetSystemInfo (GetSystemInfoRequest) returns (GetSystemInfoReply) {}
+     rpc GetDcStatus (GetDcStatusRequest) returns (GetDcStatusReply) {}
+     rpc RequestNetworkTime (RequestNetworkTimeRequest) returns (RequestNetworkTimeReply) {}
+     rpc RequestRFBandInfo (RequestRFBandInfoRequest) returns (RequestRFBandInfoReply) {}
+     rpc GetNetworkRejectInfo (GetNetworkRejectInfoRequest) returns
+         (GetNetworkRejectInfoReply) {}
+     rpc GetCallBarringInfo (GetCallBarringInfoRequest) returns
+         (GetCallBarringInfoReply) {}
+     rpc GetSmsCapabilityOverNetwork (GetSmsCapabilityOverNetworkRequest) returns
+         (GetSmsCapabilityOverNetworkReply) {}
+     rpc GetLteCsCapability (GetLteCsCapabilityRequest) returns
+         (GetLteCsCapabilityReply) {}
+     rpc RequestRFBandPreferences (RequestRFBandPreferencesRequest)
+         returns (RequestRFBandPreferencesReply) {}
+     rpc SetRFBandPreferences (SetRFBandPreferencesRequest)
+         returns (SetRFBandPreferencesReply) {}
+     rpc RequestRFBandCapability (RequestRFBandCapabilityRequest)
+         returns (RequestRFBandCapabilityReply) {}
+ }
+
+ service NetworkSelectionService {
+     rpc InitService (commonStub.GetServiceStatusRequest) returns (commonStub.GetServiceStatusReply) {}
+     rpc GetServiceStatus(commonStub.GetServiceStatusRequest) returns (commonStub.GetServiceStatusReply) {}
+     rpc CleanUpService (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+     rpc RequestNetworkSelectionMode (RequestNetworkSelectionModeRequest) returns
+         (RequestNetworkSelectionModeReply) {}
+     rpc SetNetworkSelectionMode (SetNetworkSelectionModeRequest) returns (SetNetworkSelectionModeReply) {}
+     rpc RequestPreferredNetworks (RequestPreferredNetworksRequest) returns
+         (RequestPreferredNetworksReply) {}
+     rpc SetPreferredNetworks (SetPreferredNetworksRequest) returns (SetPreferredNetworksReply) {}
+     rpc PerformNetworkScan (PerformNetworkScanRequest) returns (PerformNetworkScanReply) {}
+     rpc SetLteDubiousCell (SetLteDubiousCellRequest) returns (SetLteDubiousCellReply) {}
+     rpc SetNrDubiousCell (SetNrDubiousCellRequest) returns (SetNrDubiousCellReply) {}
+ }
+
+ service ImsService {
+     rpc InitService (commonStub.GetServiceStatusRequest)
+         returns (commonStub.GetServiceStatusReply) {}
+     rpc GetServiceStatus(commonStub.GetServiceStatusRequest)
+         returns (commonStub.GetServiceStatusReply) {}
+     rpc CleanUpService (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+     rpc RequestServiceConfig (RequestServiceConfigRequest) returns (RequestServiceConfigReply) {}
+     rpc SetServiceConfig (SetServiceConfigRequest) returns (SetServiceConfigReply) {}
+     rpc SetSipUserAgent (SetSipUserAgentRequest) returns (SetSipUserAgentReply) {}
+     rpc RequestSipUserAgent (RequestSipUserAgentRequest) returns (RequestSipUserAgentReply) {}
+     rpc RequestVonr (RequestVonrRequest) returns (RequestVonrReply) {}
+     rpc SetVonr (SetVonrRequest) returns (SetVonrReply) {}
+ }
+
+ service SuppServicesService {
+    rpc InitService (commonStub.GetServiceStatusRequest)
+        returns (commonStub.GetServiceStatusReply) {}
+    rpc GetServiceStatus(commonStub.GetServiceStatusRequest)
+         returns (commonStub.GetServiceStatusReply) {}
+    rpc CleanUpService (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc SetCallWaitingPref (SetCallWaitingPrefRequest) returns (SetCallWaitingPrefReply) {}
+    rpc RequestCallWaitingPref (RequestCallWaitingPrefRequest) returns
+        (RequestCallWaitingPrefReply) {}
+    rpc SetForwardingPref (SetForwardingPrefRequest) returns (SetForwardingPrefReply) {}
+    rpc RequestForwardingPref (RequestForwardingPrefRequest) returns
+        (RequestForwardingPrefReply) {}
+    rpc SetOirPref (SetOirPrefRequest) returns (SetOirPrefReply) {}
+    rpc RequestOirPref (RequestOirPrefRequest) returns (RequestOirPrefReply) {}
+
+ }
+
+ /*******************************************************************
+  * Messages Definition                                             *
+  *******************************************************************/
+
+message TelCommonReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+message GetCardStateRequest {
+     int32 phone_id = 1;
+}
+
+ message GetCardStateReply{
+     CardState card_state = 1;
+ }
+
+ message CardPowerRequest{
+    int32 phone_id = 1;
+    bool powerup = 2;
+ }
+ message CardPowerResponse{
+     commonStub.ErrorCode error = 2;
+     commonStub.Status status = 3;
+     int32 delay = 4;
+     bool isCallback = 5;
+ }
+ message Subscription {
+     string carrier_name = 1;
+     string icc_id = 2;
+     int32 mcc = 3;
+     int32 mnc = 4;
+     string mobile_country_code = 5;
+     string mobile_network_code = 6;
+     string phone_number = 7;
+     int32 slot_id = 8;
+     string imsi = 9;
+     string gid_1 = 10;
+     string gid_2 = 11;
+ }
+
+ message GetAllSubscriptionsReply {
+    repeated Subscription subscriptions = 1;
+ }
+
+ message GetSubscriptionRequest{
+     int32 phone_id = 1;
+ }
+
+ message SubscriptionEvent {
+     int32 phone_id = 1;
+ }
+
+ message CallStateChangeEvent {
+    int32 phone_id = 1;
+    repeated Call calls = 2;
+}
+
+ message MsdPullRequestEvent {
+     int32 phone_id = 1;
+ }
+
+ message SystemSelectionPreferenceEvent {
+     int32 phone_id = 1;
+     repeated RatPrefType rat_pref_types = 2;
+     ServiceDomainPreference.Pref service_domain_pref = 3;
+     repeated GsmRFBand gsm_pref_bands = 4;
+     repeated WcdmaRFBand wcdma_pref_bands = 5;
+     repeated LteRFBand lte_pref_bands = 6;
+     repeated NrRFBand nsa_pref_bands = 7;
+     repeated NrRFBand sa_pref_bands = 8;
+ }
+
+ message SystemInfoEvent {
+     int32 phone_id = 1;
+     RadioTechnology current_rat = 2;
+     ServiceDomainInfo.Domain current_domain = 3;
+     ServiceRegistrationState current_state = 4;
+     EndcAvailability.Status endc_availability = 5;
+     DcnrRestriction.Status dcnr_restriction = 6;
+     RadioTechnology sms_rat = 7;
+     SmsDomain sms_domain = 8;
+     NtnSmsStatus sms_status = 9;
+     LteCsCapability lte_capability = 10;
+     repeated CallBarringInfo barring_infos = 11;
+ }
+
+ message NetworkTimeInfoEvent {
+     int32 phone_id = 1;
+     uint32 year = 2;
+     uint32 month = 3;
+     uint32 day = 4;
+     uint32 hour = 5;
+     uint32 minute = 6;
+     uint32 second = 7;
+     uint32 day_of_week = 8;
+     int32 time_zone = 9;
+     uint32 dst_adj = 10;
+     string nitz_time = 11;
+ }
+
+ message RFBandInfoEvent {
+     int32 phone_id = 1;
+     RFBand band = 2;
+     uint32 channel = 3;
+     RFBandWidth band_width = 4;
+ }
+
+ message NetworkRejectInfoEvent {
+     int32 phone_id = 1;
+     RadioTechnology reject_rat = 2;
+     ServiceDomainInfo.Domain reject_domain = 3;
+     uint32 reject_cause = 4;
+     string mcc = 5;
+     string mnc = 6;
+ }
+
+message ModifyCallRequestEvent {
+    int32 phone_id = 1;
+    int32 call_index = 2;
+}
+
+message RttMessageEvent {
+    int32 phone_id = 1;
+    string message = 2;
+}
+
+ enum AppType {
+     APPTYPE_UNKNOWN = 0;
+     APPTYPE_SIM = 1;
+     APPTYPE_USIM = 2;
+     APPTYPE_RUIM = 3;
+     APPTYPE_CSIM = 4;
+     APPTYPE_ISIM = 5;
+ }
+
+ enum AppState {
+    PPSTATE_UNKNOWN = 0;
+    APPSTATE_DETECTED = 1;
+    APPSTATE_PIN = 2;
+    APPSTATE_PUK = 3;
+    APPSTATE_SUBSCRIPTION_PERSO = 4;
+    APPSTATE_READY = 5;
+    APPSTATE_ILLEGAL = 6;
+ }
+
+ message CardApp {
+     AppType app_type = 1;
+     AppState app_state = 2;
+     string app_id = 3;
+ }
+
+ message GetSupportedAppsRequest {
+     int32 slot_id = 1;
+ }
+
+ message GetSupportedAppsReply {
+     repeated CardApp card_apps = 1;
+ }
+
+ // --- CardService ---
+
+ enum CardState {
+     CARDSTATE_ABSENT = 0;
+     CARDSTATE_PRESENT = 1;
+     CARDSTATE_ERROR = 2;
+     CARDSTATE_RESTRICTED = 3;
+     CARDSTATE_UNKNOWN = -1;
+ }
+
+ message IccResult {
+     int32 sw1 = 1;
+     int32 sw2 = 2;
+     string pay_load = 3;
+     repeated int32 data = 4;
+ }
+
+ message ReadEFLinearFixedRequest {
+     int32 slot_id = 1;
+     string file_path = 2;
+     int32 file_id = 3;
+     int32 record_number = 4;
+     string aid = 5;
+ }
+
+ message ReadEFLinearFixedReply {
+     IccResult result = 1;
+     commonStub.ErrorCode error = 2;
+     commonStub.Status status = 3;
+     int32 delay = 4;
+     bool isCallback = 5;
+ }
+
+ message ReadEFLinearFixedAllRequest {
+     int32 slot_id = 1;
+     string file_path = 2;
+     int32 file_id = 3;
+     string aid = 4;
+ }
+
+ message ReadEFLinearFixedAllReply {
+     repeated IccResult records = 1;
+     commonStub.ErrorCode error = 2;
+     commonStub.Status status = 3;
+     int32 delay = 4;
+     bool isCallback = 5;
+ }
+
+ message ReadEFTransparentRequest {
+     int32 slot_id = 1;
+     string file_path = 2;
+     int32 file_id = 3;
+     int32 size = 4;
+     string aid = 5;
+ }
+
+ message ReadEFTransparentReply {
+     IccResult result = 1;
+     commonStub.ErrorCode error = 2;
+     commonStub.Status status = 3;
+     int32 delay = 4;
+     bool isCallback = 5;
+ }
+ message WriteEFLinearFixedRequest {
+     int32 slot_id = 1;
+     string file_path = 2;
+     int32 file_id = 3;
+     int32 record_number = 4;
+     repeated int32 data = 5;
+     string pin2 = 6;
+     string aid = 7;
+ }
+
+ message WriteEFLinearFixedReply {
+     IccResult result = 1;
+     commonStub.ErrorCode error = 2;
+     commonStub.Status status = 3;
+     int32 delay = 4;
+     repeated int32 data = 5;
+     bool isCallback = 6;
+ }
+
+ message WriteEFTransparentRequest {
+     int32 slot_id = 1;
+     string file_path = 2;
+     int32 file_id = 3;
+     repeated int32 data = 4;
+     string aid = 5;
+ }
+
+ message WriteEFTransparentReply {
+     IccResult result = 1;
+     commonStub.ErrorCode error = 2;
+     commonStub.Status status = 3;
+     int32 delay = 4;
+     bool isCallback = 5;
+ }
+ enum EfType {
+     UNKNOWN = 0;
+     TRANSPARENT = 1;
+     LINEAR_FIXED = 2;
+ }
+ enum CardLockType {
+   PIN1 = 0;
+   PIN2 = 1;
+   PUK1 = 2;
+   PUK2 = 3;
+   FDN  = 4;
+};
+
+ message EFAttributesRequest {
+     int32 slot_id = 1;
+     EfType ef_type = 2;
+     string file_path = 3;
+     int32 file_id = 4;
+     string aid = 5;
+ }
+
+ message FileAttributes {
+     int32 file_size = 1;
+     int32 record_size = 2;
+     int32 record_count = 3;
+ }
+
+ message RequestEFAttributesReply {
+     IccResult result = 1;
+     FileAttributes file_attributes = 2;
+     commonStub.ErrorCode error = 3;
+     commonStub.Status status = 4;
+     int32 delay = 5;
+     bool isCallback = 6;
+ }
+
+ message OpenLogicalChannelRequest {
+     int32 phone_id = 1;
+     string app_id = 2;
+ }
+
+ message OpenLogicalChannelReply {
+     int32 channel_id = 1;
+     IccResult result = 2;
+     commonStub.ErrorCode error = 3;
+     commonStub.Status status = 4;
+     int32 delay = 5;
+     bool isCallback = 6;
+ }
+
+ message CloseLogicalChannelRequest {
+     int32 phone_id = 1;
+     int32 channel_id = 2;
+ }
+ message CloseLogicalChannelReply {
+     commonStub.ErrorCode error = 1;
+     commonStub.Status status = 2;
+     int32 delay = 3;
+     bool isCallback = 4;
+ }
+
+ message TransmitAPDURequest {
+     int32 phone_id = 1;
+     int32 cla = 2;
+     int32 instruction = 3;
+     int32 p1 = 4;
+     int32 p2 = 5;
+     int32 p3 = 6;
+     repeated int32 data = 7;
+ }
+
+ message TransmitAPDUReply {
+     IccResult result = 1;
+     commonStub.ErrorCode error = 2;
+     commonStub.Status status = 3;
+     int32 delay = 4;
+     bool isCallback = 5;
+ }
+
+ message exchangeSimIORequest {
+     int32 phone_id = 1;
+     int32 fileId = 2;
+     int32 command = 3;
+     int32 p1 = 4;
+     int32 p2 = 5;
+     int32 p3 = 6;
+     repeated int32 data = 7;
+ }
+
+ message exchangeSimIOReply {
+     IccResult result = 1;
+     commonStub.ErrorCode error = 2;
+     commonStub.Status status = 3;
+     int32 delay = 4;
+     bool isCallback = 5;
+ }
+
+ message requestEidRequest {
+    int32 phone_id = 1;
+ }
+
+ message requestEidReply {
+    string eid = 1;
+    commonStub.Status status = 2;
+    commonStub.ErrorCode error = 3;
+    int32 delay = 4;
+    bool isCallback = 5;
+ }
+
+ message TransmitBasicAPDURequest {
+     int32 phone_id = 1;
+     int32 cla = 2;
+     int32 instruction = 3;
+     int32 p1 = 4;
+     int32 p2 = 5;
+     int32 p3 = 6;
+     repeated int32 data = 7;
+ }
+
+ message TransmitBasicAPDUReply {
+     IccResult result = 1;
+     commonStub.ErrorCode error = 2;
+     commonStub.Status status = 3;
+     int32 delay = 4;
+     bool isCallback = 5;
+ }
+ message SetCardLockRequest {
+     int32 phone_id = 1;
+     CardLockType lock_type = 2;
+     string pwd = 3;
+     bool enable = 4;
+     string aid = 5;
+ }
+
+ message SetCardLockReply {
+     int32 retry_count = 1;
+     bool iscardinfochanged = 2;
+     commonStub.ErrorCode error = 3;
+     commonStub.Status status = 4;
+     int32 delay = 5;
+     bool isCallback = 6;
+ }
+
+ message QueryPin1LockRequest {
+     int32 phone_id = 1;
+ }
+
+ message QueryPin1LockReply {
+     bool state = 1;
+     commonStub.ErrorCode error = 2;
+     commonStub.Status status = 3;
+     int32 delay = 4;
+     bool isCallback = 5;
+ }
+
+ message ChangePinLockRequest {
+     int32 phone_id = 1;
+     CardLockType lock_type = 2;
+     string old_pin = 3;
+     string new_pin = 4;
+     string aid = 5;
+ }
+
+ message ChangePinLockReply {
+     int32 retry_count = 1;
+     bool isCardInfoChanged = 2;
+     commonStub.ErrorCode error = 3;
+     commonStub.Status status = 4;
+     int32 delay = 5;
+     bool isCallback = 6;
+ }
+
+ message UnlockByPinRequest {
+     int32 phone_id = 1;
+     CardLockType lock_type = 2;
+     string pin = 3;
+     string aid = 4;
+ }
+
+ message UnlockByPinReply {
+     int32 retry_count = 1;
+     bool isCardInfoChanged = 2;
+     commonStub.ErrorCode error = 3;
+     commonStub.Status status = 4;
+     int32 delay = 5;
+     bool isCallback = 6;
+ }
+
+ message UnlockByPukRequest {
+     int32 phone_id = 1;
+     CardLockType lock_type = 2;
+     string puk = 3;
+     string new_pin = 4;
+     string aid = 5;
+ }
+
+ message UnlockByPukReply {
+     int32 retry_count = 1;
+     bool isCardInfoChanged = 2;
+     commonStub.ErrorCode error = 3;
+     commonStub.Status status = 4;
+     int32 delay = 5;
+     bool isCallback = 6;
+ }
+
+ message QueryFdnLockRequest {
+     int32 phone_id = 1;
+ }
+
+ message QueryFdnLockReply {
+     bool is_available = 1;
+     bool state = 2;
+     commonStub.ErrorCode error = 3;
+     commonStub.Status status = 4;
+     int32 delay = 5;
+     bool isCallback = 6;
+ }
+ message updateSimStatusRequest {
+     int32 phone_id = 1;
+ }
+
+ message updateSimStatusReply{
+     CardState card_state = 1;
+     repeated CardApp card_apps = 2;
+     commonStub.ErrorCode error = 3;
+     commonStub.Status status = 4;
+     int32 delay = 5;
+ }
+
+ message IsNtnProfileActiveRequest {
+    int32 phone_id = 1;
+ }
+
+ message IsNtnProfileActiveReply {
+    bool is_ntn_profile_active = 1;
+ }
+
+enum SessionType {
+    PRIMARY = 0;
+    SECONDARY = 2;
+    NONPROVISIONING_SLOT_1 = 4;
+    INIT_NONPROVISIONING_SLOT_2 = 5;
+    CARD_ON_SLOT_1 = 6;
+    CARD_ON_SLOT_2 = 7;
+    SESSION_TYPE_UNKNOWN = -1;
+}
+
+message RefreshParams {
+    SessionType sessionType = 1;
+    string aid = 2;
+}
+
+message IccFile {
+    uint32 fileId = 1;
+    string filePath = 2;
+}
+
+enum RefreshStage {
+    WAITING_FOR_VOTES = 0;
+    STARTING = 1;
+    ENDED_WITH_SUCCESS = 2;
+    ENDED_WITH_FAILURE = 3;
+    REFRESH_STAGE_UNKNOWN = -1;
+}
+
+enum RefreshMode {
+    RESET = 0;
+    INIT = 1;
+    INIT_FCN = 2;
+    FCN = 3;
+    INIT_FULL_FCN = 4;
+    RESET_APP = 5;
+    RESET_3G = 6;
+    RESH_MODE_UNKNOWN = -1;
+}
+
+message RefreshConfigReq {
+    uint32 identifier = 1;
+    int32 phone_id = 2;
+    bool isRegister = 3;
+    bool doVoting = 4;
+    repeated IccFile efFiles = 5;
+    RefreshParams refreshs = 6;
+}
+
+message AllowCardRefreshReq {
+    uint32 identifier = 1;
+    int32 phone_id = 2;
+    bool allowRefresh = 3;
+    RefreshParams refreshs = 4;
+}
+
+message ConfirmRefreshHandlingCompleteReq {
+    uint32 identifier = 1;
+    int32 phone_id = 2;
+    bool isCompleted = 3;
+    RefreshParams refreshs = 4;
+}
+
+message RequestLastRefreshEventReq {
+    uint32 identifier = 1;
+    int32 phone_id = 2;
+    RefreshParams refreshs = 3;
+}
+
+message  RequestLastRefreshEventResp {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    RefreshStage stage =4;
+    RefreshMode mode = 5;
+    repeated IccFile efFiles = 6;
+    RefreshParams refreshs = 7;
+}
+
+message RefreshEvent {
+    int32 phone_id = 1;
+    RefreshStage stage =2;
+    RefreshMode mode = 3;
+    repeated IccFile efFiles = 4;
+    RefreshParams refreshs = 5;
+}
+
+// --- SmsService ---
+
+ message SendSmsWithoutSmscRequest {
+     int32 phone_id = 1;
+     string number = 2;
+     string message = 3;
+     bool delivery_status = 4;
+ }
+ message SendSmsWithoutSmscReply {
+    int32 noofsegments = 1;
+    commonStub.Status status = 2;
+    commonStub.ErrorCode sentCallback_errorcode = 3;
+    int32 sentcallback_callbackdelay = 4;
+    string sentcallback_msgrefs = 5;
+    commonStub.ErrorCode deliverycallback_errorCode = 6;
+    int32 deliveryCallback_callbackDelay = 7;
+ }
+
+ message GetSmscAddressRequest {
+     int32 phone_id = 1;
+ }
+
+ message GetSmscAddressReply {
+     string smsc_address = 1;
+     commonStub.ErrorCode error = 2;
+     commonStub.Status status = 3;
+     int32 delay = 4;
+     bool iscallback = 5;
+ }
+
+ message SetSmscAddressRequest {
+     int32 phone_id = 1;
+     string number = 2;
+ }
+
+ message SetSmscAddressReply {
+     commonStub.ErrorCode error = 1;
+     commonStub.Status status = 2;
+     int32 delay = 3;
+     bool iscallback = 4;
+ }
+
+ message GetMessageAttributesRequest {
+     string message = 1;
+     int32 phone_id = 2;
+ }
+
+ message MessageAttributes {
+     enum SmsEncoding {
+         GSM7 = 0;
+         GSM8 = 1;
+         UCS2 = 2;
+         UNKNOWN = 3;
+     }
+     SmsEncoding encoding = 1;
+     int32 number_of_segments = 2;
+     int32 segment_size = 3;
+     int32 number_of_chars_left_in_last_segment = 4;
+ }
+
+ message GetMessageAttributesReply {
+     MessageAttributes message_attribute = 1;
+ }
+
+ message SendSmsRequest {
+     int32 phone_id = 1;
+ }
+ message Deliverycallback {
+    commonStub.ErrorCode ondeliveryreport_errorCode = 1;
+    int32 ondeliveryreportmsgRef = 2;
+    int32 deliverycallbackdelay = 3;
+ }
+
+ message SendSmsReply {
+     int32 noofsegments = 1;
+     commonStub.Status status = 2;
+     commonStub.ErrorCode smsresponsecb_errorCode = 3;
+     int32 smsresponsecb_callbackDelay = 4;
+     string sentcallback_msgrefs = 5;
+     repeated Deliverycallback records = 6;
+ }
+
+ message PduBuffer {
+     repeated string pdu_buffer = 1;
+ }
+
+ message SendRawSmsRequest {
+     int32 phone_id = 1;
+     int32 size = 2;
+ }
+
+ message SendRawSmsReply {
+     string reciever_address = 1;
+     commonStub.Status status = 2;
+     commonStub.ErrorCode smsresponsecb_errorCode = 3;
+     int32 smsresponsecb_callbackDelay = 4;
+     string sentcallback_msgrefs = 5;
+     repeated Deliverycallback records = 6;
+ }
+
+ message SmsTagType {
+    enum TagType {
+        MT_READ = 0;
+        UNKNOWN = -1;
+        MT_NOT_READ = 1;
+    }
+ }
+
+ message RequestSmsMessageListRequest {
+    int32 phone_id = 1;
+    SmsTagType.TagType tag_type = 2;
+ }
+
+ message SmsMetaInfo {
+    bool isMetaInfoValid = 1;
+    uint32 msg_index = 2;
+    SmsTagType.TagType tag_type = 3;
+ }
+
+ message RequestSmsMessageListReply {
+    repeated SmsMetaInfo meta_info = 1;
+    commonStub.ErrorCode error = 2;
+    commonStub.Status status = 3;
+    int32 delay = 4;
+    bool iscallback = 5;
+ }
+
+ message ReadMessageRequest {
+    int32 phone_id = 1;
+    uint32 msg_index = 2;
+ }
+
+ message ReadMessageReply {
+    SmsMessage sms_message = 1;
+    commonStub.ErrorCode error = 2;
+    commonStub.Status status = 3;
+    int32 delay = 4;
+    bool iscallback = 5;
+ }
+
+ message IsMemoryFullRequest {
+    int32 phone_id = 1;
+ }
+
+ message IsMemoryFullReply {
+    bool ismemoryfull = 1;
+ }
+
+ message DelType {
+    enum DeleteType {
+        DELETE_ALL = 0;
+        UNKNOWN = -1;
+        DELETE_MESSAGES_BY_TAG = 1;
+        DELETE_MSG_AT_INDEX = 2;
+    }
+ }
+
+ message DeleteMessageRequest {
+    int32 phone_id = 1;
+    DelType.DeleteType del_type = 2;
+    SmsTagType.TagType tag_type = 3;
+    uint32 msg_index = 4;
+ }
+ message DeleteMessageRequestReply {
+    commonStub.ErrorCode error = 1;
+    commonStub.Status status = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+ }
+
+ message StorageType {
+    enum Type {
+       NONE = 0;
+       UNKNOWN = -1;
+       SIM = 1;
+    }
+ }
+
+ message RequestPreferredStorageRequest {
+    int32 phone_id = 1;
+ }
+
+ message RequestPreferredStorageReply {
+    StorageType.Type storage_type = 1;
+    commonStub.ErrorCode error = 2;
+    commonStub.Status status = 3;
+    int32 delay = 4;
+    bool iscallback = 5;
+ }
+
+ message SetPreferredStorageRequest {
+    int32 phone_id = 1;
+    StorageType.Type storage_type = 2;
+ }
+ message SetPreferredStorageReply {
+    commonStub.ErrorCode error = 1;
+    commonStub.Status status = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+ }
+
+ message SetTagRequest {
+    int32 phone_id = 1;
+    uint32 msg_index = 2;
+    SmsTagType.TagType tag_type = 3;
+ }
+ message SetTagReply {
+    commonStub.ErrorCode error = 1;
+    commonStub.Status status = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+ }
+
+ message RequestStorageDetailsRequest {
+    int32 phone_id = 1;
+ }
+
+ message RequestStorageDetailsReply {
+    uint32 max_count = 1;
+    uint32 available_count = 2;
+    commonStub.ErrorCode error = 3;
+    commonStub.Status status = 4;
+    int32 delay = 5;
+    bool iscallback = 6;
+ }
+
+ message SmsMessage {
+    string text = 1;
+    string sender = 2;
+    string receiver = 3;
+    MessageAttributes.SmsEncoding encoding = 4;
+    string pdu = 5;
+    string pdu_buff = 6;
+    uint32 messageinforef_no = 7;
+    uint32 messageinfono_of_segments = 8;
+    uint32 messageinfosegment_no = 9;
+    bool ismetainfo_valid = 10;
+    uint32 msg_index = 11;
+    SmsTagType.TagType tag_type = 12;
+    int32 phone_id = 13;
+ }
+
+ message cardInfoChange {
+    int32 phone_id = 1;
+    bool card_power = 2;
+    bool is_ntn_profile_active = 3;
+ }
+
+ message memoryFullEvent {
+    int32 phone_id = 1;
+    StorageType.Type storage_type = 2;
+ }
+
+ message CallDirection {
+     enum Direction {
+         INCOMING = 0;
+         OUTGOING = 1;
+         NONE = 2;
+     }
+ }
+
+ enum CallState {
+     CALL_ACTIVE = 0;
+     CALL_ON_HOLD = 1;
+     CALL_DIALING = 2;
+     CALL_INCOMING = 3;
+     CALL_WAITING = 4;
+     CALL_ALERTING = 5;
+     CALL_ENDED = 6;
+     CALL_IDLE = -1;
+ }
+
+ message CallEndCause {
+     enum Cause {
+         DUMMY = 0;
+         UNOBTAINABLE_NUMBER = 1;
+         NO_ROUTE_TO_DESTINATION = 3;
+         CHANNEL_UNACCEPTABLE = 6;
+         OPERATOR_DETERMINED_BARRING = 8;
+         NORMAL = 16;
+         BUSY = 17;
+         NO_USER_RESPONDING = 18;
+         NO_ANSWER_FROM_USER = 19;
+         NOT_REACHABLE = 20;
+         CALL_REJECTED = 21;
+         NUMBER_CHANGED = 22;
+         PREEMPTION = 25;
+         DESTINATION_OUT_OF_ORDER = 27;
+         INVALID_NUMBER_FORMAT = 28;
+         FACILITY_REJECTED = 29;
+         RESP_TO_STATUS_ENQUIRY = 30;
+         NORMAL_UNSPECIFIED = 31;
+         CONGESTION = 34;
+         NETWORK_OUT_OF_ORDER = 38;
+         TEMPORARY_FAILURE = 41;
+         SWITCHING_EQUIPMENT_CONGESTION = 42;
+         ACCESS_INFORMATION_DISCARDED = 43;
+         REQUESTED_CIRCUIT_OR_CHANNEL_NOT_AVAILABLE = 44;
+         RESOURCES_UNAVAILABLE_OR_UNSPECIFIED = 47;
+         QOS_UNAVAILABLE = 49;
+         REQUESTED_FACILITY_NOT_SUBSCRIBED = 50;
+         INCOMING_CALLS_BARRED_WITHIN_CUG = 55;
+         BEARER_CAPABILITY_NOT_AUTHORIZED = 57;
+         BEARER_CAPABILITY_UNAVAILABLE = 58;
+         SERVICE_OPTION_NOT_AVAILABLE = 63;
+         BEARER_SERVICE_NOT_IMPLEMENTED = 65;
+         ACM_LIMIT_EXCEEDED = 68;
+         REQUESTED_FACILITY_NOT_IMPLEMENTED = 69;
+         ONLY_DIGITAL_INFORMATION_BEARER_AVAILABLE = 70;
+         SERVICE_OR_OPTION_NOT_IMPLEMENTED = 79;
+         INVALID_TRANSACTION_IDENTIFIER = 81;
+         USER_NOT_MEMBER_OF_CUG = 87;
+         INCOMPATIBLE_DESTINATION = 88;
+         INVALID_TRANSIT_NW_SELECTION = 91;
+         SEMANTICALLY_INCORRECT_MESSAGE = 95;
+         INVALID_MANDATORY_INFORMATION = 96;
+         MESSAGE_TYPE_NON_IMPLEMENTED = 97;
+         MESSAGE_TYPE_NOT_COMPATIBLE_WITH_PROTOCOL_STATE = 98;
+         INFORMATION_ELEMENT_NON_EXISTENT = 99;
+         CONDITIONAL_IE_ERROR = 100;
+         MESSAGE_NOT_COMPATIBLE_WITH_PROTOCOL_STATE = 101;
+         RECOVERY_ON_TIMER_EXPIRED = 102;
+         PROTOCOL_ERROR_UNSPECIFIED = 111;
+         INTERWORKING_UNSPECIFIED = 127;
+         CALL_BARRED = 240;
+         FDN_BLOCKED = 241;
+         IMSI_UNKNOWN_IN_VLR = 242;
+         IMEI_NOT_ACCEPTED = 243;
+         DIAL_MODIFIED_TO_USSD = 244;
+         DIAL_MODIFIED_TO_SS = 245;
+         DIAL_MODIFIED_TO_DIAL = 246;
+         CDMA_LOCKED_UNTIL_POWER_CYCLE = 1000;
+         CDMA_DROP = 1001;
+         CDMA_INTERCEPT = 1002;
+         CDMA_REORDER = 1003;
+         CDMA_SO_REJECT = 1004;
+         CDMA_RETRY_ORDER = 1005;
+         CDMA_ACCESS_FAILURE = 1006;
+         CDMA_PREEMPTED = 1007;
+         CDMA_NOT_EMERGENCY = 1008;
+         CDMA_ACCESS_BLOCKED = 1009;
+         ERROR_UNSPECIFIED = 65535;
+     }
+     Cause cause = 1;
+ }
+
+ enum EcallConfigType {
+    ECALL_CONFIG_MUTE_RX_AUDIO = 0;     /**< Mute the local audio device during MSD transmission */
+    ECALL_CONFIG_NUM_TYPE = 1;          /**< Decides which number needs to be dialed when an eCall
+                                            is initiated */
+    ECALL_CONFIG_OVERRIDDEN_NUM = 2;    /**< User configured/overridden number that will be dialed
+                                            for eCall */
+    ECALL_CONFIG_USE_CANNED_MSD = 3;    /**< Use the pre-defined MSD in modem for eCall */
+    ECALL_CONFIG_GNSS_UPDATE_INTERVAL = 4;/**< Time interval in milliseconds, at which modem
+                                            updates the GNSS information in its internally
+                                            generated MSD */
+    ECALL_CONFIG_T2_TIMER = 5;          /**< T2 timer value */
+    ECALL_CONFIG_T7_TIMER = 6;          /**< T7 timer value */
+    ECALL_CONFIG_T9_TIMER = 7;          /**< T9 timer value */
+    ECALL_CONFIG_MSD_VERSION = 8;       /**< MSD version to be used by modem when it internally
+                                            generates MSD i.e when MSD is not sent by application
+                                            and also canned MSD is not used */
+    ECALL_CONFIG_COUNT = 9;
+ }
+
+ enum ECallNumType {
+    DEFAULT = 0;         /* Default configured number is dialed */
+    OVERRIDDEN = 1;      /* User configured/overridden number is dialed */
+ }
+
+ enum HlapTimerType {
+    UNKNOWN_TIMER = 0;       /**< eCall unknown timer */
+    T2_TIMER = 2;            /**< eCall T2 timer */
+    T5_TIMER = 5;           /**< eCall T5 timer  */
+    T6_TIMER = 6;           /**< eCall T6 timer  */
+    T7_TIMER = 7;           /**< eCall T7 timer  */
+    T9_TIMER = 9;           /**< eCall T9 timer  */
+    T10_TIMER = 10;         /**< eCall T10 timer  */
+ }
+
+ enum HlapTimerEvent {
+   UNCHANGED = 0;               /**< No change in timer status */
+   STARTED = 1;                 /**< eCall Timer is Started */
+   STOPPED = 2;                 /**< eCall Timer is Stopped */
+   EXPIRED = 3;                 /**< eCall Timer is expired */
+ }
+
+ enum RttMode {
+   RTT_MODE_DISABLED = 0;       /**< RTT mode is not enabled */
+   RTT_MODE_FULL = 1;           /**< RTT call being used by both the parties*/
+   RTT_MODE_UNKNOWN = -1;       /**< RTT mode data is unknown */
+};
+
+enum CallType {
+   VOICE_CALL = 0;         /**< Normal voice call or TPS eCall */
+   VOICE_IP_CALL = 1;      /**< Normal Voice over IP (VoIP) call or TPS eCall over IP */
+   EMERGENCY_CALL = 2;     /**< Non-automotive emergency call, automotive eCall or NGeCall */
+   EMERGENCY_IP_CALL = 3;  /**< Non-Automotive Emergency Voice over IP (VoIP) Call */
+   UNKNOWN_CALL = -1;      /**< Unknown, when the information is not available */
+}
+
+enum ReasonType {
+    REASON_NONE = 0;            /**< Redial reason is NONE */
+    CALL_ORIG_FAILURE = 1;      /**< Redial will be attempted due to eCall origination failure */
+    CALL_DROP = 2;              /**< Redial will be attempted as the eCall is terminated before the
+                                     receipt of MSD Transmission status */
+    MAX_REDIAL_ATTEMPTED = 3;   /**< Redial will not be attempted as the maximum redial count
+                                     is reached */
+    CALL_CONNECTED = 4;         /**< Redial will not be attempted as the eCall is connected
+                                     successfully. */
+};
+
+enum RedialConfigType {
+    REDIAL_CONFIG_CALL_DROP = 0;  /**< Redial configuration for eCall termination before receipt of
+                                       MSD Transmission status */
+    REDIAL_CONFIG_CALL_ORIG = 1;  /**< Redial configuration for eCall origination failure */
+};
+
+ message ECallInfoEvent {
+    int32 phone_id = 1;
+    HlapTimerEvent action = 2;
+    string timer = 3;
+ }
+
+ message ECallRedialInfoEvent {
+    int32 phone_id = 1;
+    bool will_ecall_redial = 2;
+    ReasonType reason = 3;
+ }
+
+ message ConfigureECallRedialRequest {
+    repeated int32 time_gap = 1;
+    RedialConfigType config = 2;
+ }
+
+ message ConfigureECallRedialResponse {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+ }
+
+ message Call {
+     CallState call_state = 1;
+     int32 call_index = 2;
+     CallDirection.Direction call_direction = 3;
+     string remote_party_number = 4;
+     CallEndCause.Cause call_end_cause = 5;
+     bool is_multi_party_call = 6;
+     bool is_mpty = 7;
+     RttMode mode = 8;
+     RttMode local_rtt_capability = 9;
+     RttMode peer_rtt_capability = 10;
+     CallType call_type = 11;
+     int32 sip_error_code = 12;
+ }
+
+ message MakeECallRequest {
+     int32 phone_id = 1;
+     string remote_party_number = 2;
+     bool is_msd_transmitted = 3;
+     int32 api = 4;
+ }
+
+ message MakeECallReply {
+     int32 phone_id = 1;
+     commonStub.Status status = 2;
+     commonStub.ErrorCode error = 3;
+     int32 delay = 4;
+     bool iscallback = 5;
+     Call call = 6;
+ }
+
+message HangupRequest {
+     int32 call_index = 1;
+     int32 phone_id = 2;
+ }
+
+message HangupReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+ }
+
+message ModifyOrRespondToModifyCallRequest {
+   int32 call_index = 1;
+   int32 phone_id = 2;
+   RttMode rtt_mode = 3;
+   string api_type = 4;
+ }
+
+message ModifyOrRespondToModifyCallReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+ }
+
+message SendRttRequest {
+   int32 phone_id = 1;
+ }
+
+message SendRttReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+ }
+
+message UpdateCurrentCallsRequest {
+    int32 phone_id = 1;
+}
+
+message UpdateECallMsdRequest {
+    int32 phone_id = 1;
+    int32 api = 2;
+ }
+
+message UpdateECallMsdResponse {
+    int32 phone_id = 1;
+    commonStub.Status status = 2;
+    commonStub.ErrorCode error = 3;
+    int32 delay = 4;
+    bool iscallback = 5;
+ }
+
+  message HlapTimerStatus {
+     enum Status {
+         INACTIVE = 0;
+         ACTIVE = 1;
+         UNKNOWN = -1;
+     }
+ }
+
+ message ECallHlapTimerStatus {
+     HlapTimerStatus.Status t2 = 1;   /**< T2 Timer status */
+     HlapTimerStatus.Status t5 = 2;   /**< T5 Timer status */
+     HlapTimerStatus.Status t6 = 3;    /**< T6 Timer status */
+     HlapTimerStatus.Status t7 = 4;   /**< T7 Timer status */
+     HlapTimerStatus.Status t9 = 5;   /**< T9 Timer status */
+     HlapTimerStatus.Status t10 = 6;  /**< T10 Timer status */
+ }
+
+ message RequestECallHlapTimerStatusRequest {
+     int32 phone_id = 1;
+ }
+
+ message RequestECallHlapTimerStatusReply {
+    int32 phone_id = 1;
+    ECallHlapTimerStatus hlap_timer_status = 2;
+    commonStub.Status status = 3;
+    commonStub.ErrorCode error = 4;
+    int32 delay = 5;
+    bool iscallback = 6;
+ }
+
+ message EcallConfig {
+    repeated EcallConfigType config_validity_mask = 1;   /**< Indicates the valid configuration
+                            parameters in the structure. A bit set to 1 denotes that the
+                            corresponding configuration parameter is valid */
+    bool mute_rx_audio = 2;   /* Mute the local audio device(ex: speaker) during MSD transmission */
+    ECallNumType num_type = 3; /* Represents the type of number to be dialed when eCall is
+                                  initiated */
+    string overridden_num = 4; /* User configured/overridden number that will be dialed when
+                                  ECallNumType configuration parameter is set to OVERRIDE */
+    bool use_canned_msd = 5;   /* Use the pre-defined MSD in modem for eCall */
+    int32 gnss_update_interval = 6; /* Time interval in milliseconds at which the modem updates the
+                                    GNSS information, in its internally generated MSD */
+    int32 t2_timer = 7;   /* T2 timer value in milliseconds, according to EN 16062:2015 standard */
+    int32 t7_timer = 8;   /* T7 timer value in milliseconds, according to EN 16062:2015 standard */
+    int32 t9_timer = 9;   /* T9 timer value in milliseconds, according to EN 16062:2015 standard */
+    int32 msd_version = 10; /* MSD version to be used by modem when it internally generates MSD for
+                            transmission */
+ }
+
+ message SetConfigRequest {
+    bool is_mute_rx_audio_valid = 1;
+    bool mute_rx_audio = 2;  /* Mute the local audio device(ex: speaker) during MSD transmission */
+    bool is_num_type_valid = 3;
+    ECallNumType num_type = 4; /* Represents the type of number to be dialed when eCall is
+                                  initiated */
+    bool is_overridden_num_valid = 5;
+    string overridden_num = 6; /* User configured/overridden number that will be dialed when
+                                  ECallNumType configuration parameter is set to OVERRIDE */
+    bool is_use_canned_msd_valid = 7;
+    bool use_canned_msd = 8;   /* Use the pre-defined MSD in modem for eCall */
+    bool is_gnss_update_interval_valid = 9;
+    int32 gnss_update_interval = 10; /* Time interval in milliseconds at which the modem updates the
+                                    GNSS information, in its internally generated MSD */
+    bool is_t2_timer_valid = 11;
+    int32 t2_timer = 12;  /* T2 timer value in milliseconds, according to EN 16062:2015 standard */
+    bool is_t7_timer_valid = 13;
+    int32 t7_timer = 14;  /* T7 timer value in milliseconds, according to EN 16062:2015 standard */
+    bool is_t9_timer_valid = 15;
+    int32 t9_timer = 16;  /* T9 timer value in milliseconds, according to EN 16062:2015 standard */
+    bool is_msd_version_valid = 17;
+    int32 msd_version = 18; /* MSD version to be used by modem when it internally generates MSD for
+                            transmission */
+ }
+
+  message GetConfigResponse {
+    bool is_mute_rx_audio_valid = 1;
+    bool mute_rx_audio = 2;   /* Mute the local audio device(ex: speaker) during MSD transmission */
+    bool is_num_type_valid = 3;
+    ECallNumType num_type = 4; /* Represents the type of number to be dialed when eCall is
+                                  initiated */
+    bool is_overridden_num_valid = 5;
+    string overridden_num = 6; /* User configured/overridden number that will be dialed when
+                                  ECallNumType configuration parameter is set to OVERRIDE */
+    bool is_use_canned_msd_valid = 7;
+    bool use_canned_msd = 8;   /* Use the pre-defined MSD in modem for eCall */
+    bool is_gnss_update_interval_valid = 9;
+    int32 gnss_update_interval = 10; /* Time interval in milliseconds at which the modem updates the
+                                    GNSS information, in its internally generated MSD */
+    bool is_t2_timer_valid = 11;
+    int32 t2_timer = 12;    /* T2 timer value in milliseconds, according to EN 16062:2015
+                               standard */
+    bool is_t7_timer_valid = 13;
+    int32 t7_timer = 14;    /* T7 timer value in milliseconds, according to EN 16062:2015
+                               standard */
+    bool is_t9_timer_valid = 15;
+    int32 t9_timer = 16;    /* T9 timer value in milliseconds, according to EN 16062:2015
+                               standard */
+    bool is_msd_version_valid = 17;
+    int32 msd_version = 18;  /* MSD version to be used by modem when it internally generates MSD
+                                for transmission */
+    commonStub.Status status = 19;
+ }
+
+  message UpdateEcallHlapTimerRequest {
+    int32 phone_id = 1;
+    HlapTimerType type = 2;
+    int32 time_duration = 3;
+ }
+
+ message UpdateEcallHlapTimerResponse {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+ }
+
+ message SetConfigReply {
+    commonStub.Status status = 1;
+ }
+
+ message RequestEcallHlapTimerRequest {
+    int32 phone_id = 1;
+    HlapTimerType type = 2;
+ }
+
+ message RequestEcallHlapTimerReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+    int32 time_duration = 5;
+ }
+
+ message RequestEcbmRequest {
+     int32 phone_id = 1;
+ }
+
+ message EcbMode{
+     enum Mode {
+         NORMAL = 0;
+         EMERGENCY = 1;
+     }
+ }
+
+ message RequestEcbmReply {
+     commonStub.Status status = 1;
+     commonStub.ErrorCode error = 2;
+     int32 delay = 3;
+     bool iscallback = 4;
+     EcbMode.Mode ecbmode = 5;
+ }
+
+ message ExitEcbmRequest {
+     int32 phone_id = 1;
+ }
+
+ message ExitEcbmReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+    int32 time_duration = 5;
+ }
+
+ message MakeCallRequest {
+     int32 phone_id = 1;
+     string remote_party_number = 2;
+     bool is_msd_transmitted = 3;
+     int32 api = 4;
+ }
+
+ message MakeCallReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+    Call call = 5;
+ }
+
+ message RejectRequest {
+     int32 call_index = 1;
+     int32 phone_id = 2;
+ }
+
+ message RejectReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+ }
+
+ message RejectWithSMSRequest {
+     int32 call_index = 1;
+     int32 phone_id = 2;
+ }
+
+ message RejectWithSMSReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+ }
+
+ message AnswerRequest {
+     int32 call_index = 1;
+     int32 phone_id = 2;
+     RttMode mode = 3;
+
+ }
+
+ message AnswerReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+ }
+
+ message HangupForegroundResumeBackgroundRequest {
+     int32 phone_id = 1;
+ }
+
+ message HangupForegroundResumeBackgroundReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+ }
+
+ message HangupWaitingOrBackgroundRequest {
+     int32 phone_id = 1;
+ }
+
+ message HangupWaitingOrBackgroundReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+ }
+
+ message ResumeRequest {
+     int32 call_index = 1;
+     int32 phone_id = 2;
+ }
+
+ message ResumeReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+ }
+
+ message SwapRequest{
+     int32 call_to_hold_index = 1;
+     int32 phone_id = 2;
+     int32 call_to_activate_index = 3;
+ }
+
+ message SwapReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+ }
+
+ message HoldRequest {
+     int32 call_index = 1;
+     int32 phone_id = 2;
+ }
+
+ message HoldReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+ }
+
+ message RequestNetworkDeregistrationRequest {
+    int32 phone_id = 1;
+ }
+
+ message RequestNetworkDeregistrationReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+ }
+
+// --- ImsServingSystem ---
+
+ enum RegistrationStatus {
+    NOT_REGISTERED = 0;
+    REGISTERING = 1;
+    REGISTERED = 2;
+    LIMITED_REGISTERED = 3;
+    UNKOWN_STATE = -1;
+ }
+
+ message CellularService {
+    enum Status {
+        NO_SERVICE = 0;
+        LIMITED_SERVICE = 1;
+        FULL_SERVICE = 2;
+        UNKNOWN = -1;
+    }
+}
+
+ message RequestRegistrationInfoRequest {
+    int32 slot_id = 1;
+}
+
+ message RequestRegistrationInfoReply {
+    RegistrationStatus ims_reg_status = 1;
+    RadioTechnology rat = 2;
+    int32 error_code = 3;
+    string error_string = 4;
+    commonStub.ErrorCode error = 5;
+    commonStub.Status status = 6;
+    int32 delay = 7;
+    bool is_callback = 8;
+}
+
+ message RequestServiceInfoRequest {
+    int32 slot_id = 1;
+ }
+
+ message RequestServiceInfoReply {
+    CellularService.Status sms = 1;
+    CellularService.Status voice = 2;
+    commonStub.ErrorCode error = 3;
+    commonStub.Status status = 4;
+    int32 delay = 5;
+    bool is_callback = 6;
+ }
+
+ message RequestPdpStatusRequest {
+   int32 phone_id = 1;
+ }
+
+ message RequestPdpStatusReply {
+   bool is_pdp_connected = 1;
+   PdpFailureCode failure_code = 2;
+   EndReasonType failure_reason = 3;
+   string apn_name = 4;
+   commonStub.ErrorCode error = 5;
+   commonStub.Status status = 6;
+   int32 delay = 7;
+   bool is_callback = 8;
+ }
+
+ message ImsRegStatusChangeEvent {
+    int32 phone_id = 1;
+    RegistrationStatus ims_reg_status = 2;
+    RadioTechnology rat = 3;
+    int32 error_code = 4;
+    string error_string = 5;
+ }
+
+ message ImsServiceInfoChangeEvent {
+    int32 phone_id = 1;
+    CellularService.Status sms = 2;
+    CellularService.Status voice = 3;
+ }
+
+ message ImsPdpStatusInfoChangeEvent {
+    int32 phone_id = 1;
+    bool is_pdp_connected = 2;
+    PdpFailureCode failure_code = 3;
+    EndReasonType failure_reason = 4;
+    string apn_name = 5;
+ }
+
+ // --- ServingSystemService ---
+
+ message RequestRATPreferenceRequest {
+     int32 phone_id = 1;
+ }
+
+ enum RatPrefType {
+     PREF_CDMA_1X = 0;
+     PREF_CDMA_EVDO = 1;
+     PREF_GSM = 2;
+     PREF_WCDMA = 3;
+     PREF_LTE = 4;
+     PREF_TDSCDMA = 5;
+     PREF_NR5G = 6;
+     PREF_NR5G_NSA = 7;
+     PREF_NR5G_SA = 8;
+     PREF_NB1_NTN = 9;
+ }
+
+ enum GsmRFBand {
+    GSM_BAND_0 = 0;
+    GSM_BAND_450 = 1;
+    GSM_BAND_480 = 2;
+    GSM_BAND_750 = 3;
+    GSM_BAND_850 = 4;
+    GSM_BAND_900_EXTENDED = 5;
+    GSM_BAND_900_PRIMARY = 6;
+    GSM_BAND_900_RAILWAYS = 7;
+    GSM_BAND_1800 = 8;
+    GSM_BAND_1900 = 9;
+    GSM_BAND_INVALID = -1;
+}
+
+enum WcdmaRFBand {
+    WCDMA_BAND_0 = 0;
+    WCDMA_BAND_2100 = 1;
+    WCDMA_BAND_PCS_1900 = 2;
+    WCDMA_BAND_DCS_1800 = 3;
+    WCDMA_BAND_1700_US = 4;
+    WCDMA_BAND_850 = 5;
+    WCDMA_BAND_800 = 6;
+    WCDMA_BAND_2600 = 7;
+    WCDMA_BAND_900 = 8;
+    WCDMA_BAND_1700_JAPAN = 9;
+    WCDMA_BAND_1500_JAPAN = 10;
+    WCDMA_BAND_850_JAPAN = 11;
+    WCDMA_BAND_INVALID = -1;
+}
+
+enum LteRFBand {
+    E_UTRA_BAND_0 = 0;
+    E_UTRA_BAND_1 = 1;
+    E_UTRA_BAND_2 = 2;
+    E_UTRA_BAND_3 = 3;
+    E_UTRA_BAND_4 = 4;
+    E_UTRA_BAND_5 = 5;
+    E_UTRA_BAND_6 = 6;
+    E_UTRA_BAND_7 = 7;
+    E_UTRA_BAND_8 = 8;
+    E_UTRA_BAND_9 = 9;
+    E_UTRA_BAND_10 = 10;
+    E_UTRA_BAND_11 = 11;
+    E_UTRA_BAND_12 = 12;
+    E_UTRA_BAND_13 = 13;
+    E_UTRA_BAND_14 = 14;
+    E_UTRA_BAND_17 = 17;
+    E_UTRA_BAND_18 = 18;
+    E_UTRA_BAND_19 = 19;
+    E_UTRA_BAND_20 = 20;
+    E_UTRA_BAND_21 = 21;
+    E_UTRA_BAND_23 = 23;
+    E_UTRA_BAND_24 = 24;
+    E_UTRA_BAND_25 = 25;
+    E_UTRA_BAND_26 = 26;
+    E_UTRA_BAND_27 = 27;
+    E_UTRA_BAND_28 = 28;
+    E_UTRA_BAND_29 = 29;
+    E_UTRA_BAND_30 = 30;
+    E_UTRA_BAND_31 = 31;
+    E_UTRA_BAND_32 = 32;
+    E_UTRA_BAND_33 = 33;
+    E_UTRA_BAND_34 = 34;
+    E_UTRA_BAND_35 = 35;
+    E_UTRA_BAND_36 = 36;
+    E_UTRA_BAND_37 = 37;
+    E_UTRA_BAND_38 = 38;
+    E_UTRA_BAND_39 = 39;
+    E_UTRA_BAND_40 = 40;
+    E_UTRA_BAND_41 = 41;
+    E_UTRA_BAND_42 = 42;
+    E_UTRA_BAND_43 = 43;
+    E_UTRA_BAND_44 = 44;
+    E_UTRA_BAND_46 = 46;
+    E_UTRA_BAND_47 = 47;
+    E_UTRA_BAND_48 = 48;
+    E_UTRA_BAND_49 = 49;
+    E_UTRA_BAND_53 = 53;
+    E_UTRA_BAND_60 = 60;
+    E_UTRA_BAND_66 = 66;
+    E_UTRA_BAND_67 = 67;
+    E_UTRA_BAND_68 = 68;
+    E_UTRA_BAND_70 = 70;
+    E_UTRA_BAND_71 = 71;
+    E_UTRA_BAND_85 = 85;
+    E_UTRA_BAND_106 = 106;
+    E_UTRA_BAND_125 = 125;
+    E_UTRA_BAND_126 = 126;
+    E_UTRA_BAND_127 = 127;
+    E_UTRA_BAND_250 = 250;
+    E_UTRA_BAND_252 = 252;
+    E_UTRA_BAND_253 = 253;
+    E_UTRA_BAND_255 = 255;
+    E_UTRA_BAND_256 = 256;
+    E_UTRA_BAND_INVALID = -1;
+}
+
+enum NrRFBand {
+    NR_BAND_0 = 0;
+    NR_BAND_1 = 1;
+    NR_BAND_2 = 2;
+    NR_BAND_3 = 3;
+    NR_BAND_5 = 5;
+    NR_BAND_7 = 7;
+    NR_BAND_8 = 8;
+    NR_BAND_12 = 12;
+    NR_BAND_13 = 13;
+    NR_BAND_14 = 14;
+    NR_BAND_18 = 18;
+    NR_BAND_20 = 20;
+    NR_BAND_25 = 25;
+    NR_BAND_26 = 26;
+    NR_BAND_28 = 28;
+    NR_BAND_29 = 29;
+    NR_BAND_30 = 30;
+    NR_BAND_34 = 34;
+    NR_BAND_38 = 38;
+    NR_BAND_39 = 39;
+    NR_BAND_40 = 40;
+    NR_BAND_41 = 41;
+    NR_BAND_46 = 46;
+    NR_BAND_47 = 47;
+    NR_BAND_48 = 48;
+    NR_BAND_50 = 50;
+    NR_BAND_51 = 51;
+    NR_BAND_53 = 53;
+    NR_BAND_65 = 65;
+    NR_BAND_66 = 66;
+    NR_BAND_67 = 67;
+    NR_BAND_68 = 68;
+    NR_BAND_70 = 70;
+    NR_BAND_71 = 71;
+    NR_BAND_74 = 74;
+    NR_BAND_75 = 75;
+    NR_BAND_76 = 76;
+    NR_BAND_77 = 77;
+    NR_BAND_78 = 78;
+    NR_BAND_79 = 79;
+    NR_BAND_80 = 80;
+    NR_BAND_81 = 81;
+    NR_BAND_82 = 82;
+    NR_BAND_83 = 83;
+    NR_BAND_84 = 84;
+    NR_BAND_85 = 85;
+    NR_BAND_86 = 86;
+    NR_BAND_89 = 89;
+    NR_BAND_91 = 91;
+    NR_BAND_92 = 92;
+    NR_BAND_93 = 93;
+    NR_BAND_94 = 94;
+    NR_BAND_95 = 95;
+    NR_BAND_96 = 96;
+    NR_BAND_97 = 97;
+    NR_BAND_98 = 98;
+    NR_BAND_99 = 99;
+    NR_BAND_102 = 102;
+    NR_BAND_104 = 104;
+    NR_BAND_105 = 105;
+    NR_BAND_106 = 106;
+    NR_BAND_257 = 257;
+    NR_BAND_258 = 258;
+    NR_BAND_259 = 259;
+    NR_BAND_260 = 260;
+    NR_BAND_261 = 261;
+    NR_BAND_INVALID = -1;
+}
+
+ message RequestRATPreferenceReply {
+     repeated RatPrefType rat_pref_types = 1;
+     commonStub.ErrorCode error = 2;
+     commonStub.Status status = 3;
+     int32 delay = 4;
+     bool is_callback = 5;
+ }
+
+ message SetRATPreferenceRequest {
+     int32 phone_id = 1;
+     repeated RatPrefType rat_pref_types = 2;
+ }
+
+ message SetRATPreferenceReply {
+     commonStub.ErrorCode error = 1;
+     commonStub.Status status = 2;
+     int32 delay = 3;
+     bool is_callback = 4;
+ }
+
+ message RequestServiceDomainPreferenceRequest {
+     int32 phone_id = 1;
+ }
+
+ message ServiceDomainPreference {
+     enum Pref {
+         CS_ONLY = 0;
+         PS_ONLY = 1;
+         CS_PS = 2;
+         UNKNOWN = -1;
+     }
+ }
+
+ message RequestServiceDomainPreferenceReply {
+     commonStub.ErrorCode error = 1;
+     commonStub.Status status = 2;
+     int32 delay = 3;
+     bool is_callback = 4;
+     ServiceDomainPreference.Pref service_domain_pref = 5;
+ }
+
+ message SetServiceDomainPreferenceRequest {
+     int32 phone_id = 1;
+     ServiceDomainPreference.Pref service_domain_pref = 2;
+ }
+
+ message SetServiceDomainPreferenceReply {
+     commonStub.ErrorCode error = 1;
+     commonStub.Status status = 2;
+     int32 delay = 3;
+     bool is_callback = 4;
+ }
+
+ message ServiceDomainInfo {
+     enum Domain {
+         NO_SRV = 0;
+         CS_ONLY = 1;
+         PS_ONLY = 2;
+         CS_PS = 3;
+         CAMPED = 4;
+         UNKNOWN = -1;
+     }
+ }
+
+ enum ServiceRegistrationState {
+   REG_NO_SERVICE = 0;        /**< No service. */
+   REG_LIMITED_SERVICE = 1;   /**< Limited service. */
+   REG_IN_SERVICE = 2;        /**< In service. */
+   REG_LIMITED_REGIONAL = 3;  /**< Limited regional service. */
+   REG_POWER_SAVE = 4;        /**< Power save */
+   REG_UNKNOWN = -1;          /**< Unknown, when the information is not available */
+ }
+
+ message GetSystemInfoRequest {
+     int32 phone_id = 1;
+ }
+
+ message GetSystemInfoReply {
+     RadioTechnology current_rat = 1;
+     ServiceDomainInfo.Domain current_domain = 2;
+     ServiceRegistrationState current_state = 3;
+     commonStub.Status status = 4;
+ }
+
+ message EndcAvailability {
+     enum Status {
+         AVAILABLE = 0;
+         UNAVAILABLE = 1;
+         UNKNOWN = -1;
+     }
+ }
+
+ message DcnrRestriction {
+     enum Status {
+         RESTRICTED = 0;
+         UNRESTRICTED = 1;
+         UNKNOWN = -1;
+     }
+ }
+
+ message GetDcStatusRequest {
+     int32 phone_id = 1;
+ }
+
+ message GetDcStatusReply {
+     EndcAvailability.Status endc_availability = 1;
+     DcnrRestriction.Status dcnr_restriction = 2;
+ }
+
+ message GetNetworkRejectInfoReply {
+     RadioTechnology reject_rat = 1;
+     ServiceDomainInfo.Domain reject_domain = 2;
+     uint32 reject_cause = 3;
+     string mcc = 4;
+     string mnc = 5;
+     commonStub.Status status = 6;
+ }
+
+ message CallsAllowedInCell {
+     enum Type {
+         NORMAL_ONLY = 0;
+         EMERGENCY_ONLY = 1;
+         NO_CALLS = 2;
+         ALL_CALLS = 3;
+         UNKNOWN = -1;
+     }
+ }
+
+ message CallBarringInfo {
+     RadioTechnology rat = 1;
+     ServiceDomainInfo.Domain domain = 2;
+     CallsAllowedInCell.Type call_type = 3;
+ }
+
+ message GetCallBarringInfoReply {
+     repeated CallBarringInfo barring_infos = 1;
+     commonStub.Status status = 2;
+ }
+
+ message RequestNetworkTimeRequest {
+     int32 phone_id = 1;
+ }
+
+ message NetworkTimeInfo {
+     uint32 year = 1;
+     uint32 month = 2;
+     uint32 day = 3;
+     uint32 hour = 4;
+     uint32 minute = 5;
+     uint32 second = 6;
+     uint32 day_of_week = 7;
+     int32 time_zone = 8;
+     uint32 dst_adj = 9;
+     string nitz_time = 10;
+ }
+
+ message RequestNetworkTimeReply {
+     NetworkTimeInfo network_time_info = 1;
+     commonStub.ErrorCode error = 3;
+     commonStub.Status status = 4;
+     int32 delay = 5;
+     bool is_callback = 6;
+ }
+
+ enum RFBand {
+     BC_0 = 0;
+     INVALID = -1;
+     BC_1 = 1;
+     BC_3 = 3;
+     BC_4 = 4;
+     BC_5 = 5;
+     BC_6 = 6;
+     BC_7 = 7;
+     BC_8 = 8;
+     BC_9 = 9;
+     BC_10 = 10;
+     BC_11 = 11;
+     BC_12 = 12;
+     BC_13 = 13;
+     BC_14 = 14;
+     BC_15 = 15;
+     BC_16 = 16;
+     BC_17 = 17;
+     BC_18 = 18;
+     BC_19 = 19;
+     GSM_450 = 40;
+     GSM_480 = 41;
+     GSM_750 = 42;
+     GSM_850 = 43;
+     GSM_900_EXTENDED = 44;
+     GSM_900_PRIMARY = 45;
+     GSM_900_RAILWAYS = 46;
+     GSM_1800 = 47;
+     GSM_1900 = 48;
+     WCDMA_2100 = 80;
+     WCDMA_PCS_1900 = 81;
+     WCDMA_DCS_1800 = 82;
+     WCDMA_1700_US = 83;
+     WCDMA_850 = 84;
+     WCDMA_800 = 85;
+     WCDMA_2600 = 86;
+     WCDMA_900 = 87;
+     WCDMA_1700_JAPAN = 88;
+     WCDMA_1500_JAPAN = 90;
+     WCDMA_850_JAPAN = 91;
+     E_UTRA_OPERATING_BAND_1 = 120;
+     E_UTRA_OPERATING_BAND_2 = 121;
+     E_UTRA_OPERATING_BAND_3 = 122;
+     E_UTRA_OPERATING_BAND_4 = 123;
+     E_UTRA_OPERATING_BAND_5 = 124;
+     E_UTRA_OPERATING_BAND_6 = 125;
+     E_UTRA_OPERATING_BAND_7 = 126;
+     E_UTRA_OPERATING_BAND_8 = 127;
+     E_UTRA_OPERATING_BAND_9 = 128;
+     E_UTRA_OPERATING_BAND_10 = 129;
+     E_UTRA_OPERATING_BAND_11 = 130;
+     E_UTRA_OPERATING_BAND_12 = 131;
+     E_UTRA_OPERATING_BAND_13 = 132;
+     E_UTRA_OPERATING_BAND_14 = 133;
+     E_UTRA_OPERATING_BAND_17 = 134;
+     E_UTRA_OPERATING_BAND_33 = 135;
+     E_UTRA_OPERATING_BAND_34 = 136;
+     E_UTRA_OPERATING_BAND_35 = 137;
+     E_UTRA_OPERATING_BAND_36 = 138;
+     E_UTRA_OPERATING_BAND_37 = 139;
+     E_UTRA_OPERATING_BAND_38 = 140;
+     E_UTRA_OPERATING_BAND_39 = 141;
+     E_UTRA_OPERATING_BAND_40 = 142;
+     E_UTRA_OPERATING_BAND_18 = 143;
+     E_UTRA_OPERATING_BAND_19 = 144;
+     E_UTRA_OPERATING_BAND_20 = 145;
+     E_UTRA_OPERATING_BAND_21 = 146;
+     E_UTRA_OPERATING_BAND_24 = 147;
+     E_UTRA_OPERATING_BAND_25 = 148;
+     E_UTRA_OPERATING_BAND_41 = 149;
+     E_UTRA_OPERATING_BAND_42 = 150;
+     E_UTRA_OPERATING_BAND_43 = 151;
+     E_UTRA_OPERATING_BAND_23 = 152;
+     E_UTRA_OPERATING_BAND_26 = 153;
+     E_UTRA_OPERATING_BAND_32 = 154;
+     E_UTRA_OPERATING_BAND_125 = 155;
+     E_UTRA_OPERATING_BAND_126 = 156;
+     E_UTRA_OPERATING_BAND_127 = 157;
+     E_UTRA_OPERATING_BAND_28 = 158;
+     E_UTRA_OPERATING_BAND_29 = 159;
+     E_UTRA_OPERATING_BAND_30 = 160;
+     E_UTRA_OPERATING_BAND_66 = 161;
+     E_UTRA_OPERATING_BAND_250 = 162;
+     E_UTRA_OPERATING_BAND_46 = 163;
+     E_UTRA_OPERATING_BAND_27 = 164;
+     E_UTRA_OPERATING_BAND_31 = 165;
+     E_UTRA_OPERATING_BAND_71 = 166;
+     E_UTRA_OPERATING_BAND_47 = 167;
+     E_UTRA_OPERATING_BAND_48 = 168;
+     E_UTRA_OPERATING_BAND_67 = 169;
+     E_UTRA_OPERATING_BAND_68 = 170;
+     E_UTRA_OPERATING_BAND_49 = 171;
+     E_UTRA_OPERATING_BAND_85 = 172;
+     E_UTRA_OPERATING_BAND_72 = 173;
+     E_UTRA_OPERATING_BAND_73 = 174;
+     E_UTRA_OPERATING_BAND_86 = 175;
+     E_UTRA_OPERATING_BAND_53 = 176;
+     E_UTRA_OPERATING_BAND_87 = 177;
+     E_UTRA_OPERATING_BAND_88 = 178;
+     E_UTRA_OPERATING_BAND_70 = 179;
+     TDSCDMA_BAND_A = 200;
+     TDSCDMA_BAND_B = 201;
+     TDSCDMA_BAND_C = 202;
+     TDSCDMA_BAND_D = 203;
+     TDSCDMA_BAND_E = 204;
+     TDSCDMA_BAND_F = 205;
+     NR5G_BAND_1 = 250;
+     NR5G_BAND_2 = 251;
+     NR5G_BAND_3 = 252;
+     NR5G_BAND_5 = 253;
+     NR5G_BAND_7 = 254;
+     NR5G_BAND_8 = 255;
+     NR5G_BAND_20 = 256;
+     NR5G_BAND_28 = 257;
+     NR5G_BAND_38 = 258;
+     NR5G_BAND_41 = 259;
+     NR5G_BAND_50 = 260;
+     NR5G_BAND_51 = 261;
+     NR5G_BAND_66 = 262;
+     NR5G_BAND_70 = 263;
+     NR5G_BAND_71 = 264;
+     NR5G_BAND_74 = 265;
+     NR5G_BAND_75 = 266;
+     NR5G_BAND_76 = 267;
+     NR5G_BAND_77 = 268;
+     NR5G_BAND_78 = 269;
+     NR5G_BAND_79 = 270;
+     NR5G_BAND_80 = 271;
+     NR5G_BAND_81 = 272;
+     NR5G_BAND_82 = 273;
+     NR5G_BAND_83 = 274;
+     NR5G_BAND_84 = 275;
+     NR5G_BAND_85 = 276;
+     NR5G_BAND_257 = 277;
+     NR5G_BAND_258 = 278;
+     NR5G_BAND_259 = 279;
+     NR5G_BAND_260 = 280;
+     NR5G_BAND_261 = 281;
+     NR5G_BAND_12 = 282;
+     NR5G_BAND_25 = 283;
+     NR5G_BAND_34 = 284;
+     NR5G_BAND_39 = 285;
+     NR5G_BAND_40 = 286;
+     NR5G_BAND_65 = 287;
+     NR5G_BAND_86 = 288;
+     NR5G_BAND_48 = 289;
+     NR5G_BAND_14 = 290;
+     NR5G_BAND_13 = 291;
+     NR5G_BAND_18 = 292;
+     NR5G_BAND_26 = 293;
+     NR5G_BAND_30 = 294;
+     NR5G_BAND_29 = 295;
+     NR5G_BAND_53 = 296;
+     NR5G_BAND_46 = 297;
+     NR5G_BAND_91 = 298;
+     NR5G_BAND_92 = 299;
+     NR5G_BAND_93 = 300;
+     NR5G_BAND_94 = 301;
+ }
+
+ enum RFBandWidth {
+     LTE_BW_NRB_6 = 0;
+     INVALID_BANDWIDTH = -1;
+     LTE_BW_NRB_15 = 1;
+     LTE_BW_NRB_25 = 2;
+     LTE_BW_NRB_50 = 3;
+     LTE_BW_NRB_75 = 4;
+     LTE_BW_NRB_100 = 5;
+     NR5G_BW_NRB_5 = 6;
+     NR5G_BW_NRB_10 = 7;
+     NR5G_BW_NRB_15 = 8;
+     NR5G_BW_NRB_20 = 9;
+     NR5G_BW_NRB_25 = 10;
+     NR5G_BW_NRB_30 = 11;
+     NR5G_BW_NRB_40 = 12;
+     NR5G_BW_NRB_50 = 13;
+     NR5G_BW_NRB_60 = 14;
+     NR5G_BW_NRB_80 = 15;
+     NR5G_BW_NRB_90 = 16;
+     NR5G_BW_NRB_100 = 17;
+     NR5G_BW_NRB_200 = 18;
+     NR5G_BW_NRB_400 = 19;
+     GSM_BW_NRB_2 = 20;
+     TDSCDMA_BW_NRB_2 = 21;
+     WCDMA_BW_NRB_5 = 22;
+     WCDMA_BW_NRB_10 = 23;
+     NR5G_BW_NRB_70 = 24;
+ }
+
+ enum PdpFailureCode {
+    OTHER_FAILURE = 0;                 /**< Generic failure reason. */
+    OPTION_UNSUBSCRIBED = 1;           /**< Option is unsubscribed. */
+    UNKNOWN_PDP = 2;                   /**< PDP was unknown. */
+    REASON_NOT_SPECIFIED = 3;         /**< Reason not specified. */
+    CONNECTION_BRINGUP_FAILURE = 4;   /**< Connection bring-up failure. */
+    CONNECTION_IKE_AUTH_FAILURE = 5;   /**< IKE authentication failure. */
+    USER_AUTH_FAILED = 6;              /**< User authentication failed. */
+ };
+
+ enum EndReasonType {
+    CE_UNKNOWN = 0;
+    CE_MOBILE_IP = 1;
+    CE_INTERNAL = 2;
+    CE_CALL_MANAGER_DEFINED = 3;
+    CE_3GPP_SPEC_DEFINED = 6;
+    CE_PPP = 7;
+    CE_EHRPD = 8;
+    CE_IPV6 = 9;
+    CE_HANDOFF = 12;
+}
+
+ message RequestRFBandInfoRequest {
+     int32 phone_id = 1;
+ }
+
+ message RequestRFBandInfoReply {
+     RFBand band = 1;
+     uint32 channel = 2;
+     RFBandWidth band_width = 3;
+     commonStub.ErrorCode error = 4;
+     commonStub.Status status = 5;
+     int32 delay = 6;
+     bool is_callback = 7;
+ }
+
+ // --- NetworkSelectionService ---
+
+ message RequestNetworkSelectionModeRequest {
+     int32 phone_id = 1;
+ }
+
+ message NetworkSelectionMode {
+     enum Mode {
+         AUTOMATIC = 0;
+         MANUAL = 1;
+         UNKNOWN = -1;
+     }
+     Mode mode = 1;
+ }
+
+ message RequestNetworkSelectionModeReply {
+     NetworkSelectionMode.Mode mode = 1 ;
+     string mnc = 2;
+     string mcc = 3;
+     commonStub.ErrorCode error = 4;
+     commonStub.Status status = 5;
+     int32 delay = 6;
+     bool is_callback = 7;
+ }
+
+ message SetNetworkSelectionModeRequest {
+     int32 phone_id = 1;
+     NetworkSelectionMode.Mode mode = 2;
+     string mnc = 3;
+     string mcc = 4;
+ }
+
+ message SetNetworkSelectionModeReply {
+     commonStub.ErrorCode error = 1;
+     commonStub.Status status = 2;
+     int32 delay = 3;
+     bool is_callback = 4;
+ }
+
+ message RequestPreferredNetworksRequest {
+     int32 phone_id = 1;
+ }
+
+ message RatType {
+     enum Type {
+        UNKNOWN = 0;
+        UMTS = 15;
+        LTE = 14;
+        GSM = 7;
+        NR5G = 11;
+     }
+ }
+
+ message PreferredNetworkInfo {
+     int32 mcc = 1;
+     int32 mnc = 2;
+     repeated RatType.Type types = 3;
+ }
+
+ message RequestPreferredNetworksReply {
+     repeated PreferredNetworkInfo preferred = 1;
+     repeated PreferredNetworkInfo static_preferred = 2;
+     commonStub.ErrorCode error = 3;
+     commonStub.Status status = 4;
+     int32 delay = 5;
+     bool is_callback = 6;
+ }
+
+ message SetPreferredNetworksRequest {
+     int32 phone_id = 1;
+     repeated PreferredNetworkInfo preferred_networks_info = 2;
+     bool clear_previous = 3;
+ }
+
+ message SetPreferredNetworksReply {
+     commonStub.ErrorCode error = 1;
+     commonStub.Status status = 2;
+     int32 delay = 3;
+     bool is_callback = 4;
+ }
+
+ enum NetworkScanType {
+    NOT_DEFINED = 0 ;
+    CURRENT_RAT_PREFERENCE = 1;
+    USER_SPECIFIED_RAT = 2;
+    ALL_RATS = 3;
+ }
+
+ message PerformNetworkScanRequest {
+     int32 phone_id = 1;
+     NetworkScanType scan_type = 2;
+     repeated RatType.Type rat_types = 3;
+ }
+
+ message PerformNetworkScanReply {
+     commonStub.ErrorCode error = 1;
+     commonStub.Status status = 2;
+     int32 delay = 3;
+     bool is_callback = 4;
+ }
+
+ message InUseStatus{
+     enum Status {
+         UNKNOWN = 0;
+         CURRENT_SERVING = 1;
+         AVAILABLE = 2;
+     }
+ }
+
+ message RoamingStatus{
+     enum Status {
+         UNKNOWN = 0;
+         HOME = 1;
+         ROAM = 2;
+     }
+ }
+
+ message ForbiddenStatus{
+     enum Status {
+         UNKNOWN = 0;
+         FORBIDDEN = 1;
+         NOT_FORBIDDEN = 2;
+     }
+ }
+
+ message PreferredStatus{
+     enum Status {
+         UNKNOWN = 0;
+         PREFERRED = 1;
+         NOT_PREFERRED = 2;
+     }
+ }
+
+ message OperatorStatus {
+     InUseStatus.Status inuse = 1;
+     RoamingStatus.Status roaming = 2;
+     ForbiddenStatus.Status forbidden = 3;
+     PreferredStatus.Status preferred = 4;
+ }
+
+ message OperatorInfo {
+     string name = 1;
+     string mcc = 2;
+     string mnc = 3;
+     RadioTechnology rat = 4;
+     OperatorStatus operator_status = 5;
+ }
+
+message SelectionModeChangeEvent {
+    NetworkSelectionMode.Mode mode = 1;
+    string mnc = 2;
+    string mcc = 3;
+    int32 phone_id = 4;
+}
+
+enum NetworkScanStatus {
+    COMPLETE = 0;
+    PARTIAL = 1;
+    FAILED = 2;
+}
+
+message NetworkScanResultsChangeEvent {
+    NetworkScanStatus status = 1;
+    repeated OperatorInfo operator_infos = 2;
+    int32 phone_id = 3;
+}
+
+ // --- PhoneService ---
+enum VoiceServiceState {
+    NOT_REG_AND_NOT_SEARCHING = 0;
+    REG_HOME = 1;
+    NOT_REG_AND_SEARCHING = 2;
+    REG_DENIED = 3;
+    VOICE_SERVICE_STATE_UNKNOWN = 4;
+    REG_ROAMING = 5;
+    NOT_REG_AND_EMERGENCY_AVAILABLE_AND_NOT_SEARCHING = 10;
+    NOT_REG_AND_EMERGENCY_AVAILABLE_AND_SEARCHING = 12;
+    REG_DENIED_AND_EMERGENCY_AVAILABLE = 13;
+    UNKNOWN_AND_EMERGENCY_AVAILABLE = 14;
+}
+
+enum VoiceServiceDenialCause {
+    GENERAL = 0;      /**< General */
+    AUTH_FAILURE = 1; /**< Authentication Failure */
+
+    // Cause codes related to MS identification
+    IMSI_UNKNOWN = 2;      /**< IMSI unknown in HLR */
+    ILLEGAL_MS = 3;        /**< Illegal Mobile Station (MS), network
+                                refuses service to the MS either because an
+                                identity of the MS is not acceptable to the network
+                                or because the MS does not pass the authentication
+                                check */
+    IMSI_UNKNOWN_VLR = 4;  /**< IMSI unknown in Visitors Location Register (VLR) */
+    IMEI_NOT_ACCEPTED = 5; /**< Network does not accept emergency call
+                               establishment using an IMEI or not accept attach
+                               procedure for emergency services using an IMEI */
+    ILLEGAL_ME = 6;        /**< ME used is not acceptable to the network */
+
+    // Cause codes related non-GPRS and GPRS services (GMM)
+    GPRS_SERVICES_NOT_ALLOWED = 7;      /**< Not allowed to operate GPRS services. */
+    GPRS_NON_GPRS_NOT_ALLOWED = 8;      /**< Not allowed to operate either GPRS or
+                                             non-GPRS services */
+    MS_IDENTITY_FAILED = 9;             /**< the network cannot derive the MS's identity
+                                             from the P-TMSI/GUTI. */
+    IMPLICITLY_DETACHED = 10;           /**< network has implicitly detached the MS */
+    GPRS_NOT_ALLOWED_IN_PLMN = 14;      /**< GPRS services not allowed in this PLMN */
+    MSC_TEMPORARILY_NOT_REACHABLE = 16; /**< MSC temporarily not reachable */
+    SMS_PROVIDED_VIA_GPRS = 28;         /**< SMS provided via GPRS in this routing area */
+    NO_PDP_CONTEXT_ACTIVATED = 40;      /**< No PDP context activated */
+
+    // Cause codes related to subscription options
+    PLMN_NOT_ALLOWED = 11;          /**<  if the network initiates a detach request or UE
+                                         requests a services, in a PLMN where
+                                         the MS, by subscription or due to operator
+                                         determined barring is not allowed to operate. */
+    LOCATION_AREA_NOT_ALLOWED = 12; /**<  network initiates a detach request, in a
+                                         location area where the HPLMN determines that
+                                         the MS, by subscription, is not allowed to
+                                         operate  or roaming subscriber the subscriber is
+                                         denied service even if other PLMNs are available
+                                         on which registration was possible*/
+    ROAMING_NOT_ALLOWED = 13;       /**< Roaming not allowed in this Location Area */
+    NO_SUITABLE_CELLS = 15;         /**< No Suitable Cells in this Location Area */
+    NOT_AUTHORIZED = 25;            /**< Not Authorized for this CSG */
+
+    // Causes related to PLMN specific network failures and
+    // congestion/Authentication Failures
+    NETWORK_FAILURE = 17;                 /**< Network Failure */
+    MAC_FAILURE = 20;                     /**< MAC failure */
+    SYNC_FAILURE = 21;                    /**< USIM detects that the SQN in the
+                                               AUTHENTICATION REQUEST or
+                                               AUTHENTICATION_AND_CIPHERING REQUEST
+                                               message is out of range */
+    CONGESTION = 22;                      /**< network cannot serve a request from the MS
+                                             because of congestion */
+    GSM_AUTHENTICATION_UNACCEPTABLE = 23; /**< GSM Authentication unacceptable */
+
+    // Causes related to nature of request
+    SERVICE_OPTION_NOT_SUPPORTED = 32; /**< Service option not supported */
+    SERVICE_OPTION_NOT_SUBCRIBED = 33; /**< Requested service option not subscribed */
+    SERVICE_OPTION_OUT_OF_ORDER = 34;  /**< Service option temporarily out of order */
+    CALL_NOT_IDENTIFIED = 38;          /**< Call cannot be identified */
+    RETRY_FOR_NEW_CELL = 48;           /**< Retry upon entry into a new cell */
+
+    // Causes related to invalid messages
+    INCORRECT_MESSAGE = 95;           /**< Semantically incorrect message */
+    INVALID_INFO = 96;                /**< Invalid mandatory information */
+    MSG_TYPE_NOT_IMPLEMENTED = 97;    /**< Message type non-existent or not implemented */
+    MSG_NOT_COMPATIBLE = 98;          /**< Message not compatible with protocol state */
+    INFO_NOT_IMPLEMENTED = 99;        /**< Information element non-existent or not implemented */
+    CONDITIONAL_IE_ERROR = 100;       /**< Conditional IE error */
+    PROTOCOL_ERROR_UNSPECIFIED = 111; /**< Protocol error, unspecified */
+    UNDEFINED = -1;   /**< Undefined */
+}
+
+enum RadioTechnology {
+    RADIO_TECH_UNKNOWN = 0;
+    RADIO_TECH_GPRS = 1;
+    RADIO_TECH_EDGE = 2;
+    RADIO_TECH_UMTS = 3;
+    RADIO_TECH_IS95A = 4;
+    RADIO_TECH_IS95B = 5;
+    RADIO_TECH_1xRTT = 6;
+    RADIO_TECH_EVDO_0 = 7;
+    RADIO_TECH_EVDO_A = 8;
+    RADIO_TECH_HSDPA = 9;
+    RADIO_TECH_HSUPA = 10;
+    RADIO_TECH_HSPA = 11;
+    RADIO_TECH_EVDO_B = 12;
+    RADIO_TECH_EHRPD = 13;
+    RADIO_TECH_LTE = 14;
+    RADIO_TECH_HSPAP = 15;
+    RADIO_TECH_GSM = 16;
+    RADIO_TECH_TD_SCDMA = 17;
+    RADIO_TECH_IWLAN = 18;
+    RADIO_TECH_LTE_CA = 19;
+    RADIO_TECH_NR5G = 20;
+    RADIO_TECH_NB1_NTN = 21;
+}
+
+enum VoiceServiceTechnology {
+    VOICE_TECH_GW_CSFB = 0;
+    VOICE_TECH_1x_CSFB = 1;
+    VOICE_TECH_VOLTE = 2;
+    VOICE_TECH_INVALID = -1;
+}
+
+enum RATCapability {
+    AMPS = 0;
+    CDMA = 1;
+    HDR = 2;
+    GSM = 3;
+    WCDMA = 4;
+    LTE = 5;
+    TDS = 6;
+    NR5G = 7;
+    NR5GSA = 8;
+    NB1_NTN = 9;
+    RAT_CAP_INVALID = -1;
+}
+
+enum OperatingMode {
+    ONLINE = 0;
+    AIRPLANE = 1;
+    FACTORY_TEST = 2;
+    OFFLINE = 3;
+    RESETTING = 4;
+    SHUTTING_DOWN = 5;
+    PERSISTENT_LOW_POWER = 6;
+}
+
+enum ECallMode {
+    NORMAL = 0;
+    ECALL_ONLY = 1;
+    NONE = 2;
+}
+
+message SimRatCapability {
+    // Mapped to RATCapabilitiesMask, since we can't use bitset we add the available RATCapability
+    // to a list and create bitset on server side.
+    repeated RATCapability capabilities = 1;
+    int32 phone_id = 2;
+ }
+
+message GetPhoneIdsReply {
+    commonStub.Status status = 1;
+}
+
+message GetPhoneIdReply {
+    commonStub.Status status = 1;
+}
+
+message CellularCapabilityInfoReply {
+    CellularCapabilityInfo capability_info = 1;
+    commonStub.ErrorCode error = 2;
+    commonStub.Status status = 3;
+    int32 delay = 4;
+    bool iscallback = 5;
+}
+
+message CellularCapabilityInfo {
+    // Mapped to VoiceServiceTechnologiesMask
+    repeated VoiceServiceTechnology voice_service_techs = 1;
+    int32 sim_count = 2;
+    int32 max_active_sims = 3;
+    repeated SimRatCapability sim_rat_capabilities = 4;
+    // Mapped to DeviceRatCapability, since DeviceRatCapability = SimRatCapability we directly use
+    // SimRatCapability.
+    repeated SimRatCapability device_rat_capability = 5;
+}
+
+message SetOperatingModeRequest {
+    OperatingMode operating_mode = 1;
+}
+
+message SetOperatingModeReply {
+    commonStub.ErrorCode error = 1;
+    commonStub.Status status = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+}
+
+message GetOperatingModeReply {
+    OperatingMode operating_mode = 1;
+    commonStub.ErrorCode error = 2;
+    commonStub.Status status = 3;
+    int32 delay = 4;
+    bool iscallback = 5;
+}
+
+message OperatingModeEvent {
+    OperatingMode operating_mode = 1;
+}
+
+message ResetWwanReply {
+    commonStub.ErrorCode error = 1;
+    commonStub.Status status = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+}
+
+message RequestVoiceServiceStateRequest {
+    int32 phone_id = 1;
+}
+
+message RequestVoiceServiceStateReply {
+    VoiceServiceStateInfo voice_service_state_info = 1;
+    int32 phone_id = 2;
+    commonStub.ErrorCode error = 3;
+    commonStub.Status status = 4;
+    int32 delay = 5;
+    bool iscallback = 6;
+}
+
+message VoiceServiceStateInfo {
+    VoiceServiceState voice_service_state = 1;
+    VoiceServiceDenialCause voice_service_denial_cause = 2;
+    RadioTechnology radio_technology = 3;
+}
+
+message VoiceServiceStateEvent {
+    VoiceServiceStateInfo voice_service_state_info = 1;
+    int32 phone_id = 2;
+}
+
+message SetRadioPowerRequest {
+    bool enable = 1;
+    int32 phone_id = 2;
+}
+
+message SetRadioPowerReply {
+    commonStub.ErrorCode error = 1;
+    commonStub.Status status = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+}
+
+message RequestCellInfoListRequest {
+    int32 phone_id = 1;
+}
+
+message CellInfo {
+    enum CellType {
+        DUMMY = 0;
+        GSM = 1;
+        CDMA = 2;
+        LTE = 3;
+        WCDMA = 4;
+        TDSCDMA = 5;
+        NR5G = 6;
+        NB1_NTN = 7;
+   }
+   CellType cell_type = 1;
+   bool registered = 2;
+}
+
+message GsmCellInfo {
+    GsmCellIdentity gsm_cell_identity = 1;
+    GsmSignalStrengthInfo gsm_signal_strength_info = 2;
+}
+
+message GsmCellIdentity {
+    string mcc = 1;
+    string mnc = 2;
+    int32 lac = 3;
+    int32 cid = 4;
+    int32 arfcn = 5;
+    int32 bsic = 6;
+}
+
+message GsmSignalStrengthInfo {
+    int32 gsm_signal_strength = 1;
+    int32 gsm_bit_error_rate = 2;
+    int32 timing_advance = 3;
+}
+
+message WcdmaCellInfo {
+    WcdmaCellIdentity wcdma_cell_identity = 1;
+    WcdmaSignalStrengthInfo wcdma_signal_strength_info = 2;
+}
+
+message WcdmaCellIdentity {
+    string mcc = 1;
+    string mnc = 2;
+    int32 lac = 3;
+    int32 cid = 4;
+    int32 psc = 5;
+    int32 uarfcn = 6;
+}
+
+message WcdmaSignalStrengthInfo {
+    int32 signal_strength = 1;
+    int32 bit_error_rate = 2;
+    int32 ecio = 3;
+    int32 rscp = 4;
+}
+
+message LteCellInfo {
+    LteCellIdentity lte_cell_identity = 1;
+    LteSignalStrengthInfo lte_signal_strength_info = 2;
+}
+
+message LteCellIdentity {
+    string mcc = 1;
+    string mnc = 2;
+    int32 ci = 3;
+    int32 pci = 4;
+    int32 tac = 5;
+    int32 earfcn = 6;
+}
+
+message LteSignalStrengthInfo {
+    int32 lte_signal_strength = 1;
+    int32 lte_rsrp = 2;
+    int32 lte_rsrq = 3;
+    int32 lte_rssnr = 4;
+    int32 lte_cqi = 5;
+    int32 timing_advance = 6;
+}
+
+message Nr5gCellInfo {
+    Nr5gCellIdentity nr5g_cell_identity = 1;
+    Nr5gSignalStrengthInfo nr5g_signal_strength_info = 2;
+}
+
+message Nr5gCellIdentity {
+    string mcc = 1;
+    string mnc = 2;
+    int32 ci = 3;
+    int32 pci = 4;
+    int32 tac = 5;
+    int32 arfcn = 6;
+}
+
+message Nr5gSignalStrengthInfo {
+    int32 rsrp = 1;
+    int32 rsrq = 2;
+    int32 rssnr = 3;
+}
+
+message Nb1NtnCellInfo {
+    Nb1NtnCellIdentity nb1_ntn_cell_identity = 1;
+    Nb1NtnSignalStrengthInfo nb1_ntn_signal_strength_info = 2;
+}
+
+message Nb1NtnCellIdentity {
+    string mcc = 1;
+    string mnc = 2;
+    int32 ci = 3;
+    int32 tac = 4;
+    int32 earfcn = 5;
+}
+
+message Nb1NtnSignalStrengthInfo {
+    int32 signal_strength = 1;
+    int32 rsrp = 2;
+    int32 rsrq = 3;
+    int32 rssnr = 4;
+}
+
+message CellInfoList {
+    CellInfo cell_type = 1;
+    GsmCellInfo gsm_cell_info = 2;
+    WcdmaCellInfo wcdma_cell_info = 3;
+    LteCellInfo lte_cell_info = 4;
+    Nr5gCellInfo nr5g_cell_info = 5;
+    Nb1NtnCellInfo nb1_ntn_cell_info = 6;
+    int32 phone_id = 7;
+    string mcc = 8;
+}
+
+message RequestCellInfoListReply {
+    repeated CellInfoList cell_info_list = 1;
+    int32 phone_id = 2;
+    commonStub.ErrorCode error = 3;
+    commonStub.Status status = 4;
+    int32 delay = 5;
+    bool iscallback = 6;
+}
+
+message CellInfoListEvent {
+    repeated CellInfoList cell_info_list = 1;
+    int32 phone_id = 2;
+}
+
+message SetCellInfoListRateRequest {
+    int32 phone_id = 1;
+    int32 cell_info_rate = 2;
+}
+
+message SetCellInfoListRateReply {
+    int32 phone_id = 1;
+    commonStub.ErrorCode error = 2;
+    commonStub.Status status = 3;
+    int32 delay = 4;
+    bool iscallback = 5;
+}
+
+message GetSignalStrengthRequest {
+    int32 phone_id = 1;
+    string current_rat = 2;
+}
+
+message GetSignalStrengthReply {
+    SignalStrength signal_strength = 1;
+    int32 phone_id = 2;
+    commonStub.ErrorCode error = 3;
+    commonStub.Status status = 4;
+    int32 delay = 5;
+    bool iscallback = 6;
+}
+
+message SignalStrength {
+    GsmSignalStrengthInfo gsm_signal_strength_info = 1;
+    WcdmaSignalStrengthInfo wcdma_signal_strength_info = 2;
+    LteSignalStrengthInfo lte_signal_strength_info = 3;
+    Nr5gSignalStrengthInfo nr5g_signal_strength_info = 4;
+    Nb1NtnSignalStrengthInfo nb1_ntn_signal_strength_info = 5;
+}
+
+message SignalStrengthChangeEvent {
+    SignalStrength signal_strength = 1;
+    int32 phone_id = 2;
+}
+
+message SetECallOperatingModeRequest {
+    int32 phone_id = 1;
+    ECallMode ecall_mode = 2;
+}
+
+message SetECallOperatingModeReply {
+    int32 phone_id = 1;
+    commonStub.ErrorCode error = 2;
+    commonStub.Status status = 3;
+    int32 delay = 4;
+    bool iscallback = 5;
+}
+
+message GetECallOperatingModeRequest {
+    int32 phone_id = 1;
+}
+
+message GetECallOperatingModeReply {
+    ECallMode ecall_mode = 1;
+    int32 phone_id = 2;
+    commonStub.ErrorCode error = 3;
+    commonStub.Status status = 4;
+    int32 delay = 5;
+    bool iscallback = 6;
+}
+
+message ECallModeReason {
+    enum Reason {
+        NORMAL = 0;
+        ERA_GLONASS = 1;
+    }
+    Reason reason = 1;
+}
+
+// In ecall operating mode change notification, ecall mode reason is informed
+message ECallModeInfoChangeEvent {
+    ECallMode ecall_mode = 1;
+    ECallModeReason.Reason ecall_mode_reason = 2;
+    int32 phone_id = 3;
+}
+
+message RequestOperatorInfoRequest {
+    int32 phone_id = 1;
+}
+
+message PlmnInfo {
+    string long_name = 1;
+    string short_name = 2;
+    string plmn = 3;
+    bool ishome = 4;
+}
+
+message RequestOperatorInfoReply {
+    PlmnInfo plmn_info = 1;
+    int32 phone_id = 2;
+    commonStub.ErrorCode error = 3;
+    commonStub.Status status = 4;
+    int32 delay = 5;
+    bool iscallback = 6;
+}
+
+message OperatorInfoEvent {
+    PlmnInfo plmn_info = 1;
+    int32 phone_id = 2;
+}
+
+enum SignalStrengthConfigType {
+    CONFIG_NONE = 0;
+    DELTA = 1;       /**< Signal strength delta provided. */
+    THRESHOLD = 2;   /**< Signal strength threshold provided. */
+}
+
+enum RadioSignalStrengthType {
+    GSM_RSSI = 0;     /**< GSM received signal strength indicator.*/
+    WCDMA_RSSI = 1;   /**< WCDMA received signal strength indicator.*/
+    LTE_SNR = 2;      /**< LTE signal-to-noise ratio.*/
+    LTE_RSRQ = 3;     /**< LTE reference signal received quality.*/
+    LTE_RSRP = 4;     /**< LTE reference signal received power.*/
+    NR5G_SNR = 5;     /**< NR5G signal-to-noise ratio.*/
+    NR5G_RSRP = 6;    /**< NR5G reference signal received power.*/
+    NR5G_RSRQ = 7;    /**< NR5G reference signal received quality.*/
+}
+
+message SignalStrengthThreshold {
+    int32 lower_range_threshold = 1;     /**< Lower threshold for the selected
+                                          radio technology. */
+    int32 upper_range_threshold = 2;     /**< Upper threshold for the selected
+                                          radio technology. */
+}
+
+message ConfigureSignalStrength {
+    SignalStrengthConfigType config_type = 1;
+    RadioSignalStrengthType rat_sig_type = 2;
+    oneof Request {
+        uint32 delta = 3;
+        SignalStrengthThreshold threshold = 4;
+    }
+}
+
+message ConfigureSignalStrengthRequest {
+   int32 phone_id = 1;
+   repeated ConfigureSignalStrength config = 2;
+}
+
+message ConfigureSignalStrengthReply {
+    int32 phone_id = 1;
+    commonStub.ErrorCode error = 2;
+    commonStub.Status status = 3;
+    int32 delay = 4;
+    bool iscallback = 5;
+}
+
+enum SignalStrengthConfigExType {
+    EX_CONFIG_NONE = 0;
+    EX_DELTA = 1;       /**< Signal strength delta provided. */
+    EX_THRESHOLD = 2;   /**< Signal strength threshold provided. */
+    EX_HYSTERESIS_DB = 3; /**< Signal strength hysteresis delta provided. */
+}
+
+enum SignalStrengthMeasurementType {
+    RSSI = 0;  /**< Received signal strength indicator. */
+    ECIO = 1;  /**< Energy per chip to interference power ratio. */
+    SINR = 2;  /**< Signal-to-interference-plus-noise ratio. */
+    IO = 3;    /**< Interference power ratio. */
+    RSRQ = 4;  /**< Reference signal received quality. */
+    RSRP = 5;  /**< Reference signal received power. */
+    SNR = 6;   /**< Signal-to-noise ratio. */
+    RSCP = 7;  /**< Received signal code power. */
+}
+
+message SignalStrengthConfigDataElements {
+    repeated int32 threshold_list = 1;
+    uint32 hysteresis_db = 2;
+}
+
+message SignalStrengthConfigData {
+    SignalStrengthMeasurementType sig_meas_type = 1;
+    oneof Request{
+        uint32 delta = 2;
+        SignalStrengthConfigDataElements elements = 3;
+    }
+}
+
+message ConfigureSignalStrengthEx {
+    repeated SignalStrengthConfigExType config_types = 1;
+    RadioTechnology radio_tech = 2;
+    repeated SignalStrengthConfigData sig_config_data = 3;
+}
+
+message ConfigureSignalStrengthExRequest {
+    int32 phone_id = 1;
+    repeated ConfigureSignalStrengthEx config = 2;
+    uint32 hysteresis_ms = 3;
+}
+
+message ConfigureSignalStrengthExReply {
+    commonStub.ErrorCode error = 1;
+    commonStub.Status status = 2;
+    int32 delay = 3;
+    bool iscallback = 4;
+}
+
+message GetNetworkRejectInfoRequest {
+    int32 phone_id = 1;
+}
+
+message GetCallBarringInfoRequest {
+    int32 phone_id = 1;
+}
+
+enum SmsDomain {
+   NO_SMS = 0;           /**< Can't receive SMS */
+   SMS_ON_IMS = 1;       /**< SMS is supported over IMS network */
+   SMS_ON_3GPP = 2;      /**< SMS is supported over 3GPP network */
+   UNKNOWN_DOMAIN = -1;  /**< Unknown, when the information is not available */
+};
+
+enum NtnSmsStatus {
+   SMS_NOT_AVAILABLE = 0; /**< SMS service status over CP is not available. */
+   SMS_TEMP_FAILURE = 1;  /**< SMS service status over CP is not available temporarily. */
+   SMS_AVAILABLE = 2;     /**< SMS service status over CP is available. */
+   SMS_UNKNOWN = -1;  /**< Unknown, when the information is not available. */
+}
+
+message GetSmsCapabilityOverNetworkRequest {
+    int32 phone_id = 1;
+}
+
+message GetSmsCapabilityOverNetworkReply {
+    RadioTechnology rat = 1;
+    SmsDomain domain = 2;
+    NtnSmsStatus sms_status = 3;
+    commonStub.Status status = 4;
+}
+
+enum  LteCsCapability {
+   FULL_SERVICE = 0;        /**< Full service on CS domain is available */
+   CSFB_NOT_PREFERRED = 1;  /**< CSFB is not preferred */
+   SMS_ONLY = 2;            /**< CS registation is for SMS only */
+   LIMITED = 3;             /**< CS registation failed for max attach or tracking area
+                                updating(TAU) attempts */
+   BARRED = 4;              /**< CS domain not available */
+   UNKNOWN_SERVICE = -1;    /**< Unknown, when the information is not available */
+}
+
+message GetLteCsCapabilityRequest {
+    int32 phone_id = 1;
+}
+
+message GetLteCsCapabilityReply {
+    LteCsCapability capability  = 1;
+    commonStub.Status status = 2;
+}
+
+message RequestRFBandPreferencesRequest {
+    int32 phone_id = 1;
+}
+
+message RequestRFBandPreferencesReply {
+    repeated GsmRFBand gsm_pref_bands = 1;
+    repeated WcdmaRFBand wcdma_pref_bands = 2;
+    repeated LteRFBand lte_pref_bands = 3;
+    repeated NrRFBand nsa_pref_bands = 4;
+    repeated NrRFBand sa_pref_bands = 5;
+    commonStub.ErrorCode error = 6;
+    commonStub.Status status = 7;
+    int32 delay = 8;
+    bool is_callback = 9;
+}
+
+message SetRFBandPreferencesRequest {
+    int32 phone_id = 1;
+    repeated GsmRFBand gsm_pref_bands = 2;
+    repeated WcdmaRFBand wcdma_pref_bands = 3;
+    repeated LteRFBand lte_pref_bands = 4;
+    repeated NrRFBand nsa_pref_bands = 5;
+    repeated NrRFBand sa_pref_bands = 6;
+}
+
+message SetRFBandPreferencesReply {
+    commonStub.ErrorCode error = 1;
+    commonStub.Status status = 2;
+    int32 delay = 3;
+    bool is_callback = 4;
+}
+
+message RequestRFBandCapabilityRequest {
+    int32 phone_id = 1;
+}
+
+message RequestRFBandCapabilityReply {
+    repeated GsmRFBand gsm_capability_bands = 1;
+    repeated WcdmaRFBand wcdma_capability_bands = 2;
+    repeated LteRFBand lte_capability_bands = 3;
+    repeated NrRFBand nr_capability_bands = 4;
+    commonStub.ErrorCode error = 5;
+    commonStub.Status status = 6;
+    int32 delay = 7;
+    bool is_callback = 8;
+}
+
+enum ServiceState {
+   EMERGENCY_ONLY = 0; /**< Only emergency calls allowed */
+   IN_SERVICE = 1;     /**< Normal operation, device is registered with a carrier and
+                        online */
+   OUT_OF_SERVICE = 2; /**< Device is not registered with any carrier */
+   RADIO_OFF = 3;      /**< Device radio is off - Airplane mode for example */
+   UNKNOWN_STATE = 10; /**< Unknown */
+};
+
+message ServiceStateChangeEvent {
+    ServiceState service_state = 1;
+    int32 phone_id = 2;
+}
+
+message VoiceRadioTechnologyChangeEvent {
+    RadioTechnology radio_technology = 1;
+    int32 phone_id = 2;
+}
+
+// --- ImsService start ---
+
+ message ImsServiceConfig {
+     bool is_ims_service_enabled_valid = 1;
+     bool ims_service_enabled = 2;
+     bool is_voims_enabled_valid = 3;
+     bool voims_enabled = 4;
+     bool is_sms_enabled_valid = 5;
+     bool sms_enabled = 6;
+     bool is_rtt_enabled_valid = 7;
+     bool rtt_enabled = 8;
+ }
+
+ message RequestServiceConfigRequest {
+     int32 phone_id = 1;
+ }
+
+ message RequestServiceConfigReply {
+     ImsServiceConfig config = 1;
+     commonStub.ErrorCode error = 2;
+     commonStub.Status status = 3;
+     int32 delay = 4;
+     bool is_callback = 5;
+ }
+
+ message SetServiceConfigRequest {
+     int32 phone_id = 1;
+     ImsServiceConfig config = 2;
+ }
+
+ message SetServiceConfigReply {
+     commonStub.ErrorCode error = 1;
+     commonStub.Status status = 2;
+     int32 delay = 3;
+     bool is_callback = 4;
+ }
+
+ message ImsServiceConfigsChangeEvent {
+     int32 phone_id = 1;
+     ImsServiceConfig config = 2;
+ }
+
+ message RequestSipUserAgentRequest {
+     int32 phone_id = 1;
+ }
+
+ message RequestSipUserAgentReply {
+     string sip_user_agent = 1;
+     commonStub.ErrorCode error = 2;
+     commonStub.Status status = 3;
+     int32 delay = 4;
+     bool is_callback = 5;
+ }
+
+ message SetSipUserAgentRequest {
+     int32 phone_id = 1;
+     string sip_user_agent = 2;
+ }
+
+ message SetSipUserAgentReply {
+     commonStub.ErrorCode error = 1;
+     commonStub.Status status = 2;
+     int32 delay = 3;
+     bool is_callback = 4;
+ }
+
+ message RequestVonrRequest {
+     int32 phone_id = 1;
+ }
+
+ message RequestVonrReply {
+     bool enable = 1;
+     commonStub.ErrorCode error = 2;
+     commonStub.Status status = 3;
+     int32 delay = 4;
+     bool is_callback = 5;
+ }
+
+ message SetVonrRequest {
+     int32 phone_id = 1;
+     bool enable = 2;
+ }
+
+ message SetVonrReply {
+     commonStub.ErrorCode error = 1;
+     commonStub.Status status = 2;
+     int32 delay = 3;
+     bool is_callback = 4;
+ }
+
+ message ImsSipUserAgentChangeEvent {
+     int32 phone_id = 1;
+     string sip_user_agent = 2;
+ }
+
+// --- ImsService end ---
+
+// --- Supp Services start ---
+
+message SuppServicesFailureCause {
+    enum FailureCause {
+        OFFLINE = 0x00;
+        UNAVAILABLE = 0xFFFF;
+        CDMA_LOCK = 0x14;
+        NO_SRV = 0x15;
+        FADE = 0x16;
+        INTERCEPT = 0x17;
+        REORDER = 0x18;
+        REL_NORMAL = 0x19;
+        REL_SO_REJ = 0x1A;
+        INCOM_CALL = 0x1B;
+        ALERT_STOP = 0x1C;
+        CLIENT_END = 0x1D;
+        ACTIVATION = 0x1E;
+        MC_ABORT = 0x1F;
+        MAX_ACCESS_PROBE = 0x20;
+        PSIST_N = 0x21;
+        UIM_NOT_PRESENT = 0x22;
+        ACC_IN_PROG = 0x23;
+        ACC_FAIL = 0x24;
+        RETRY_ORDER = 0x25;
+        CCS_NOT_SUPPORTED_BY_BS = 0x26;
+        NO_RESPONSE_FROM_BS = 0x27;
+        REJECTED_BY_BS = 0x28;
+        INCOMPATIBLE = 0x29;
+        ACCESS_BLOCK = 0x2A;
+        ALREADY_IN_TC = 0x2B;
+        EMERGENCY_FLASHED = 0x2C;
+        USER_CALL_ORIG_DURING_GPS = 0x2D;
+        USER_CALL_ORIG_DURING_SMS = 0x2E;
+        USER_CALL_ORIG_DURING_DATA = 0x2F;
+        REDIR_OR_HANDOFF = 0x30;
+        ACCESS_BLOCK_ALL = 0x31;
+        OTASP_SPC_ERR = 0x32;
+        IS707B_MAX_ACC = 0x33;
+        ACC_FAIL_REJ_ORD = 0x34;
+        ACC_FAIL_RETRY_ORD = 0x35;
+        TIMEOUT_T42 = 0x36;
+        TIMEOUT_T40 = 0x37;
+        SRV_INIT_FAIL = 0x38;
+        T50_EXP = 0x39;
+        T51_EXP = 0x3A;
+        RL_ACK_TIMEOUT = 0x3B;
+        BAD_FL = 0x3C;
+        TRM_REQ_FAIL = 0x3D;
+        TIMEOUT_T41 = 0x3E;
+        INCOM_REJ = 0x66;
+        SETUP_REJ = 0x67;
+        NETWORK_END = 0x68;
+        NO_FUNDS = 0x69;
+        NO_GW_SRV = 0x6A;
+        NO_CDMA_SRV = 0x6B;
+        NO_FULL_SRV = 0x6C;
+        MAX_PS_CALLS = 0x6D;
+        UNKNOWN_SUBSCRIBER = 0x6E;
+        ILLEGAL_SUBSCRIBER = 0x6F;
+        BEARER_SERVICE_NOT_PROVISIONED = 0x70;
+        TELE_SERVICE_NOT_PROVISIONED = 0x71;
+        ILLEGAL_EQUIPMENT = 0x72;
+        CALL_BARRED = 0x73;
+        ILLEGAL_SS_OPERATION = 0x74;
+        SS_ERROR_STATUS = 0x75;
+        SS_NOT_AVAILABLE = 0x76;
+        SS_SUBSCRIPTION_VIOLATION = 0x77;
+        SS_INCOMPATIBILITY = 0x78;
+        FACILITY_NOT_SUPPORTED = 0x79;
+        ABSENT_SUBSCRIBER = 0x7A;
+        SHORT_TERM_DENIAL = 0x7B;
+        LONG_TERM_DENIAL = 0x7C;
+        SYSTEM_FAILURE = 0x7D;
+        DATA_MISSING = 0x7E;
+        UNEXPECTED_DATA_VALUE = 0x7F;
+        PWD_REGISTRATION_FAILURE = 0x80;
+        NEGATIVE_PWD_CHECK = 0x81;
+        NUM_OF_PWD_ATTEMPTS_VIOLATION = 0x82;
+        POSITION_METHOD_FAILURE = 0x83;
+        UNKNOWN_ALPHABET = 0x84;
+        USSD_BUSY = 0x85;
+        REJECTED_BY_USER = 0x86;
+        REJECTED_BY_NETWORK = 0x87;
+        DEFLECTION_TO_SERVED_SUBSCRIBER = 0x88;
+        SPECIAL_SERVICE_CODE = 0x89;
+        INVALID_DEFLECTED_TO_NUMBER = 0x8A;
+        MPTY_PARTICIPANTS_EXCEEDED = 0x8B;
+        RESOURCES_NOT_AVAILABLE = 0x8C;
+        UNASSIGNED_NUMBER = 0x8D;
+        NO_ROUTE_TO_DESTINATION = 0x8E;
+        CHANNEL_UNACCEPTABLE = 0x8F;
+        OPERATOR_DETERMINED_BARRING = 0x90;
+        NORMAL_CALL_CLEARING = 0x91;
+        USER_BUSY = 0x92;
+        NO_USER_RESPONDING = 0x93;
+        USER_ALERTING_NO_ANSWER = 0x94;
+        CALL_REJECTED = 0x95;
+        NUMBER_CHANGED = 0x96;
+        PREEMPTION = 0x97;
+        DESTINATION_OUT_OF_ORDER = 0x98;
+        INVALID_NUMBER_FORMAT = 0x99;
+        FACILITY_REJECTED = 0x9A;
+        RESP_TO_STATUS_ENQUIRY = 0x9B;
+        NORMAL_UNSPECIFIED = 0x9C;
+        NO_CIRCUIT_OR_CHANNEL_AVAILABLE = 0x9D;
+        NETWORK_OUT_OF_ORDER = 0x9E;
+        TEMPORARY_FAILURE = 0x9F;
+        SWITCHING_EQUIPMENT_CONGESTION = 0xA0;
+        ACCESS_INFORMATION_DISCARDED = 0xA1;
+        REQUESTED_CIRCUIT_OR_CHANNEL_NOT_AVAILABLE = 0xA2;
+        RESOURCES_UNAVAILABLE_OR_UNSPECIFIED = 0xA3;
+        QOS_UNAVAILABLE = 0xA4;
+        REQUESTED_FACILITY_NOT_SUBSCRIBED = 0xA5;
+        INCOMING_CALLS_BARRED_WITHIN_CUG = 0xA6;
+        BEARER_CAPABILITY_NOT_AUTH = 0xA7;
+        BEARER_CAPABILITY_UNAVAILABLE = 0xA8;
+        SERVICE_OPTION_NOT_AVAILABLE = 0xA9;
+        ACM_LIMIT_EXCEEDED = 0xAA;
+        BEARER_SERVICE_NOT_IMPLEMENTED = 0xAB;
+        REQUESTED_FACILITY_NOT_IMPLEMENTED = 0xAC;
+        ONLY_DIGITAL_INFORMATION_BEARER_AVAILABLE = 0xAD;
+        SERVICE_OR_OPTION_NOT_IMPLEMENTED = 0xAE;
+        INVALID_TRANSACTION_IDENTIFIER = 0xAF;
+        USER_NOT_MEMBER_OF_CUG = 0xB0;
+        INCOMPATIBLE_DESTINATION = 0xB1;
+        INVALID_TRANSIT_NW_SELECTION = 0xB2;
+        SEMANTICALLY_INCORRECT_MESSAGE = 0xB3;
+        INVALID_MANDATORY_INFORMATION = 0xB4;
+        MESSAGE_TYPE_NON_IMPLEMENTED = 0xB5;
+        MESSAGE_TYPE_NOT_COMPATIBLE_WITH_PROTOCOL_STATE = 0xB6;
+        INFORMATION_ELEMENT_NON_EXISTENT = 0xB7;
+        CONDITONAL_IE_ERROR = 0xB8;
+        MESSAGE_NOT_COMPATIBLE_WITH_PROTOCOL_STATE = 0xB9;
+        RECOVERY_ON_TIMER_EXPIRED = 0xBA;
+        PROTOCOL_ERROR_UNSPECIFIED = 0xBB;
+        INTERWORKING_UNSPECIFIED = 0xBC;
+        OUTGOING_CALLS_BARRED_WITHIN_CUG = 0xBD;
+        NO_CUG_SELECTION = 0xBE;
+        UNKNOWN_CUG_INDEX = 0xBF;
+        CUG_INDEX_INCOMPATIBLE = 0xC0;
+        CUG_CALL_FAILURE_UNSPECIFIED = 0xC1;
+        CLIR_NOT_SUBSCRIBED = 0xC2;
+        CCBS_POSSIBLE = 0xC3;
+        CCBS_NOT_POSSIBLE = 0xC4;
+        IMSI_UNKNOWN_IN_HLR = 0xC5;
+        ILLEGAL_MS = 0xC6;
+        IMSI_UNKNOWN_IN_VLR = 0xC7;
+        IMEI_NOT_ACCEPTED = 0xC8;
+        ILLEGAL_ME = 0xC9;
+        PLMN_NOT_ALLOWED = 0xCA;
+        LOCATION_AREA_NOT_ALLOWED = 0xCB;
+        ROAMING_NOT_ALLOWED_IN_THIS_LOCATION_AREA = 0xCC;
+        NO_SUITABLE_CELLS_IN_LOCATION_AREA = 0xCD;
+        NETWORK_FAILURE = 0xCE;
+        MAC_FAILURE = 0xCF;
+        SYNCH_FAILURE = 0xD0;
+        NETWORK_CONGESTION = 0xD1;
+        GSM_AUTHENTICATION_UNACCEPTABLE = 0xD2;
+        SERVICE_NOT_SUBSCRIBED = 0xD3;
+        SERVICE_TEMPORARILY_OUT_OF_ORDER = 0xD4;
+        CALL_CANNOT_BE_IDENTIFIED = 0xD5;
+        INCORRECT_SEMANTICS_IN_MESSAGE = 0xD6;
+        MANDATORY_INFORMATION_INVALID = 0xD7;
+        ACCESS_STRATUM_FAILURE = 0xD8;
+        INVALID_SIM = 0xD9;
+        WRONG_STATE = 0xDA;
+        ACCESS_CLASS_BLOCKED = 0xDB;
+        NO_RESOURCES = 0xDC;
+        INVALID_USER_DATA = 0xDD;
+        TIMER_T3230_EXPIRED = 0xDE;
+        NO_CELL_AVAILABLE = 0xDF;
+        ABORT_MSG_RECEIVED = 0xE0;
+        RADIO_LINK_LOST = 0xE1;
+        TIMER_T303_EXPIRED = 0xE2;
+        CNM_MM_REL_PENDING = 0xE3;
+        ACCESS_STRATUM_REJ_RR_REL_IND = 0xE4;
+        ACCESS_STRATUM_REJ_RR_RANDOM_ACCESS_FAILURE = 0xE5;
+        ACCESS_STRATUM_REJ_RRC_REL_IND = 0xE6;
+        ACCESS_STRATUM_REJ_RRC_CLOSE_SESSION_IND = 0xE7;
+        ACCESS_STRATUM_REJ_RRC_OPEN_SESSION_FAILURE = 0xE8;
+        ACCESS_STRATUM_REJ_LOW_LEVEL_FAIL = 0xE9;
+        ACCESS_STRATUM_REJ_LOW_LEVEL_FAIL_REDIAL_NOT_ALLOWED = 0xEA;
+        ACCESS_STRATUM_REJ_LOW_LEVEL_IMMED_RETRY = 0xEB;
+        ACCESS_STRATUM_REJ_ABORT_RADIO_UNAVAILABLE = 0xEC;
+        SERVICE_OPTION_NOT_SUPPORTED = 0xED;
+        ACCESS_STRATUM_REJ_CONN_EST_FAILURE_ACCESS_BARRED = 0xEE;
+        ACCESS_STRATUM_REJ_CONN_REL_NORMAL = 0xEF;
+        ACCESS_STRATUM_REJ_UL_DATA_CNF_FAILURE_CONN_REL = 0xF0;
+        BAD_REQ_WAIT_INVITE = 0x12C;
+        BAD_REQ_WAIT_REINVITE = 0x12D;
+        INVALID_REMOTE_URI = 0x12E;
+        REMOTE_UNSUPP_MEDIA_TYPE = 0x12F;
+        PEER_NOT_REACHABLE = 0x130;
+        NETWORK_NO_RESP_TIME_OUT = 0x131;
+        NETWORK_NO_RESP_HOLD_FAIL = 0x132;
+        DATA_CONNECTION_LOST = 0x133;
+        UPGRADE_DOWNGRADE_REJ = 0x134;
+        SIP_403_FORBIDDEN = 0x135;
+        NO_NETWORK_RESP = 0x136;
+        UPGRADE_DOWNGRADE_FAILED = 0x137;
+        UPGRADE_DOWNGRADE_CANCELLED = 0x138;
+        SSAC_REJECT = 0x139;
+        THERMAL_EMERGENCY = 0x13A;
+        FAILURE_1XCSFB_SOFT = 0x13B;
+        FAILURE_1XCSFB_HARD = 0x13C;
+        CONNECTION_EST_FAILURE = 0x13D;
+        CONNECTION_FAILURE = 0x13E;
+        RRC_CONN_REL_NO_MT_SETUP = 0x13F;
+        ESR_FAILURE = 0x140;
+        MT_CSFB_NO_RESPONSE_FROM_NW = 0x141;
+        BUSY_EVERYWHERE = 0x142;
+        ANSWERED_ELSEWHERE = 0x143;
+        RLF_DURING_CC_DISCONNECT = 0x144;
+        TEMP_REDIAL_ALLOWED = 0x145;
+        PERM_REDIAL_NOT_NEEDED = 0x146;
+        MERGED_TO_CONFERENCE = 0x147;
+        LOW_BATTERY = 0x148;
+        CALL_DEFLECTED = 0x149;
+        RTP_RTCP_TIMEOUT = 0x14A;
+        RINGING_RINGBACK_TIMEOUT = 0x14B;
+        REG_RESTORATION = 0x14C;
+        CODEC_ERROR = 0x14D;
+        UNSUPPORTED_SDP = 0x14E;
+        RTP_FAILURE = 0x14F;
+        QoS_FAILURE = 0x150;
+        MULTIPLE_CHOICES = 0x151;
+        MOVED_PERMANENTLY = 0x152;
+        MOVED_TEMPORARILY = 0x153;
+        USE_PROXY = 0x154;
+        ALTERNATE_SERVICE = 0x155;
+        ALTERNATE_EMERGENCY_CALL = 0x156;
+        UNAUTHORIZED = 0x157;
+        PAYMENT_REQUIRED = 0x158;
+        METHOD_NOT_ALLOWED = 0x159;
+        NOT_ACCEPTABLE = 0x15A;
+        PROXY_AUTHENTICATION_REQUIRED = 0x15B;
+        GONE = 0x15C;
+        REQUEST_ENTITY_TOO_LARGE = 0x15D;
+        REQUEST_URI_TOO_LARGE = 0x15E;
+        UNSUPPORTED_URI_SCHEME = 0x15F;
+        BAD_EXTENSION = 0x160;
+        EXTENSION_REQUIRED = 0x161;
+        INTERVAL_TOO_BRIEF = 0x162;
+        CALL_OR_TRANS_DOES_NOT_EXIST = 0x163;
+        LOOP_DETECTED = 0x164;
+        TOO_MANY_HOPS = 0x165;
+        ADDRESS_INCOMPLETE = 0x166;
+        AMBIGUOUS = 0x167;
+        REQUEST_TERMINATED = 0x168;
+        NOT_ACCEPTABLE_HERE = 0x169;
+        REQUEST_PENDING = 0x16A;
+        UNDECIPHERABLE = 0x16B;
+        SERVER_INTERNAL_ERROR = 0x16C;
+        NOT_IMPLEMENTED = 0x16D;
+        BAD_GATEWAY = 0x16E;
+        SERVER_TIME_OUT = 0x16F;
+        VERSION_NOT_SUPPORTED = 0x170;
+        MESSAGE_TOO_LARGE = 0x171;
+        DOES_NOT_EXIST_ANYWHERE = 0x172;
+        SESS_DESCR_NOT_ACCEPTABLE = 0x173;
+        SRVCC_END_CALL = 0x174;
+        INTERNAL_ERROR = 0x175;
+        SERVER_UNAVAILABLE = 0x176;
+        PRECONDITION_FAILURE = 0x177;
+        DRVCC_IN_PROG = 0x178;
+        DRVCC_END_CALL = 0x179;
+        CS_HARD_FAILURE = 0x17A;
+        CS_ACQ_FAILURE = 0x17B;
+        REJECTED_ELSEWHERE = 0x180;
+        CALL_PULLED = 0x181;
+        CALL_PULL_OUT_OF_SYNC = 0x182;
+        HOLD_RESUME_FAILED = 0x183;
+        HOLD_RESUME_CANCELED = 0x184;
+        REINVITE_COLLISION = 0x185;
+        REDIAL_SECONDARY_LINE_CS = 0x186;
+        REDIAL_SECONDARY_LINE_PS = 0x187;
+        REDIAL_SECONDARY_LINE_CS_AUTO = 0x188;
+        REDIAL_SECONDARY_LINE_PS_AUTO = 0x189;
+    }
+}
+
+message SuppServicesStatus {
+    enum Status {
+        DUMMY = 0;
+        UNKNOWN = -1;
+        ENABLED = 1;
+        DISABLED = 2;
+    }
+}
+
+message SuppSvcProvisionStatus {
+    enum Status {
+        NOT_PROVISIONED = 0;
+        UNKNOWN = -1;
+        PROVISIONED = 1;
+        PRESENTATION_RESTRICTED = 2;
+        PRESENTATION_ALLOWED = 3;
+    }
+}
+
+message ServiceClassType {
+    enum Type {
+        NONE = 0x00;
+        VOICE = 0x01;
+    }
+}
+
+enum ForwardReason {
+    DUMMY = 0;
+    UNCONDITIONAL = 1;
+    BUSY = 2;
+    NOREPLY = 3;
+    NOT_REACHABLE = 4;
+    NOT_LOGGED_IN = 23;
+}
+
+message ForwardInfo {
+    SuppServicesStatus.Status status = 1;
+    repeated ServiceClassType.Type service_class = 2;
+    string number = 3;
+    uint32 no_reply_timer = 4;
+}
+
+message ForwardOperation {
+    enum Operation {
+        DUMMY = 0;
+        UNKNOWN = -1;
+        ACTIVATE = 1;
+        DEACTIVATE = 2;
+        REGISTER = 3;
+        ERASE = 4;
+    }
+}
+
+message ForwardReq {
+    ForwardOperation.Operation operation = 1;
+    ForwardReason reason = 2;
+    repeated ServiceClassType.Type service_class = 3;
+    string number = 4;
+    uint32 no_reply_timer = 5;
+}
+
+message SetCallWaitingPrefRequest {
+    int32 slot_id = 1;
+    SuppServicesStatus.Status supp_services_status = 2;
+}
+
+message SetCallWaitingPrefReply {
+    SuppServicesFailureCause.FailureCause failure_cause = 1;
+    commonStub.ErrorCode error = 2;
+    commonStub.Status status = 3;
+    int32 delay = 4;
+    bool is_callback = 5;
+}
+
+message RequestCallWaitingPrefRequest {
+    int32 slot_id = 1;
+}
+
+message RequestCallWaitingPrefReply {
+    SuppServicesStatus.Status supp_services_status = 1;
+    SuppServicesFailureCause.FailureCause failure_cause = 2;
+    commonStub.ErrorCode error = 3;
+    commonStub.Status status = 4;
+    int32 delay = 5;
+    bool is_callback = 6;
+}
+
+message RequestForwardingPrefRequest {
+    int32 slot_id = 1;
+    repeated ServiceClassType.Type service_class = 2;
+    ForwardReason forward_reason = 3;
+}
+
+message RequestForwardingPrefReply {
+    repeated ForwardInfo forward_info = 1;
+    SuppServicesFailureCause.FailureCause failure_cause = 2;
+    commonStub.ErrorCode error = 3;
+    commonStub.Status status = 4;
+    int32 delay = 5;
+    bool is_callback = 6;
+}
+
+message SetForwardingPrefRequest {
+    int32 slot_id = 1;
+    ForwardReq forward_req = 2;
+}
+
+message SetForwardingPrefReply {
+    SuppServicesFailureCause.FailureCause failure_cause = 1;
+    commonStub.ErrorCode error = 2;
+    commonStub.Status status = 3;
+    int32 delay = 4;
+    bool is_callback = 5;
+}
+
+message SetOirPrefRequest {
+    int32 slot_id = 1;
+    repeated ServiceClassType.Type service_class = 2;
+    SuppServicesStatus.Status supp_services_status = 3;
+}
+
+message SetOirPrefReply {
+    SuppServicesFailureCause.FailureCause failure_cause = 1;
+    commonStub.ErrorCode error = 2;
+    commonStub.Status status = 3;
+    int32 delay = 4;
+    bool is_callback = 5;
+}
+
+message RequestOirPrefRequest {
+    int32 slot_id = 1;
+    repeated ServiceClassType.Type service_class = 2;
+}
+
+message RequestOirPrefReply {
+    SuppServicesStatus.Status supp_services_status = 1;
+    SuppSvcProvisionStatus.Status provision_status = 2;
+    SuppServicesFailureCause.FailureCause failure_cause = 3;
+    commonStub.ErrorCode error = 4;
+    commonStub.Status status = 5;
+    int32 delay = 6;
+    bool is_callback = 7;
+}
+
+message SetLteDubiousCellRequest {
+    uint32 slot_id = 1;
+}
+
+message SetNrDubiousCellRequest {
+    uint32 slot_id = 1;
+}
+
+message SetLteDubiousCellReply {
+     commonStub.ErrorCode error = 1;
+}
+
+message SetNrDubiousCellReply {
+     commonStub.ErrorCode error = 1;
+}
+
+// --- Supp Services end ---

@@ -1,0 +1,132 @@
+{
+    "ILocationConfigurator": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 400,
+        "DefaultCallbackDelay" : 400,
+        "configureCTunc":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "configurePACE":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "deleteAllAidingData":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "configureRobustLocation":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestRobustLocation":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "configureMinGpsWeek":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestMinGpsWeek":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "configureMinSVElevation":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestMinSVElevation":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "deleteAidingData":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "configureDR":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "configureEngineState":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "provideConsentForTerrestrialPositioning":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "configureNmeaTypes":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "configureNmea":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "configureEngineIntegrityRisk":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "configureXtraParams":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestXtraStatus":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "injectMerkleTreeInformation":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "configureOsnma":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "configureLeverArm":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "configureConstellations":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "configureSecondaryBand":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestSecondaryBandConfig":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "provideConsentForXtra":
+        {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        }
+    }
+}

@@ -1,0 +1,9 @@
+Name: libtelux_common
+Version: @SDK_VERSION@
+Description: This library contains APIs like Version, Status, logger and others
+
+prefix=@CMAKE_INSTALL_PREFIX@
+includedir=@CMAKE_INSTALL_INCLUDEDIR@
+libdir=@CMAKE_INSTALL_LIBDIR@
+Cflags:-I${includedir} -I${includedir}/telux
+Libs: -L${libdir} -ltelux_common

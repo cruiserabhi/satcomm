@@ -1,0 +1,14 @@
+{
+    "ICv2xRadio": {
+        "ifaceName": {
+            "IP" : "lo",
+            "nonIP": "lo"
+        },
+        "cv2xDefaultStatus": {
+            "rxStatus" : "active",
+            "txStatus" : "active",
+            "rxCause" : 15,
+            "txCause" : 15
+        }
+    }
+}

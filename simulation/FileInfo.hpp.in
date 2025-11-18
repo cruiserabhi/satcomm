@@ -1,0 +1,13 @@
+/*
+ *  Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
+ *  SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
+
+#ifndef FILEINFO_HPP
+#define FILEINFO_HPP
+
+// File Path
+#define DEFAULT_SIM_FILE_PREFIX (getenv("DEFAULT_SIM_FILE_PATH") ? \
+    getenv("DEFAULT_SIM_FILE_PATH") : "@CMAKE_INSTALL_PREFIX@")
+
+#endif

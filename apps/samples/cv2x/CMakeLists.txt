@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.10.2)
+
+if(BUILD_ALL_SAMPLES)
+    if(TELSDK_FEATURE_CV2X)
+        add_subdirectory( cv2x_tcp_app )
+        add_subdirectory( cv2x_rx_app )
+        add_subdirectory( cv2x_tx_app )
+        add_subdirectory( cv2x_tx_service_status_app )
+        add_subdirectory( cv2x_tx_report_sample_app )
+    endif(TELSDK_FEATURE_CV2X)
+endif(BUILD_ALL_SAMPLES)
+
+if(TELSDK_FEATURE_CV2X)
+    add_subdirectory( cv2x_get_status_app )
+    add_subdirectory(cv2x_tm_app)
+endif(TELSDK_FEATURE_CV2X)

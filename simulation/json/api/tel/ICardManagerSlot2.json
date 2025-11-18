@@ -1,0 +1,127 @@
+{
+    "ICardManager" :
+    {
+        "DefaultCallbackDelay" : 400,
+        "readEFLinearFixed" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "readEFLinearFixedAll" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "readEFTransparent" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "writeEFLinearFixed" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "writeEFTransparent" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestEFAttributes" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "unlockCardByPin" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "queryFdnLockState" :
+        {
+            "State" : false,
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "queryPin1LockState" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "closeLogicalChannel" :
+        {
+            "error" : "SUCCESS",
+            "status" : "SUCCESS"
+        },
+        "changeCardPassword" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "openLogicalChannel" :
+        {
+            "error" : "SUCCESS",
+            "status" : "SUCCESS"
+        },
+        "setCardLock" :
+        {
+            "error" : "SUCCESS",
+            "status" : "SUCCESS"
+        },
+        "cardPowerUp" :
+        {
+            "error" : "SUCCESS",
+            "status" : "SUCCESS"
+        },
+        "cardPowerDown" :
+        {
+            "error" : "SUCCESS",
+            "status" : "SUCCESS"
+        },
+        "transmitApduBasicChannel" :
+        {
+            "error" : "SUCCESS",
+            "status" : "SUCCESS"
+        },
+        "transmitApduLogicalChannel" :
+        {
+            "error" : "SUCCESS",
+            "status" : "SUCCESS"
+        },
+        "exchangeSimIO" :
+        {
+            "error" : "SUCCESS",
+            "status" : "SUCCESS"
+        },
+        "requestEid" :
+        {
+            "error" : "SUCCESS",
+            "status" : "SUCCESS"
+        },
+        "unlockCardByPuk" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "setupRefreshConfig" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "allowCardRefresh" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "confirmRefreshHandlingCompleted" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestLastRefreshEvent" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        }
+    }
+}

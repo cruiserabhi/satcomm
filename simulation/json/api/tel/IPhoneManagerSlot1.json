@@ -1,0 +1,81 @@
+{
+    "IPhoneManager" :
+    {
+        "IsSubsystemReady" : "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay" : 300,
+        "DefaultCallbackDelay" : 400,
+        "getPhoneIds":
+        {
+            "status" : "SUCCESS"
+        },
+        "requestCellularCapabilityInfo" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "setOperatingMode" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestOperatingMode" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "resetWwan" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "getPhoneId":
+        {
+            "status" : "SUCCESS"
+        },
+        "requestVoiceServiceState" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "setRadioPower" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestCellInfo" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "setCellInfoListRate" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestSignalStrength" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "setECallOperatingMode" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestECallOperatingMode" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestOperatorInfo" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "configureSignalStrength" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        }
+    }
+}

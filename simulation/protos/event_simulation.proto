@@ -1,0 +1,46 @@
+/*
+ * Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
+
+syntax = "proto3";
+
+package eventService;
+import "google/protobuf/empty.proto";
+import "google/protobuf/any.proto";
+
+/*******************************************************************
+* Services Definition                                             *
+*******************************************************************/
+
+service EventDispatcherService {
+    rpc isServiceAvailable(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc registerForEvents(EventRequest) returns (stream EventResponse) {}
+    rpc InjectEvent(UnsolicitedEvent) returns (google.protobuf.Empty) {}
+    rpc updateFilter(EventRequest) returns (google.protobuf.Empty) {}
+    rpc cleanup(CleanupRequest) returns (google.protobuf.Empty) {}
+}
+
+message EventRequest {
+    int32 client_id = 1;
+    repeated string filters = 2;
+}
+
+message EventResponse {
+    string filter = 1;
+    google.protobuf.Any any = 2;
+}
+
+message UnsolicitedEvent {
+    string filter = 1;
+    string event = 2;
+}
+
+message CleanupRequest {
+    int32 client_id = 1;
+}
+
+message ServerEvent {
+    string filter = 1;
+    google.protobuf.Any any = 2;
+}

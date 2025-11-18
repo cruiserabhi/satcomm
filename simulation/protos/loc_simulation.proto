@@ -1,0 +1,1957 @@
+/*
+ *  Copyright (c) 2023-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+ *  SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
+
+syntax = "proto3";
+
+package locStub;
+import "google/protobuf/empty.proto";
+import "common_simulation.proto";
+import "event_simulation.proto";
+// option optimize_for = CODE_SIZE;
+
+/*******************************************************************
+ * Services Definition                                             *
+ *******************************************************************/
+
+service LocationManagerService {
+    rpc InitService (google.protobuf.Empty) returns (GetServiceStatusReply) {}
+    rpc StartBasicReports (google.protobuf.Empty) returns (LocManagerCommandReply) {}
+    rpc StartDetailedReports (google.protobuf.Empty) returns (LocManagerCommandReply) {}
+    rpc StartDetailedEngineReports (google.protobuf.Empty)
+        returns (LocManagerCommandReply) {}
+    rpc StopReports (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc RegisterLocationSystemInfo (google.protobuf.Empty)
+        returns (LocManagerCommandReply) {}
+    rpc DeregisterLocationSystemInfo (google.protobuf.Empty)
+        returns (LocManagerCommandReply) {}
+    rpc GetYearOfHw (google.protobuf.Empty) returns (GetYearOfHwReply) {}
+    rpc RequestEnergyConsumedInfo(google.protobuf.Empty) returns (RequestEnergyConsumedInfoReply) {}
+    rpc GetCapabilities(google.protobuf.Empty) returns (GetCapabilitiesReply) {}
+    rpc GetTerrestrialPosition (google.protobuf.Empty) returns (LocManagerCommandReply) {}
+    rpc CancelTerrestrialPosition(google.protobuf.Empty) returns (LocManagerCommandReply) {}
+    rpc GetLastLocation (google.protobuf.Empty) returns (LastLocationInfo) {}
+}
+
+service LocationConfiguratorService {
+    rpc InitService (google.protobuf.Empty) returns (GetServiceStatusReply) {}
+    rpc ConfigureCTUNC (ConfigureCTUNCRequest) returns (LocManagerCommandReply) {}
+    rpc ConfigurePACE (ConfigurePACERequest) returns (LocManagerCommandReply) {}
+    rpc DeleteAllAidingData (google.protobuf.Empty) returns (LocManagerCommandReply) {}
+    rpc ConfigureLeverArm (ConfigureLeverArmRequest) returns (LocManagerCommandReply) {}
+    rpc ConfigureConstellations (ConfigureConstellationsRequest) returns (LocManagerCommandReply) {}
+    rpc ConfigureRobustLocation (ConfigureRobustLocationRequest) returns (LocManagerCommandReply) {}
+    rpc RequestRobustLocation (google.protobuf.Empty) returns (RequestRobustLocationReply) {}
+    rpc ConfigureMinGpsWeek (ConfigureMinGpsWeekRequest) returns (LocManagerCommandReply) {}
+    rpc RequestMinGpsWeek (google.protobuf.Empty) returns (RequestMinGpsWeekReply) {}
+    rpc ConfigureMinSVElevation (ConfigureMinSVElevationRequest) returns (LocManagerCommandReply) {}
+    rpc RequestMinSVElevation (google.protobuf.Empty) returns (RequestMinSVElevationReply) {}
+    rpc ConfigureSecondaryBand (ConfigureSecondaryBandRequest) returns (LocManagerCommandReply) {}
+    rpc RequestSecondaryBandConfig (google.protobuf.Empty) returns
+        (RequestSecondaryBandConfigReply) {}
+    rpc DeleteAidingData (DeleteAidingDataRequest) returns (LocManagerCommandReply) {}
+    rpc ConfigureDR (ConfigureDRRequest) returns (LocManagerCommandReply) {}
+    rpc ConfigureEngineState (ConfigureEngineStateRequest) returns (LocManagerCommandReply) {}
+    rpc ProvideConsentForTerrestrialPositioning (ProvideConsentForTerrestrialPositioningRequest)
+        returns (LocManagerCommandReply) {}
+    rpc ConfigureNmeaTypes (ConfigureNmeaTypesRequest) returns (LocManagerCommandReply) {}
+    rpc ConfigureNmea (ConfigureNmeaRequest) returns (LocManagerCommandReply) {}
+    rpc ConfigureEngineIntegrityRisk (ConfigureEngineIntegrityRiskRequest) returns
+        (LocManagerCommandReply) {}
+    rpc ConfigureXtraParams (ConfigureXtraParamsRequest) returns (LocManagerCommandReply) {}
+    rpc RequestXtraStatus (google.protobuf.Empty) returns (RequestXtraStatusReply) {}
+    rpc InjectMerkleTree (google.protobuf.Empty) returns (LocManagerCommandReply) {}
+    rpc ConfigureOsnma (ConfigureOsnmaRequest) returns (LocManagerCommandReply) {}
+    rpc RegisterListener (RegisterListenerRequest) returns (LocManagerCommandReply) {}
+    rpc ProvideXtraConsent(XtraConsentRequest) returns (LocManagerCommandReply) {}
+}
+
+service DgnssService {
+    rpc InitService (DgnssInitServiceRequest) returns (google.protobuf.Empty) {}
+    rpc CleanUpService (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc CreateSource (CreateSourceRequest) returns (google.protobuf.Empty) {}
+    rpc ReleaseSource (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    // SDK API allows injecting data as buffer of uint8_t, here we only pass the file name
+    // or server details and reading from the source is handled by server.
+    rpc InjectCorrectionData (InjectCorrectionDataRequest) returns (InjectCorrectionDataReply) {}
+}
+
+service EventDispatcherService {
+    rpc isServiceAvailable(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc registerForEvents(eventService.EventRequest) returns (stream eventService.EventResponse) {}
+    rpc InjectEvent(eventService.UnsolicitedEvent) returns (google.protobuf.Empty) {}
+    rpc updateFilter(eventService.EventRequest) returns (google.protobuf.Empty) {}
+    rpc cleanup(eventService.CleanupRequest) returns (google.protobuf.Empty) {}
+}
+
+/*******************************************************************
+ * Messages Definition                                             *
+ *******************************************************************/
+
+message GetServiceStatusReply {
+    commonStub.ServiceStatus service_status = 1;
+    int32 delay = 2;
+}
+
+message LocManagerCommandReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+message StartReportsEvent {
+    string loc_report = 1;
+}
+
+message CapabilitiesUpdateEvent {
+    int32 capability_mask = 1;
+}
+
+message SysInfoUpdateEvent {
+    int32 sysinfo_validity = 1;
+    int32 leapsecond_validity = 2;
+    int32 current = 3;
+    int32 leap_seconds_before_change = 4;
+    int32 leap_seconds_after_change = 5;
+    int32 gnss_validity = 6;
+    int32 system_week = 7;
+    int32 system_msec = 8;
+    float system_clk_time_bias = 9;
+    float system_clk_time_unc_ms = 10;
+    int32 ref_f_count = 11;
+    int32 clock_resets = 12;
+}
+
+message LastLocationInfo {
+    string loc_report = 1;
+}
+
+message StreamingStoppedEvent {}
+
+message ResetWindowEvent {}
+
+message XtraStatusEvent {
+    int32 enable = 1;
+    int32 validity = 2;
+    int32 dataStatus = 3;
+    int32 consent = 4;
+}
+
+message GnssUpdateEvent {
+    int32 enabledMask = 1;
+}
+
+message RequestEnergyConsumedInfoReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    uint32 delay = 3;
+    uint32 validity = 4;
+    uint32 energy_consumed = 5;
+}
+
+message GetYearOfHwReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    uint32 year_of_hw = 4;
+}
+
+message GetCapabilitiesReply {
+    uint32 loc_capability = 1;
+}
+
+message RegisterListenerRequest {
+    bool xtra_indication = 1;
+    bool gnss_indication = 2;
+}
+
+// Left Shift
+enum LocationValidityType {
+    HAS_LAT_LONG_BIT          = 0;
+    /** Location has valid altitude.*/
+    HAS_ALTITUDE_BIT          = 1;
+    /** Location has valid speed.*/
+    HAS_SPEED_BIT             = 2;
+    /** Location has valid heading.*/
+    HAS_HEADING_BIT           = 3;
+    /* Location has valid horizontal accuracy. */
+    HAS_HORIZONTAL_ACCURACY_BIT = 4;
+    /** Location has valid vertical accuracy.*/
+    HAS_VERTICAL_ACCURACY_BIT = 5;
+    /** Location has valid speed accuracy.*/
+    HAS_SPEED_ACCURACY_BIT    = 6;
+    /** Location has valid heading accuracy.*/
+    HAS_HEADING_ACCURACY_BIT  = 7;
+    /** Location has valid timestamp.*/
+    HAS_TIMESTAMP_BIT         = 8;
+    /** Location has valid elapsed real time.*/
+    HAS_ELAPSED_REAL_TIME_BIT = 9;
+    /** Location has valid elapsed real time uncertainty.*/
+    HAS_ELAPSED_REAL_TIME_UNC_BIT = 10;
+    /** Location has valid elapsed gPTP time.*/
+    HAS_GPTP_TIME_BIT = 12;
+    /** Location has valid elapsed gPTP time uncertainty.*/
+    HAS_GPTP_TIME_UNC_BIT = 13;
+}
+
+// Left Shift
+enum LocationTechnologyType {
+  /** Location was calculated using GNSS-based technology. */
+  LOC_GNSS = 0;
+  /** Location was calculated using Cell-based technology. */
+  LOC_CELL = 1;
+  /** Location was calculated using WiFi-based technology. */
+  LOC_WIFI = 2;
+  /** Location was calculated using Sensors-based technology. */
+  LOC_SENSORS = 3;
+  /** Location was calculated using Reference location. */
+  LOC_REFERENCE_LOCATION = 4;
+  /** Location was calculated using Coarse position injected into the location engine. */
+  LOC_INJECTED_COARSE_POSITION = 5;
+  /** Location was calculated using AFLT. */
+  LOC_AFLT = 6;
+  /** Location was calculated using GNSS and network-provided measurements. */
+  LOC_HYBRID = 7;
+  /** Location was calculated using Precise position engine. */
+  LOC_PPE = 8;
+  /** Location was calculated using Vehicular data. */
+  LOC_VEH = 9;
+  /** Location was calculated using Visual data. */
+  LOC_VIS = 10;
+}
+
+message LocationInfoBase {
+    repeated LocationValidityType location_info_validity = 1;
+    // Tech Mask
+    repeated LocationTechnologyType technology_types = 2;
+    float speed = 3;
+    double latitiude = 4;
+    double longitude = 5;
+    double altitiude = 6;
+    float heading = 7;
+    float horizontal_uncertainty = 8;
+    float vertical_uncertainty = 9;
+    uint64 timestamp = 10;
+    float speed_uncertainty = 11;
+    float heading_uncertainty = 12;
+    uint64 elapsed_real_time = 13;
+    uint64 elapsed_real_time_uncertainty = 14;
+    uint64 elapsedGptpTime_ = 15;
+    uint64 elapsedGptpTimeUncertainty_ = 16;
+}
+
+message RegisterOnBasicLocationUpdateReply {
+    int32 client_id = 1;
+    LocationInfoBase location_info_base = 2;
+}
+
+message ConfigureCTUNCRequest {
+    bool enable = 1;
+    float time_uncertainty = 2;
+    uint32 energy_budget  = 3;
+}
+
+message ConfigureCTUNCReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+// Left Shift
+enum LocationInfoExValidityType {
+    /** valid altitude mean sea level */
+    HAS_ALTITUDE_MEAN_SEA_LEVEL = 0;
+    /** valid pdop, hdop, and vdop */
+    HAS_DOP = 1;
+    /** valid magnetic deviation */
+    HAS_MAGNETIC_DEVIATION = 2;
+    /** valid horizontal reliability */
+    HAS_HOR_RELIABILITY = 3;
+    /** valid vertical reliability */
+    HAS_VER_RELIABILITY = 4;
+    /** valid elipsode semi major */
+    HAS_HOR_ACCURACY_ELIP_SEMI_MAJOR = 5;
+    /** valid elipsode semi minor */
+    HAS_HOR_ACCURACY_ELIP_SEMI_MINOR = 6;
+    /** valid accuracy elipsode azimuth */
+    HAS_HOR_ACCURACY_ELIP_AZIMUTH = 7;
+    /** valid gnss sv used in pos data */
+    HAS_GNSS_SV_USED_DATA = 8;
+    /** valid navSolutionMask */
+    HAS_NAV_SOLUTION_MASK = 9;
+    /** valid LocPosTechMask */
+    HAS_POS_TECH_MASK = 10;
+    /** valid LocSvInfoSource */
+    HAS_SV_SOURCE_INFO = 11;
+    /** valid position dynamics data */
+    HAS_POS_DYNAMICS_DATA = 12;
+    /** valid gdop, tdop */
+    HAS_EXT_DOP = 13;
+    /**valid North standard deviation */
+    HAS_NORTH_STD_DEV = 14;
+    /** valid East standard deviation*/
+    HAS_EAST_STD_DEV = 15;
+    /** valid North Velocity */
+    HAS_NORTH_VEL = 16;
+    /** valid East Velocity */
+    HAS_EAST_VEL = 17;
+    /** valid Up Velocity */
+    HAS_UP_VEL = 18;
+    /** valid North Velocity Uncertainty */
+    HAS_NORTH_VEL_UNC = 19;
+    /** valid East Velocity Uncertainty */
+    HAS_EAST_VEL_UNC = 20;
+    /** valid Up Velocity Uncertainty */
+    HAS_UP_VEL_UNC = 21;
+    /** valid leap_seconds */
+    HAS_LEAP_SECONDS = 22;
+    /** valid timeUncMs */
+    HAS_TIME_UNC = 23;
+    /** valid number of sv used */
+    HAS_NUM_SV_USED_IN_POSITION = 24;
+    /** valid sensor calibrationConfidencePercent */
+    HAS_CALIBRATION_CONFIDENCE_PERCENT = 25;
+    /** valid sensor calibrationConfidence */
+    HAS_CALIBRATION_STATUS = 26;
+    /** valid output engine type */
+    HAS_OUTPUT_ENG_TYPE = 27;
+    /** valid output engine mask */
+    HAS_OUTPUT_ENG_MASK = 28;
+    /** valid conformity index */
+    HAS_CONFORMITY_INDEX_FIX = 29;
+    /** valid lla vrp based*/
+    HAS_LLA_VRP_BASED = 30;
+    /** valid enu velocity vrp based*/
+    HAS_ENU_VELOCITY_VRP_BASED = 31;
+    /** valid altitude type*/
+    HAS_ALTITUDE_TYPE = 32;
+    /** valid report status*/
+    HAS_REPORT_STATUS = 33;
+    /** valid integrity risk*/
+    HAS_INTEGRITY_RISK_USED = 34;
+    /** valid protect level along track*/
+    HAS_PROTECT_LEVEL_ALONG_TRACK = 35;
+    /** valid protect level cross track*/
+    HAS_PROTECT_LEVEL_CROSS_TRACK = 36;
+    /** valid protect level vertical*/
+    HAS_PROTECT_LEVEL_VERTICAL = 37;
+}
+
+// Simple
+enum SbasCorrectionType {
+  SBAS_CORRECTION_IONO = 0; /**< Bit mask to specify whether
+                             SBAS ionospheric correction is used */
+  SBAS_CORRECTION_FAST = 1; /**< Bit mask to specify whether
+                             SBAS fast correction is used */
+  SBAS_CORRECTION_LONG = 2; /**< Bit mask to specify whether
+                             SBAS long correction is used */
+  SBAS_INTEGRITY = 3; /**< Bit mask to specify whether
+                      SBAS integrity information is used */
+  SBAS_CORRECTION_DGNSS = 4; /**< Bit mask to specify whether
+                              SBAS DGNSS correction is used */
+  SBAS_CORRECTION_RTK = 5; /**< Bit mask to specify whether
+                            SBAS RTK correction is used */
+  SBAS_CORRECTION_PPP = 6; /**< Bit mask to specify whether
+                            SBAS PPP correction is used */
+  SBAS_CORRECTION_RTK_FIXED = 7; /**< Bit mask to specify whether
+                            SBAS RTK fixed correction is used */
+  SBAS_CORRECTION_ONLY_SBAS_CORRECTED_SV_USED_= 8;/**< Bit mask to specify
+                            only SBAS corrected SV is used */
+  SBAS_COUNT  = 9; /**< Bitset */
+}
+
+// Left Shift
+enum GnssPositionTechType {
+  /** Satellites-based technology was used to generate
+   *  location info.*/
+  GNSS_SATELLITE = 0;
+  /** Cell towers were used to generate location info.*/
+  GNSS_CELLID = 1;
+  /** Wi-Fi access points were used to generate location info.*/
+  GNSS_WIFI = 2;
+  /** Sensors were used to generate location info.*/
+  GNSS_SENSORS = 3;
+  /**  Reference location was used to generate location info.*/
+  GNSS_REFERENCE_LOCATION = 4;
+  /** Coarse position injected into the location engine was used to
+   *  generate location info.*/
+  GNSS_INJECTED_COARSE_POSITION= 5;
+  /** AFLT was used to generate location info.*/
+  GNSS_AFLT = 6;
+  /** GNSS and network-provided measurements were used to generate
+   *  location info.*/
+  GNSS_HYBRID = 7;
+  /** Precise position engine was used to generate location info.*/
+  GNSS_PPE = 8;
+  /** Location was calculated using Vehicular data. */
+  GNSS_VEHICLE = 9;
+  /** Location was calculated using Visual data. */
+  GNSS_VISUAL = 10;
+  /** Technology used to generate location info
+   *  is unknown. Marked as 0 in Location Defines*/
+  GNSS_DEFAULT = 99;
+}
+
+// Left Shift
+enum KinematicDataValidityType {
+    /** Navigation data has Forward Acceleration  */
+    HAS_LONG_ACCEL = 0;
+    /** Navigation data has Sideward Acceleration */
+    HAS_LAT_ACCEL = 1;
+    /** Navigation data has Vertical Acceleration */
+    HAS_VERT_ACCEL = 2;
+    /** Navigation data has Heading Rate */
+    HAS_YAW_RATE = 3;
+    /** Navigation data has Body pitch */
+    HAS_PITCH = 4;
+    /** Navigation data has Forward Acceleration  */
+    HAS_LONG_ACCEL_UNC = 5;
+    /** Navigation data has Sideward Acceleration */
+    HAS_LAT_ACCEL_UNC = 6;
+    /** Navigation data has Vertical Acceleration */
+    HAS_VERT_ACCEL_UNC = 7;
+    /** Navigation data has Heading Rate */
+    HAS_YAW_RATE_UNC = 8;
+    /** Navigation data has Body pitch */
+    HAS_PITCH_UNC = 9;
+    /** Navigation data has Body pitch rate */
+    HAS_PITCH_RATE_BIT = 10;
+    /** Navigation data has Body pitch rate uncertainty */
+    HAS_PITCH_RATE_UNC_BIT = 11;
+    /** Navigation data has roll */
+    HAS_ROLL_BIT = 12;
+    /** Navigation data has roll UNC */
+    HAS_ROLL_UNC_BIT = 13;
+    /** Navigation data has roll rate */
+    HAS_ROLL_RATE_BIT = 14;
+    /** Navigation data has roll rate uncertainty */
+    HAS_ROLL_RATE_UNC_BIT = 15;
+    /** Navigation data has yaw */
+    HAS_YAW_BIT = 16;
+    /** Navigation data has yaw uncertainty */
+    HAS_YAW_UNC_BIT = 17;
+}
+
+message GnssKinematicsData {
+    /** Contains Body frame data valid bits. */
+    repeated KinematicDataValidityType body_frame_data_mask = 1;
+    /** Forward Acceleration in body frame (meters/second^2)*/
+    float long_accel = 2;
+    /** Sideward Acceleration in body frame (meters/second^2)*/
+    float lat_accel = 3;
+    /** Vertical Acceleration in body frame (meters/second^2)*/
+    float vert_accel = 4;
+    /** Heading Rate (Radians/second) */
+    float yaw_rate = 5;
+    /** Body pitch (Radians) */
+    float pitch = 6;
+    /** Uncertainty of Forward Acceleration in body
+    *  frame (meters/second^2)
+    *  Uncertainty is defined with 68% confidence level. */
+    float long_accel_unc = 7;
+    /** Uncertainty of Side-ward Acceleration in body
+    *  frame meters/second^2)
+    *  Uncertainty is defined with 68% confidence level. */
+    float lat_accel_unc = 8;
+    /** Uncertainty of Vertical Acceleration in body
+    *  frame (meters/second^2)
+    *  Uncertainty is defined with 68% confidence level. */
+    float vert_accel_unc = 9;
+    /** Uncertainty of Heading Rate (Radians/second)
+    *  Uncertainty is defined with 68% confidence level. */
+    float yaw_rate_unc = 10;
+    /** Uncertainty of Body pitch (Radians)
+    *  Uncertainty is defined with 68% confidence level. */
+    float pitch_unc = 11;
+    /** Body pitch rate, in unit of radians/second.*/
+    float pitch_rate = 12;
+    /** Uncertainty of pitch rate, in unit of radians/second.
+    *  Uncertainty is defined with 68% confidence level. */
+    float pitch_rate_unc =13;
+    /** Roll of body frame, clockwise is positive, in unit of radian. */
+    float roll = 14;
+    /** Uncertainty of roll, in unit of radian.
+    *  Uncertainty is defined with 68% confidence level. */
+    float roll_unc = 15;
+    /** Roll rate of body frame, clockwise is positive, in unit of
+    *  radian/second.*/
+    float roll_rate = 16;
+    /** Uncertainty of roll rate, in unit of radian/second.
+    *  Uncertainty is defined with 68% confidence level. */
+    float roll_rate_unc = 17;
+    /** Yaw of body frame, clockwise is positive, in unit of radian. */
+    float yaw = 18;
+    /** Uncertainty of yaw, in unit of radian.
+    *  Uncertainty is defined with 68% confidence level. */
+    float yaw_unc = 19;
+}
+
+// Left Shift
+enum GnssSignalType {
+    /** Gnss signal is of GPS L1CA RF Band. */
+    GPS_L1CA = 0;
+    /** Gnss signal is of GPS L1C RF Band. */
+    GPS_L1C = 1;
+    /** Gnss signal is of GPS L2 RF Band. */
+    GPS_L2 = 2;
+    /** Gnss signal is of GPS L5 RF Band. */
+    GPS_L5 = 3;
+    /** Gnss signal is of GLONASS G1 (L1OF) RF Band. */
+    GLONASS_G1 = 4;
+    /** Gnss signal is of GLONASS G2 (L2OF) RF Band. */
+    GLONASS_G2 = 5;
+    /** Gnss signal is of GALILEO E1 RF Band. */
+    GALILEO_E1 = 6;
+    /** Gnss signal is of GALILEO E5A RF Band. */
+    GALILEO_E5A = 7;
+    /** Gnss signal is of GALILEO E5B RF Band. */
+    GALILIEO_E5B = 8;
+    /** Gnss signal is of BEIDOU B1 RF Band. */
+    BEIDOU_B1 = 9;
+    /** Gnss signal is of BEIDOU B2 RF Band. */
+    BEIDOU_B2 = 10;
+    /** Gnss signal is of QZSS L1CA RF Band. */
+    QZSS_L1CA = 11;
+    /** Gnss signal is of QZSS L1S RF Band. */
+    QZSS_L1S = 12;
+    /** Gnss signal is of QZSS L2 RF Band. */
+    QZSS_L2 = 13;
+    /** Gnss signal is of QZSS L5 RF Band. */
+    QZSS_L5 = 14;
+    /** Gnss signal is of SBAS L1 RF Band. */
+    SBAS_L1 = 15;
+    /** Gnss signal is of BEIDOU B1I RF Band. */
+    BEIDOU_B1I = 16;
+    /** Gnss signal is of BEIDOU B1C RF Band. */
+    BEIDOU_B1C = 17;
+    /** Gnss signal is of BEIDOU B2I RF Band. */
+    BEIDOU_B2I = 18;
+    /** Gnss signal is of BEIDOU B2AI RF Band. */
+    BEIDOU_B2AI = 19;
+    /** Gnss signal is of NAVIC L5 RF Band. */
+    NAVIC_L5 = 20;
+    /** Gnss signal is of BEIDOU B2A_Q RF Band. */
+    BEIDOU_B2AQ = 21;
+}
+
+// Simple
+enum GnssSystem {
+    GNSS_SYS_DUMMY = 0;
+    /** UNKNOWN satellite. */
+    GNSS_LOC_SV_SYSTEM_UNKNOWN = -1;
+    /** GPS satellite. */
+    GNSS_LOC_SV_SYSTEM_GPS = 1;
+    /** GALILEO satellite. */
+    GNSS_LOC_SV_SYSTEM_GALILEO = 2;
+    /** SBAS satellite. */
+    GNSS_LOC_SV_SYSTEM_SBAS = 3;
+    /** COMPASS satellite.
+    @deprecated constellation type
+    is not supported.*/
+    GNSS_LOC_SV_SYSTEM_COMPASS = 4;
+    /** GLONASS satellite. */
+    GNSS_LOC_SV_SYSTEM_GLONASS = 5;
+    /** BDS satellite. */
+    GNSS_LOC_SV_SYSTEM_BDS = 6;
+    /** QZSS satellite. */
+    GNSS_LOC_SV_SYSTEM_QZSS = 7;
+    /** NAVIC satellite. */
+    GNSS_LOC_SV_SYSTEM_NAVIC = 8;
+}
+
+message GnssMeasurementInfo {
+    /** GnssSignalType mask */
+    repeated GnssSignalType gnss_signal_type = 1;
+    /** Specifies GNSS Constellation Type */
+    GnssSystem gnss_constellation = 2;
+    /** GNSS SV ID.
+    *  For GPS:      1 to 32.
+    *  For GLONASS:  [65, 96] or [97, 110].
+                        [65, 96] if orbital slot number(OSN) is known.
+                        [97, 110] as frequency channel number(FCN) [-7, 6] plus 104.
+                        i.e. encode FCN (-7) as 97, FCN (0) as 104, FCN (6) as 110.
+    *  For SBAS:     120 to 158 and 183 to 191.
+    *  For QZSS:     193 to 197.
+    *  For BDS:      201 to 263.
+    *  For GAL:      301 to 336.
+    *  For NAVIC:    401 to 414.*/
+    uint32 gnss_sv_id = 3;
+}
+
+// Left Shift
+enum GnssTimeValidityType {
+    /** valid systemWeek.*/
+    GNSS_SYSTEM_TIME_WEEK_VALID = 0;
+    /** valid systemMsec*/
+    GNSS_SYSTEM_TIME_WEEK_MS_VALID = 1;
+    /** valid systemClkTimeBias*/
+    GNSS_SYSTEM_CLK_TIME_BIAS_VALID = 2;
+    /** valid systemClkTimeUncMs*/
+    GNSS_SYSTEM_CLK_TIME_BIAS_UNC_VALID = 3;
+    /** valid refFCount*/
+    GNSS_SYSTEM_REF_FCOUNT_VALID = 4;
+    /** valid numClockResets*/
+    GNSS_SYSTEM_NUM_CLOCK_RESETS_VALID = 5;
+}
+
+/** Specify non-Glonass Gnss system time info.*/
+message TimeInfo {
+    /** Validity mask for below fields */
+    repeated GnssTimeValidityType validity_mask = 1;
+    /** Extended week number at reference tick.
+    *  Unit: Week.
+    *  Set to 65535 if week number is unknown.
+    *  For GPS:
+    *  Calculated from midnight, Jan. 6, 1980.
+    *  OTA decoded 10 bit GPS week is extended to map between:
+    *  [NV6264 to (NV6264 + 1023)].
+    *  For BDS:
+    *  Calculated from 00:00:00 on January 1, 2006 of Coordinated Universal Time
+    *  (UTC).
+    *  For GAL:
+    *  Calculated from 00:00 UT on Sunday August 22, 1999
+    *  (midnight between August 21 and August 22).*/
+    uint32 system_week = 2;
+    /** Time in to the current week at reference tick.
+    *  Unit: Millisecond. Range: 0 to 604799999.*/
+    uint32 system_msec = 3;
+    /** System clock time bias
+    *  Units: Millisecond
+    *  Note: System time (TOW Millisecond) = systemMsec - systemClkTimeBias.*/
+    float system_clk_time_bias = 4;
+    /** Single sided maximum time bias uncertainty
+    *  Units: Millisecond */
+    float system_clk_time_unc_ms = 5;
+    /** FCount (free running HW timer) value. Don't use for relative time purpose
+    *  due to possible discontinuities.
+    *  Unit: Millisecond */
+    uint32 ref_f_count = 6;
+    /** Number of clock resets/discontinuities detected,
+    *  affecting the local hardware counter value. */
+    uint32 num_clock_resets = 7;
+}
+
+// Left Shift
+enum GlonassTimeValidity {
+  /** valid gloDays*/
+  GNSS_CLO_DAYS_VALID = 0;
+  /** valid gloMsec*/
+  GNSS_GLOS_MSEC_VALID = 1;
+  /** valid gloClkTimeBias*/
+  GNSS_GLO_CLK_TIME_BIAS_VALID = 2;
+  /** valid gloClkTimeUncMs*/
+  GNSS_GLO_CLK_TIME_BIAS_UNC_VALID = 3;
+  /** valid refFCount*/
+  GNSS_GLO_REF_FCOUNT_VALID = 4;
+  /** valid numClockResets*/
+  GNSS_GLO_NUM_CLOCK_RESETS_VALID = 5;
+  /** valid gloFourYear*/
+  GNSS_GLO_FOUR_YEAR_VALID = 6;
+}
+
+message GlonassTimeInfo {
+  /** GLONASS day number in four years. Refer to GLONASS ICD.
+   *  Applicable only for GLONASS and shall be ignored for other constellations.
+   *  If unknown shall be set to 65535 */
+  uint32 glo_days = 1;
+  /** Validity mask for GlonassTimeInfo fields */
+  repeated GlonassTimeValidity validity_mask = 2;
+  /** GLONASS time of day in Millisecond. Refer to GLONASS ICD.
+   *  Units: Millisecond.*/
+  uint32 glo_msec = 3;
+  /** GLONASS clock time bias.
+   *  Units: Millisecond
+   *  Note: GLO time (TOD Millisecond) = gloMsec - gloClkTimeBias.
+   *  Check for gloClkTimeUncMs before use. */
+  float glo_clk_time_bias = 4;
+  /** Single sided maximum time bias uncertainty
+   *  Units: Millisecond */
+  float glo_clk_time_unc_ms = 5;
+  /** FCount (free running HW timer) value. Don't use for relative time purpose
+   *  due to possible discontinuities.
+   *  Unit: Millisecond */
+  uint32 ref_f_count = 6;
+  /** Number of clock resets/discontinuities detected,
+   *  affecting the local hardware counter value. */
+  uint32 num_clock_resets = 7;
+  /** GLONASS four year number from 1996. Refer to GLONASS ICD.
+   *  Applicable only for GLONASS and shall be ignored for other constellations.*/
+  uint32 glo_four_year = 8;
+}
+
+message SystemTimeInfo {
+    /** System time info from GPS constellation.*/
+    TimeInfo gps = 1;
+    /** System time info from GALILEO constellation.*/
+    TimeInfo gal = 2;
+    /** System time info from BEIDOU constellation.*/
+    TimeInfo bds = 3;
+    /** System time info from QZSS constellation.*/
+    TimeInfo qzss = 4;
+    /** System time info from GLONASS constellation.*/
+    GlonassTimeInfo glo = 5;
+    /** System time info from NAVIC constellation.*/
+    TimeInfo navic = 6;
+}
+
+/** GNSS system time in @ref ILocationInfoEx.*/
+message SystemTime {
+    /** Specify the source constellation for GNSS system time. */
+    GnssSystem gnss_system_time_src = 1;
+    /** Specify the GNSS system time corresponding to the source.*/
+    SystemTimeInfo time = 2;
+}
+
+// Left Shift
+enum DrCalibrationStatusType {
+    /** Indicate that roll calibration is needed. Need to take more
+    *  turns on level ground.*/
+    DR_ROLL_CALIBRATION_NEEDED  = 0;
+    /** Indicate that pitch calibration is needed. Need to take more
+    *  turns on level ground.*/
+    DR_PITCH_CALIBRATION_NEEDED = 1;
+    /** Indicate that yaw calibration is needed. Need to accelerate
+    *  in a straight line.*/
+    DR_YAW_CALIBRATION_NEEDED   = 2;
+    /** Indicate that odo calibration is needed. Need to accelerate
+    *  in a straight line.*/
+    DR_ODO_CALIBRATION_NEEDED   = 3;
+    /** Indicate that gyro calibration is needed. Need to take more
+    *  turns on level ground.*/
+    DR_GYRO_CALIBRATION_NEEDED  = 4;
+}
+
+// Simple
+enum LocationAggregationType {
+    /** This is the propagated/aggregated report from the fixes of all engines
+    *  running on the system (e.g.: DR/SPE/PPE).*/
+        LOC_OUTPUT_ENGINE_FUSED = 0;
+    /** This fix is the unmodified fix from modem GNSS engine */
+        LOC_OUTPUT_ENGINE_SPE   = 1;
+    /** This is the unmodified fix from PPP engine */
+        LOC_OUTPUT_ENGINE_PPE   = 2;
+    /** This is the unmodified fix from VPE engine. */
+        LOC_OUTPUT_ENGINE_VPE  = 3;
+}
+
+// Left Shift
+enum PositioningEngineType {
+    STANDARD_POSITIONING_ENGINE = 0;
+    DEAD_RECKONING_ENGINE       = 1;
+    PRECISE_POSITIONING_ENGINE  = 2;
+    VP_POSITIONING_ENGINE       = 3;
+}
+
+message LLAInfo {
+    /** Latitude, in unit of degrees, range [-90.0, 90.0]. */
+    double latitude = 1;
+    /** Longitude, in unit of degrees, range [-180.0, 180.0]. */
+    double longitude = 2;
+    /** Altitude above the WGS 84 reference ellipsoid, in unit of meters. */
+    float altitude = 3;
+}
+
+// Normal
+enum AltitudeType {
+    CALCULATED = 0; /**< Altitude is calculated  */
+    ASSUMED = 1; /**< Altitude is assumed, there may not be enough
+                        satellites to determine the precise altitude */
+    UNKNOWN = -1; /**< Unknown altitude type*/
+}
+
+
+enum ReportStatus {
+    SUCCESS = 0;
+    /** Report is still in progress. The engine has not completed its calculations when this
+     *  report was generated. Accuracy of various fields is non-optimal. Only some of the fields
+     *  in ILocationInfoEx will be valid. */
+    INTERMEDIATE = 1;
+    /** Report status has failed. The engine is not able to calculate the fix. Most of the fields
+     *  in ILocationInfoEx will be invalid. */
+    FAILURE = 2;
+    /** Report status is unknown. */
+    REPORT_STATUS_UNKNOWN = -1;
+    /** Report status is successful. The engine is able to calculate the desired fix. Most
+     *  of the fields in ILocationInfoEx will be valid. */
+}
+
+message SvUsedInPosition{
+    /** Specify the set of SVs from GPS constellation that are used
+     *  to compute the position. Bit 0 to Bit 31 corresponds
+     *  to GPS SV id 1 to 32.*/
+    uint64 gps = 1;
+    /** Specify the set of SVs from GLONASS constellation that are
+     *  used to compute the position.
+     *  Bit 0 to Bit 31 corresponds to GLO SV id 65 to 96.*/
+    uint64 glo = 2;
+    /** Specify the set of SVs from GALILEO constellation that are
+     *  used to compute the position.
+     *  Bit 0 to Bit 35 corresponds to GAL SV id 301 to 336.*/
+    uint64 gal = 3;
+    /** Specify the set of SVs from BEIDOU constellation that are
+     *  used to compute the position.
+     *  Bit 0 to Bit 62 corresponds to BDS SV id 201 to 263.*/
+    uint64 bds = 4;
+    /** Specify the set of SVs from QZSS constellation that are used
+     *  to compute the position.
+     *  Bit 0 to Bit 4 corresponds to QZSS SV id 193 to 197.*/
+    uint64 qzss = 5;
+    /** Specify the set of SVs from NAVIC constellation that are used
+     *  to compute the position.
+     *  Bit 0 to Bit 13 corresponds to NAVIC SV id 401 to 414.*/
+    uint64 navic = 6;
+}
+
+// Normal
+enum LocationReliability {
+    NOT_SET = 0; /**<  Location reliability is not set. The reliability of this position report
+                        could not be determined. It could be unreliable/reliable */
+    VERY_LOW = 1;/**<  Location reliability is very low */
+    LOW = 2; /**<  Location reliability is low, little or no cross-checking is possible */
+    MEDIUM = 3; /**<  Location reliability is medium, limited cross-check passed */
+    HIGH = 4; /**<  Location reliability is high, strong cross-check passed */
+    LOC_REL_UNKNOWN = -1; /**< Unknown location reliability*/
+}
+
+message LocationInfoEx {
+    LocationInfoBase location_info_base = 1;
+    repeated LocationInfoExValidityType location_info_ex_validity = 2;
+    float altitude_mean_sea_level = 3;
+    float position_dop = 4;
+    float horizontal_dop = 5;
+    float vertical_dop = 6;
+    float geometric_dop = 7;
+    float time_dop = 8;
+    float magnetic_deviation = 9;
+    LocationReliability horizontal_reliability = 10;
+    LocationReliability vertical_reliability = 11;
+    float horizontal_uncertainty_semi_major = 12;
+    float horizontal_uncertainty_semi_minor = 13;
+    float horizontal_uncertainty_azimuth = 14;
+    float east_standard_deviation = 15;
+    float north_standard_deviation = 16;
+    int32 num_sv_used = 17;
+    SvUsedInPosition sv_used_in_position = 18;
+    repeated uint32 ids_of_used_svs = 19;
+    repeated SbasCorrectionType sbas_correction = 20;
+    repeated GnssPositionTechType gnss_position_tech = 21;
+    GnssKinematicsData body_frame_data = 22;
+    repeated GnssMeasurementInfo meas_usage_info = 23;
+    SystemTime gnss_system_time = 24;
+    float time_unc_ms = 25;
+    uint32 leap_seconds = 26;
+    repeated float velocity_east_north_up = 27;
+    repeated float velocity_uncertainty_east_north_up = 28;
+    uint32 calibration_confidence_percent = 29;
+    repeated DrCalibrationStatusType calibration_status = 30;
+    LocationAggregationType loc_output_eng_type = 31;
+    repeated PositioningEngineType loc_output_eng_mask = 32;
+    float conformity_index = 33;
+    LLAInfo vrp_based_lla = 34;
+    repeated float vrp_based_enu_velocity = 35;
+    AltitudeType altitude_type = 36;
+    ReportStatus report_status = 37;
+    uint32 integrity_risk_used = 38;
+    float protection_level_along_track = 39;
+    float protection_level_cross_track = 40;
+    float protection_level_vertical = 41;
+}
+
+message RegisterOnDetailedLocationUpdateReply {
+    int32 client_id = 1;
+    LocationInfoEx location_info_ex = 2;
+}
+
+message RegisterOnDetailedEngineLocationUpdateReply {
+    int32 client_id = 1;
+    repeated LocationInfoEx location_info_ex = 2;
+}
+
+// Simple
+enum GnssConstellationType {
+    CONSTELLATION_DUMMY = 0;
+    GPS = 1; /**< GPS satellite */
+    GALILEO = 2; /**< GALILEO satellite */
+    SBAS = 3; /**< SBAS satellite */
+    COMPASS = 4; /**< COMPASS satellite.
+                @deprecated constellation type is not supported.*/
+    GLONASS = 5; /**< GLONASS satellite */
+    BDS = 6; /**< BDS satellite */
+    QZSS = 7; /**< QZSS satellite */
+    NAVIC = 8; /**< NAVIC satellite*/
+    CONSTELLATION_UNKNOWN = -1; /**< Unknown constellation type*/
+}
+
+// Simple
+enum SVHealthStatus {
+    UNHEALTHY = 0; /**< satellite is not operational and cannot be
+                        used in position calculations */
+    HEALTHY = 1; /**< satellite is fully operational */
+    SV_HEALTH_STATUS_UNKNOWN = -1; /**< Unknown sv health status*/
+}
+
+// Simple
+enum SVStatus {
+    IDLE = 0; /**< SV is not being actively processed  */
+    SEARCH = 1; /**< The system is searching for this SV */
+    TRACK = 2; /**< SV is being tracked */
+    SV_STATUS_UNKNOWN = -1; /**< Unknown sv status*/
+}
+
+// Simple
+enum SVInfoAvailability {
+    YES = 0; /**< Ephemeris or Almanac exits  */
+    NO = 1;/**< Ephemeris or Almanac doesn't exist */
+    SV_INFO_AVAL_UNKNOWN = -1; /**< Unknown sv info availability*/
+}
+
+message SVInfo {
+    GnssConstellationType constellation = 1;
+    uint32 id = 2;
+    SVHealthStatus sv_health_status = 3;
+    SVStatus sv_status = 4;
+    SVInfoAvailability has_ephemeris = 5;
+    SVInfoAvailability has_almanac = 6;
+    SVInfoAvailability has_fix = 7;
+    float elevation = 8;
+    float azimuth = 9;
+    float snr = 10;
+    float carrier_frequency = 11;
+    repeated GnssSignalType gnss_signal_type = 12;
+    uint32 glonass_fcn = 13;
+    double baseband_cnr = 14;
+}
+
+message GnssSVInfo {
+    AltitudeType altitude_type = 1;
+    repeated SVInfo sv_info = 2;
+}
+
+// Left Shift
+enum GnssDataValidityType {
+    /** Jammer Indicator is available */
+    HAS_JAMMER = 0;
+    /** AGC is available */
+    HAS_AGC = 1;
+}
+
+message GnssDataValidity {
+    repeated GnssDataValidityType gnss_validity = 1;
+}
+
+message GnssData {
+    /** bitwise OR of GnssDataValidityType */
+    repeated GnssDataValidity gnss_data_mask = 1;
+    /** Jammer Indication for each signal type. Each index represents the signal type in
+    *  GnssDataSignalTypes.
+    */
+    repeated double jammer_ind = 2;
+    /** Automatic gain control for each signal type. Each index corresponds to the signal type
+    *  in GnssDataSignalTypes.
+    */
+    repeated double agc = 3;
+}
+
+message GnssSignalInfo {
+    GnssData gnss_data = 1;
+}
+
+// Left shift
+enum GnssMeasurementsClockValidityType {
+    /** Validity of leapSecond.*/
+    LEAP_SECOND_BIT                   = 0;
+    /** Validity of timeNs.*/
+    TIME_BIT                          = 1;
+    /** Validity of timeUncertaintyNs.*/
+    TIME_UNCERTAINTY_BIT              = 2;
+    /** Validity of fullBiasNs.*/
+    FULL_BIAS_BIT                     = 3;
+    /** Validity of biasNs.*/
+    BIAS_BIT                          = 4;
+    /** Validity of biasUncertaintyNs.*/
+    BIAS_UNCERTAINTY_BIT              = 5;
+    /** Validity of driftNsps.*/
+    DRIFT_BIT                         = 6;
+    /** Validity of driftUncertaintyNsps.*/
+    DRIFT_UNCERTAINTY_BIT             = 7;
+    /** Validity of hwClockDiscontinuityCount.*/
+    HW_CLOCK_DISCONTINUITY_COUNT_BIT  = 8;
+}
+
+message GnssMeasurementsClock {
+    /** Bitwise OR of GnssMeasurementsClockValidityType.*/
+    repeated GnssMeasurementsClockValidityType valid = 1;
+    /** Leap second, in unit of seconds.*/
+    int32 leap_second = 2;
+    /** Time, monotonically increasing as long as the power is on,
+     *  in unit of nanoseconds.*/
+    int64 time_ns = 3;
+    /** Time uncertainty (one sigma), in unit of nanoseconds.*/
+    double time_uncertainty_ns = 4;
+    /** Full bias, in uint of nanoseconds.*/
+    int64 full_bias_ns = 5;
+    /** Sub-nanoseconds bias, in unit of nonoseconds.*/
+    double bias_ns = 6;
+    /** Bias uncertainty (one sigma), in unit of nanoseconds.*/
+    double bias_uncertainty_ns = 7;
+    /** Clock drift, in unit of nanoseconds/second.*/
+    double drift_nsps = 8;
+    /** Clock drift uncertainty (one sigma), in unit of
+     *  nanoseconds/second.*/
+    double drift_uncertainty_nsps = 9;
+    /** HW clock discontinuity count - incremented
+     *  for each discontinuity in HW clock.*/
+    uint32 hw_clock_discontinuity_count = 10;
+}
+
+// Left Shift
+enum GnssMeasurementsDataValidityType{
+    /** Validity of svId.*/
+    SV_ID_BIT                        = 0;
+    /** Validity of svType.*/
+    SV_TYPE_BIT                      = 1;
+    /** Validity of stateMask.*/
+    STATE_BIT                        = 2;
+    /** Validity of receivedSvTimeNs and receivedSvTimeSubNs.*/
+    RECEIVED_SV_TIME_BIT             = 3;
+    /** Validity of receivedSvTimeUncertaintyNs.*/
+    RECEIVED_SV_TIME_UNCERTAINTY_BIT = 4;
+    /** Validity of carrierToNoiseDbHz.*/
+    CARRIER_TO_NOISE_BIT             = 5;
+    /** Validity of pseudorangeRateMps.*/
+    PSEUDORANGE_RATE_BIT             = 6;
+    /** Validity of pseudorangeRateUncertaintyMps.*/
+    PSEUDORANGE_RATE_UNCERTAINTY_BIT = 7;
+    /** Validity of adrStateMask.*/
+    ADR_STATE_BIT                    = 8;
+    /** Validity of adrMeters.*/
+    ADR_BIT                          = 9;
+    /** Validity of adrUncertaintyMeters.*/
+    ADR_UNCERTAINTY_BIT              = 10;
+    /** Validity of carrierFrequencyHz.*/
+    CARRIER_FREQUENCY_BIT            = 11;
+    /** Validity of carrierCycles.*/
+    CARRIER_CYCLES_BIT               = 12;
+    /** Validity of carrierPhase.*/
+    CARRIER_PHASE_BIT                = 13;
+    /** Validity of carrierPhaseUncertainty.*/
+    CARRIER_PHASE_UNCERTAINTY_BIT    = 14;
+    /** Validity of multipathIndicator.*/
+    MULTIPATH_INDICATOR_BIT          = 15;
+    /** Validity of signalToNoiseRatioDb.*/
+    SIGNAL_TO_NOISE_RATIO_BIT        = 16;
+    /** Validity of agcLevelDb.*/
+    AUTOMATIC_GAIN_CONTROL_BIT       = 17;
+    /** Validity of signal type.*/
+    GNSS_SIGNAL_TYPE                 = 18;
+    /** Validity of basebandCarrierToNoise.*/
+    BASEBAND_CARRIER_TO_NOISE        = 19;
+    /** Validity of fullInterSignalBias.*/
+    FULL_ISB                         = 20;
+    /** Validity of fullInterSignalBiasUncertainty.*/
+    FULL_ISB_UNCERTAINTY             = 21;
+}
+
+// Left Shift
+enum GnssMeasurementsStateValidityType {
+    /** State is "code lock".*/
+    CODE_LOCK_BIT               = 0;
+    /** State is "bit sync".*/
+    BIT_SYNC_BIT                = 1;
+    /** State is "subframe sync".*/
+    SUBFRAME_SYNC_BIT           = 2;
+    /** State is "tow decoded".*/
+    TOW_DECODED_BIT             = 3;
+    /** State is "msec ambiguous".*/
+    MSEC_AMBIGUOUS_BIT          = 4;
+    /** State is "symbol sync".*/
+    SYMBOL_SYNC_BIT             = 5;
+    /** State is "GLONASS string sync".*/
+    GLO_STRING_SYNC_BIT         = 6;
+    /** State is "GLONASS TOD decoded".*/
+    GLO_TOD_DECODED_BIT         = 7;
+    /** State is "BDS D2 bit sync".*/
+    BDS_D2_BIT_SYNC_BIT         = 8;
+    /** State is "BDS D2 subframe sync".*/
+    BDS_D2_SUBFRAME_SYNC_BIT    = 9;
+    /** State is "Galileo E1BC code lock".*/
+    GAL_E1BC_CODE_LOCK_BIT      = 10;
+    /** State is "Galileo E1C second code lock".*/
+    GAL_E1C_2ND_CODE_LOCK_BIT   = 11;
+    /** State is "Galileo E1B page sync".*/
+    GAL_E1B_PAGE_SYNC_BIT       = 12;
+    /** State is "SBAS sync".*/
+    SBAS_SYNC_BIT               = 13;
+    /** State is unknown.*/
+    UNKNOWN_BIT                 = 99;
+}
+
+// Left Shift
+enum GnssMeasurementsAdrStateValidityType {
+    /** State is valid.*/
+    VALID_BIT       = 0;
+    /** State is "reset".*/
+    RESET_BIT       = 1;
+    /** State is "cycle slip".*/
+    CYCLE_SLIP_BIT  = 2;
+    /** State is unknown.*/
+    UNKNOWN_STATE   = 99;
+}
+
+// Simple
+enum GnssMeasurementsMultipathIndicator {
+    /** Multipath indicator is unknown.*/
+    UNKNOWN_INDICATOR     = 0;
+    /** Multipath indicator is present.*/
+    PRESENT               = 1;
+    /** Multipath indicator is not present.*/
+    NOT_PRESENT           = 2;
+}
+
+message GnssMeasurementsData {
+    /** Bitwise OR of GnssMeasurementsDataValidityType to specify the
+     *  valid fields in GnssMeasurementsData. */
+    repeated GnssMeasurementsDataValidityType valid = 1;
+    /** Specify satellite vehicle ID number.*/
+    int32 sv_id = 2;
+    /** SV constellation type.*/
+    GnssConstellationType sv_type = 3;
+    /** Time offset when the measurement was taken,
+     *  in unit of nanoseconds.*/
+    double time_offset_ns = 4;
+    /** Bitwise OR of GnssMeasurementsStateValidityType to specify the
+     *  GNSS measurement state.*/
+    repeated GnssMeasurementsStateValidityType state_mask = 5;
+    /** Received GNSS time of the week in nanoseconds when the
+     *  measurement was taken.
+     *  Total time is: receivedSvTimeNs+receivedSvTimeSubNs.*/
+    int64 received_sv_time_ns = 6;
+    /** Sub nanoseconds portion of the received GNSS time of the
+     *  week when the measurement was taken.
+     *  Total time is: receivedSvTimeNs+receivedSvTimeSubNs.*/
+    float received_sv_time_sub_ns = 7;
+    /** Satellite time.
+     *  All SV times in the current measurement block are already
+     *  propagated to a common reference time epoch, in unit of
+     *  nano seconds.*/
+    int64 received_sv_time_uncertainty_ns = 8;
+    /** Signal strength, carrier to noise ratio, in unit of dB-Hz.*/
+    double carrier_to_noise_db_hz = 9;
+    /** Uncorrected pseudorange rate, in unit of metres/second.*/
+    double pseudorange_rate_mps = 10;
+    /** Uncorrected pseudorange rate uncertainty, in unit of
+     *  meters/second.*/
+    double pseudorange_rate_uncertainty_mps = 11;
+    /** Bitwise OR of GnssMeasurementsAdrStateValidityType.*/
+    repeated GnssMeasurementsAdrStateValidityType adr_state_mask = 12;
+    /** Accumulated delta range, in unit of meters.*/
+    double adr_meters = 13;
+    /** Accumulated delta range uncertainty, in unit of meters.*/
+    double adr_uncertainty_meters = 14;
+    /** Carrier frequency of the tracked signal, in unit of Hertz.*/
+    float carrier_frequency_hz = 15;
+    /** The number of full carrier cycles between the receiver and
+     *  the satellite.*/
+    int64 carrier_cycles = 16;
+    /** The RF carrier phase that the receiver has detected.*/
+    double carrier_phase = 17;
+    /** The RF carrier phase uncertainty.*/
+    double carrier_phase_uncertainty = 18;
+    /** Multipath indicator, could be unknown, present or not
+     *  present.*/
+    GnssMeasurementsMultipathIndicator multipath_indicator = 19;
+    /** Signal to noise ratio, in unit of dB.*/
+    double signal_to_noise_ratio_db = 20;
+    /** Automatic gain control level, in unit of dB.*/
+    double agc_level_db = 21;
+    /** GnssSignalType mask */
+    repeated GnssSignalType gnss_signal_type = 22;
+    /** Carrier-to-noise ratio of the signal measured at baseband,
+     *  in unit of dB-Hz. */
+    double baseband_carrier_to_noise = 23;
+    /** The full inter-signal bias (ISB) in nanoseconds.
+     *  This value is the sum of the estimated receiver-side and the
+     *  space-segment-side inter-system bias, inter-frequency bias
+     *  and inter-code bias. */
+    double full_inter_signal_bias =24;
+    /** Uncertainty associated with the full inter-signal bias in
+     *  nanoseconds. */
+    double full_inter_signal_bias_uncertainty = 25;
+}
+
+message GnssMeasurements {
+    /** GNSS measurements clock info.*/
+    GnssMeasurementsClock clock = 1;
+    /** GNSS measurements data.*/
+    repeated GnssMeasurementsData measurements = 2;
+    /** Indicates the frequency for GNSS measurements generated at NHz or not.*/
+    bool is_nhz = 3;
+}
+
+// Simple
+enum GnssReportDCType {
+    GNSS_REPORT_DC_TYPE_DUMMY = 0 ;
+    /**
+     * Disaster Prevention information provided by Japan Meteorological Agency.
+     */
+    QZSS_JMA_DISASTER_PREVENTION_INFO = 43;
+    /**
+     * Disaster Prevention information provided by other organizations.
+     */
+    QZSS_NON_JMA_DISASTER_PREVENTION_INFO = 44;
+}
+
+message GnssDisasterCrisisReport {
+    /**
+     * Disaster and crisis report types supported by the GNSS Engine.
+     */
+    GnssReportDCType dc_report_type = 1;
+    /**
+     * The disaster crisis report data, packed into uint8_t.
+     * The bits in the payload are packed w.r.t the MSB First ordering.
+     */
+    repeated uint32 dc_report_data = 2;
+    /**
+     * Number of valid bits that client should use in the payload as
+     * per the dcReportData.
+     */
+    uint32 num_valid_bits = 3;
+    /**
+     * Pseudo-Random Number validity
+     */
+    bool prn_validity = 4;
+    /**
+     * Pseudo-Random Number, uint8_t value.
+     */
+    uint32 prn = 5;
+}
+
+// Left Shift
+enum LocCapabilityType {
+    /** Support time based tracking session via @ref ILocationManager::startDetailedReports,
+    *  @ref ILocationManager::startDetailedEngineReports and
+    *  @ref ILocationManager::startBasicReports with distanceInMeters set to 0.
+    */
+    TIME_BASED_TRACKING = 0;
+    /** Support distance based tracking session via @ref ILocationManager::startBasicReports with
+    *  distanceInMeters specified.
+    */
+    DISTANCE_BASED_TRACKING = 1;
+    /** Support Gnss Measurement data via @ref ILocationListener::onGnssMeasurementsInfo when a
+    *  tracking session is enabled.
+    */
+    GNSS_MEASUREMENTS = 2;
+    /** Support configure constellations via @ref ILocationConfigurator::configureConstellations. */
+    CONSTELLATION_ENABLEMENT = 3;
+    /** Support carrier phase for Precise Positioning Measurement Engine (PPME). */
+    CARRIER_PHASE = 4;
+    /** Support GNSS Single Frequency feature. */
+    QWES_GNSS_SINGLE_FREQUENCY = 5;
+    /** Supports GNSS Multi Frequency feature. */
+    QWES_GNSS_MULTI_FREQUENCY = 6;
+    /** Support VEPP license bundle is enabled. VEPP bundle include Carrier Phase features. */
+    QWES_VPE = 7;
+    /** Support for CV2X Location basic features. This includes features for
+    *  GTS Time & Freq, @ref ILocationConfigurator::configureCTunc.
+    */
+    QWES_CV2X_LOCATION_BASIC = 8;
+    /** Support for CV2X Location premium features. This includes features for
+    *  CV2X Location Basic features, QDR3 feature and @ref ILocationConfigurator::configurePACE.
+    */
+    QWES_CV2X_LOCATION_PREMIUM = 9;
+    /** Support PPE (Precise Positioning Engine) library is enabled or Precise Positioning Framework
+    *  (PPF) is available. This includes features for Carrier Phase and SV Ephermeris.
+    */
+    QWES_PPE = 10;
+    /** Support QDR2_C license bundle is enabled. */
+    QWES_QDR2 = 11;
+    /** Support QDR3_C license bundle is enabled. */
+    QWES_QDR3 = 12;
+}
+
+
+
+// Left Shift
+enum TerrestrialTechnologyType {
+    /** Cell-based technology */
+    GTP_WWAN = 0;
+}
+
+message GetTerrestrialPositionRequest {
+    uint32 timeout_msec = 1;
+    repeated TerrestrialTechnologyType type = 2;
+}
+
+message GetTerrestrialPositionReply {
+    LocationInfoBase location_info_base = 1;
+}
+
+// Left Shift
+enum GnssReportType {
+    /** Location reports */
+    LOCATION          = 0;
+    /** Satellite reports */
+    SATELLITE_VEHICLE = 1;
+    /** Nmea reports */
+    NMEA              = 2;
+    /** Data reports */
+    DATA              = 3;
+    /** Low rate measurement reports. Currently the rate is defined to be 1 Hz. */
+    MEASUREMENT       = 4;
+    /** High rate measurement reports. Currently the rate is defined to be 10 Hz.
+     *  Client cannot specify rates. The data in high rate would be different that from low rate.
+     *  Also there might be difference in accuracy of fields for the both the rates. */
+    HIGH_RATE_MEASUREMENT    = 5;
+    /*Disaster Crisis Reports*/
+    DISASTER_CRISIS   = 6;
+}
+
+message StartDetailedReportsRequest {
+    uint32 interval = 1;
+    repeated GnssReportType report_mask = 2;
+}
+
+// Left Shift
+enum LocReqEngineType {
+    /** Indicate that the fused/default position is needed to be reported back
+     *  for the tracking sessions. The default position is the propagated/aggregated
+     *  reports from all engines running on the system (e.g.: DR/SPE/PPE) according to
+     *  QTI algorithm.
+     */
+    LOC_REQ_ENGINE_FUSED_BIT = 0;
+    /** Indicate that the unmodified SPE position is needed to be reported back for the
+     *  tracking sessions.
+     */
+    LOC_REQ_ENGINE_SPE_BIT   = 1;
+    /** Indicate that the unmodified PPE position is needed to be reported back for the
+     *  tracking sessions.
+     */
+    LOC_REQ_ENGINE_PPE_BIT   = 2;
+     /**Indicate that the unmodified VPE position is needed to be reported back for the
+      * tracking sessions.
+      */
+    LOC_REQ_ENGINE_VPE_BIT  = 3;
+}
+
+message StartDetailedEngineReportsRequest {
+    uint32 interval = 1;
+    repeated LocReqEngineType engine_type = 2;
+    repeated GnssReportType report_mask = 3;
+}
+
+// Left Shift
+enum GnssEnergyConsumedInfoValidityType {
+    /** validity of GnssEnergyConsumedInfo*/
+    ENERGY_CONSUMED_SINCE_FIRST_BOOT_BIT = 0;
+}
+
+/** Specify the info regarding energy consumed by GNSS
+ *  engine.*/
+message GnssEnergyConsumedInfo {
+    /** Bitwise OR of GnssEnergyConsumedInfoValidityType to
+     *  specify the valid fields in GnssEnergyConsumedInfo.*/
+    repeated GnssEnergyConsumedInfoValidityType valid = 1;
+    /** Energy consumed by the modem GNSS engine since device first
+     *  ever bootup, in unit of 0.1 milli watt seconds.
+     *  For an invalid reading, INVALID_ENERGY_CONSUMED is returned.*/
+    uint64 energy_since_first_boot = 2;
+}
+
+// Left Shift
+enum LeapSecondInfoValidityType{
+    /** Validity of LeapSecondInfo::current.*/
+    LEAP_SECOND_SYS_INFO_CURRENT_LEAP_SECONDS_BIT = 0;
+    /** Validity of LeapSecondInfo::info.*/
+    LEAP_SECOND_SYS_INFO_LEAP_SECOND_CHANGE_BIT = 1;
+}
+
+message LeapSecondChangeInfo {
+    /** GPS timestamp that corrresponds to the last known leap
+     *  second change event.
+     *  The info can be available on two scenario:
+     *  1: This leap second change event has been scheduled and yet
+     *     to happen
+     *  2: This leap second change event has already happened and
+     *     next leap second change event has not yet been
+     *     scheduled.*/
+    TimeInfo time_info = 1;
+    /** Number of leap seconds prior to the leap second change event
+     *  that corresponds to the timestamp at timeInfo.*/
+    uint32 leap_seconds_before_change = 2;
+    /** Number of leap seconds after the leap second change event
+     *  that corresponds to the timestamp at timeInfo.*/
+    uint32 leap_seconds_after_change = 3;
+}
+
+message LeapSecondInfo {
+    repeated LeapSecondInfoValidityType valid = 1;
+    /** Current leap seconds, in unit of seconds.
+     *  This info will only be available only if the leap second change info
+     *  is not available.*/
+    uint32 current = 2;
+    /** Leap second change event info. The info can be available on
+     *  two scenario:
+     *  1: this leap second change event has been scheduled and yet
+     *     to happen
+     *  2: this leap second change event has already happened and
+     *     next leap second change event has not yet been scheduled.
+     *  If leap second change info is available, to figure out the
+     *  current leap second info, compare current gps time with
+     *  LeapSecondChangeInfo::timeInfo to know whether
+     *  to choose leapSecondBefore or leapSecondAfter as current
+     *  leap second.*/
+    LeapSecondChangeInfo info = 3;
+}
+
+// Left Shift
+enum LocationSystemInfoValidityType{
+    /** contains current leap second or leap second change info */
+    LOCATION_SYS_INFO_LEAP_SECOND = 0;
+}
+
+message LocationSystemInfo {
+    /** validity of LocationSystemInfo::info*/
+    repeated LocationSystemInfoValidityType valid = 1;
+    /** Current leap second and leap second info.*/
+    LeapSecondInfo info = 2;
+}
+
+message RegisterOnLocationSystemInfoReply {
+    int32 client_id = 1;
+    LocationSystemInfo location_system_info = 2;
+}
+
+message ConfigurePACERequest {
+    bool enable = 1;
+}
+
+message ConfigurePACEReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+message DeleteAllAidingDataReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+enum LeverArmType {
+    option allow_alias = true;
+    LEVER_ARM_TYPE_DUMMY = 0;
+    /** Lever arm parameters regarding the VRP (Vehicle Reference
+     *  Point) w.r.t the origin (at the GNSS Antenna) */
+    LEVER_ARM_TYPE_GNSS_TO_VRP = 1;
+    /** Lever arm regarding GNSS Antenna w.r.t the origin at the
+     *  IMU (inertial measurement unit) for DR (dead reckoning
+     *  engine) */
+    LEVER_ARM_TYPE_DR_IMU_TO_GNSS = 2;
+    /** Lever arm regarding GNSS Antenna w.r.t the origin at the
+     *  IMU (inertial measurement unit) for VEPP (vision enhanced
+     *  precise positioning engine)
+     *  @deprecated enum type is not supported.*/
+    LEVER_ARM_TYPE_VEPP_IMU_TO_GNSS = 3;
+    /** Lever arm regarding GNSS Antenna w.r.t the origin at the
+     *  IMU (inertial measurement unit) for VPE (vision positioning
+     *  engine) */
+    LEVER_ARM_TYPE_VPE_IMU_TO_GNSS = 3;
+}
+
+message LeverArmParams {
+    /** Offset along the vehicle forward axis, in unit of meters */
+    float forward_offset = 1;
+    /** Offset along the vehicle starboard axis, in unit of
+     *  meters */
+    float sideways_offset = 2;
+    /** Offset along the vehicle up axis, in unit of meters  */
+    float up_offset = 3;
+}
+
+message ConfigureLeverArmRequest {
+    // Since we are not allowed to use Enums as keys in a map using int,
+    // which can be then used to extract Enum for all testing purposes.
+    // Alternatively we can create our own message and then create a vector,
+    // but that would not provide features of map like no duplicate entry etc.
+    map <int32, LeverArmParams> lever_arm_config_info = 1;
+}
+
+message ConfigureLeverArmReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+message SvBlackListInfo {
+    /** constellation for the sv  */
+    GnssConstellationType constellation = 1;
+    /** sv id for the constellation:
+     * 0 means blacklist for all SVIds of a given constellation type
+     * GPS SV id range: 1 to 32
+     * GLONASS SV id range: 65 to 96
+     * QZSS SV id range: 193 to 197
+     * BDS SV id range: 201 to 237
+     * GAL SV id range: 301 to 336
+     * SBAS SV id range: 120 to 158 and 183 to 191
+     */
+    uint32 sv_id = 2;
+}
+
+message ConfigureConstellationsRequest {
+    repeated SvBlackListInfo sv_black_list_info = 1;
+    bool reset_to_default = 2;
+}
+
+message ConfigureConstellationsReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+message ConfigureSecondaryBandRequest {
+    // Using repeated instead of set because "Set" data structure is not present in protobuf
+    // Header definition: typedef std::unordered_set<GnssConstellationType> ConstellationSet
+    // Validation such as no duplicates can be done at client side if required.
+    // Parsing to unordered set will be done at C++ GRPC server layer.
+    repeated GnssConstellationType constellation_set = 1;
+}
+
+message ConfigureSecondaryBandReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+message RequestSecondaryBandConfigReply {
+    // Using repeated instead of set because "Set" data structure is not present in protobuf
+    // Header definition: typedef std::unordered_set<GnssConstellationType> ConstellationSet
+    // Validation such as no duplicates can be done at client side if required.
+    // Parsing to repeated from unordered set(SDK response) will be done at C++ GRPC server layer.
+    repeated GnssConstellationType constellation_set = 1;
+    commonStub.Status status = 2;
+    commonStub.ErrorCode error = 3;
+    int32 delay = 4;
+}
+
+// Left Shift
+enum RobustLocationConfigType {
+    /** Validity of enabled */
+    VALID_ENABLED          = 0;
+    /** Validity of enabledForE911. */
+    VALID_ENABLED_FOR_E911 = 1;
+    /** Validity of version. */
+    VALID_VERSION          = 2;
+}
+
+message RobustLocationVersion {
+    /** Major version number. */
+    uint32 major_version = 1;
+    /** Minor version number. */
+    uint32 minor_version = 2;
+}
+
+message RobustLocationConfiguration {
+    /** Validity mask */
+    uint32 valid_mask = 1;
+    /** Specify whether robust location feature is enabled or
+     *  not. */
+    bool enabled = 2;
+    /** Specify whether robust location feature is enabled or not
+     *  when device is on E911 call. */
+    bool enabled_for_e911 = 3;
+    /** Specify the version info of robust location module used
+     *  by the GNSS standard position engine (SPE). */
+    RobustLocationVersion version = 4;
+}
+
+message ConfigureRobustLocationRequest {
+    bool enable = 1;
+    bool enable_for_e911 = 2;
+}
+
+message ConfigureRobustLocationReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+message RequestRobustLocationReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    RobustLocationConfiguration robust_location_configuration = 4;
+}
+
+message ConfigureMinGpsWeekRequest {
+    uint32 min_gps_week = 1;
+}
+
+message ConfigureMinGpsWeekReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+message RequestMinGpsWeekReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    uint32 min_gps_week = 4;
+}
+
+message ConfigureMinSVElevationRequest {
+    uint32 min_sv_elevation = 1;
+}
+
+message ConfigureMinSVElevationReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+message RequestMinSVElevationReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    uint32 min_sv_elevation = 4;
+}
+
+message DeleteAidingDataRequest {
+    uint32 aiding_data_mask = 1;
+}
+
+message DeleteAidingDataReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+message BodyToSensorMountParams {
+    /** The misalignment of the sensor board along the
+     *  horizontal plane of the vehicle chassis measured looking
+     *  from the vehicle to forward direction.
+     *  In unit of degrees.
+     *  Range: [-180.0, 180.0].*/
+    float roll_offset = 1;
+    /** The misalignment along the horizontal plane of the vehicle
+     *  chassis measured looking from the vehicle to the right
+     *  side. Positive pitch indicates vehicle is inclined such
+     *  that forward wheels are at higher elevation than rear
+     *  wheels.
+     *  In unit of degrees.
+     *  Range: [-180.0, 180.0].*/
+    float yaw_offset = 2;
+    /** The angle between the vehicle forward direction and the
+     *  sensor axis as seen from the top of the vehicle, and
+     *  measured in counterclockwise direction.
+     *  In unit of degrees.
+     *  Range: [-180.0, 180.0].*/
+    float pitch_offset = 3;
+    /** Single uncertainty number that may be the largest of the
+     *  uncertainties for roll offset, pitch offset and yaw
+     *  offset.
+     *  In unit of degrees.
+     *  Range: [-180.0, 180.0].*/
+    float offset_unc = 4;
+}
+
+message DREngineConfiguration {
+    /** Specify the valid fields. */
+    uint32 valid_mask = 1;
+    /** Body to sensor mount parameters used by dead reckoning
+     *  positioning engine. */
+    BodyToSensorMountParams mount_param = 2;
+    /** Vehicle Speed Scale Factor configuration input for the dead reckoning positioning engine.
+     *  The multiplicative scale factor is applied to the received Vehicle Speed value
+     *  (in meter/second) to obtain the true Vehicle Speed. Range is [0.9 to 1.1].
+     *  Note: The scale factor is specific to a given vehicle make & model. */
+    float speed_factor = 3;
+    /** Vehicle Speed Scale Factor Uncertainty (68% confidence) configuration input for the dead
+     *  reckoning positioning engine. Range is [0.0 to 0.1].
+     *  Note: The scale factor uncertainty is specific to a given vehicle make & model. */
+    float speed_factor_unc = 4;
+    /** Gyroscope Scale Factor configuration input for the dead reckoning positioning engine. The
+     *  multiplicative scale factor is applied to received gyroscope value to obtain the true
+     *  value. Range is [0.9 to 1.1].
+     *  Note: The scale factor is specific to the Gyroscope sensor and typically derived from
+     *  either sensor data-sheet or from actual calibration. */
+    float gyro_factor = 5;
+    /** Gyroscope Scale Factor uncertainty (68% confidence) configuration input for the dead
+     *  reckoning positioning engine. Range is [0.0 to 0.1].
+     *  Note: The scale factor uncertainty is specific to the Gyroscope sensor and typically
+     *  derived from either sensor data-sheet or from actual calibration. */
+    float gyro_factor_unc = 6;
+}
+
+message ConfigureDRRequest {
+    DREngineConfiguration config = 1;
+}
+
+message ConfigureDRReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+// Simple
+enum EngineType {
+    ENG_TYPE_DUMMY = 0;
+    /** Unknown engine type. */
+    ENG_TYPE_UNKNOWN = -1;
+    /** Standard GNSS position engine. */
+    SPE = 1;
+    /** Precise position engine. */
+    PPE = 2;
+    /** Dead reckoning position engine. */
+    DRE = 3;
+    /** Vision positioning engine. */
+    VPE = 4;
+}
+
+// Simple
+enum LocationEngineRunState {
+    ENG_STATE_DUMMY = 0;
+    /** Unknown engine run state. */
+    ENG_STATE_UNKNOWN = -1;
+    /** Request the position engine to be put into suspended state. */
+    SUSPENDED = 1;
+    /** Request the position engine to be put into running state. */
+    RUNNING = 2;
+}
+
+message ConfigureEngineStateRequest {
+    uint32 engine_type = 1;
+    uint32 engine_state = 2;
+}
+
+message ConfigureEngineStateReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+message ProvideConsentForTerrestrialPositioningRequest {
+    bool user_consent = 1;
+}
+
+message ProvideConsentForTerrestrialPositioningReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+// Left shift
+enum NmeaSentenceType {
+    /** GGA NMEA sentence */
+    GGA = 0;
+    /** RMC NMEA sentence */
+    RMC = 1;
+    /** GSA NMEA sentence */
+    GSA = 2;
+    /** VTG NMEA sentence */
+    VTG = 3;
+    /** GNS NMEA sentence */
+    GNS = 4;
+    /** DTM NMEA sentence */
+    DTM = 5;
+    /** GPGSV NMEA sentence for SVs from GPS constellation */
+    GPGSV = 6;
+    /** GLGSV NMEA sentence for SVs from GLONASS constellation */
+    GLGSV = 7;
+    /** GAGSV NMEA sentence for SVs from GALILEO constellation */
+    GAGSV = 8;
+    /** GQGSV NMEA sentence for SVs from QZSS constellation */
+    GQGSV = 9;
+    /** GBGSV NMEA sentence for SVs from BEIDOU constellation */
+    GBGSV = 10;
+    /** GIGSV NMEA sentence for SVs from NAVIC constellation */
+    GIGSV = 11;
+    /** All NMEA sentences */
+    ALL = 99; // ALL = 0xffffffff overflows in proto.
+}
+
+message ConfigureNmeaTypesRequest {
+    uint32 nmea_type = 1;
+}
+
+message ConfigureNmeaTypesReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+enum DatumType {
+    WGS_84 = 0;
+    PZ_90 = 1;
+}
+
+message ConfigureNmeaRequest {
+    uint32 nmea_type = 1;
+    DatumType datum_type = 2;
+    uint32 engine_type = 3;
+}
+
+message ConfigureNmeaReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+message ConfigureEngineIntegrityRiskRequest {
+    uint32 engine_type = 1;
+    uint32 integrity_risk = 2;
+}
+
+message ConfigureEngineIntegrityRiskReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+// Simple
+enum DebugLogLevel {
+    /** No message is logged. */
+    DEBUG_LOG_LEVEL_NONE = 0;
+    /** Only error level debug messages will get logged. */
+    DEBUG_LOG_LEVEL_ERROR = 1;
+    /** Only warning and error level debug messages will get logged. */
+    DEBUG_LOG_LEVEL_WARNING = 2;
+    /** Only info, warning and error level debug messages will get logged. */
+    DEBUG_LOG_LEVEL_INFO = 3;
+    /** Only debug, info, warning and error level debug messages will get logged. */
+    DEBUG_LOG_LEVEL_DEBUG = 4;
+    /** Verbose, debug, info, warning and error level debug messages will get logged. */
+    DEBUG_LOG_LEVEL_VERBOSE = 5;
+}
+
+message ConfigureXtraParamsRequest {
+    bool enable = 1;
+    uint32 download_interval_minute = 2;
+    uint32 download_timeout_sec = 3;
+    uint32 download_retry_interval_minute = 4;
+    uint32 download_retry_attempts = 5;
+    string ca_path = 6;
+    string server_urls = 7;
+    string  ntp_server_urls = 8;
+    uint32 daemon_debug_log_level = 9;
+    bool integrity_download_enabled = 10;
+    uint32 integrity_download_interval_minute = 11;
+    string nts_server_url = 12;
+    bool diag_logging_enabled = 13;
+}
+
+message ConfigureXtraParamsReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+message XtraStatus {
+    /** XTRA assistance data and NTP time download is enabled or disabled. */
+    bool feature_enabled = 1;
+    /**
+     * XTRA assistance data status. If XTRA assistance data
+     * download is not enabled, this field will be set to
+     * XTRA_DATA_STATUS_UNKNOWN.
+     */
+    uint32 xtra_data_status = 2;
+    /**
+     * Number of hours that xtra assistance data will remain valid.
+     *
+     * This field will be valid when xtraDataStatus is set to
+     * XTRA_DATA_STATUS_VALID.
+     * For all other XtraDataStatus, this field will be set to 0.
+     */
+    uint32 xtra_valid_for_hours = 3;
+    /** User consent to avail the Xtra assistance service. */
+    bool consent = 4;
+}
+
+message RequestXtraStatusReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    XtraStatus xtra_status = 4;
+}
+
+message RegisterOnXtraStatusUpdateReply {
+    int32 client_id = 1;
+    XtraStatus xtra_status = 2;
+}
+
+message InjectMerkleTreeReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+message ConfigureOsnmaRequest {
+    bool enable = 1;
+}
+
+message XtraConsentRequest {
+    bool consent = 1;
+}
+
+message ConfigureOsnmaReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+enum DgnssDataFormat{
+    /** Source data format is unknown */
+    DATA_FORMAT_UNKNOWN = 0;
+    /** Source data format is RTCM_3 */
+    DATA_FORMAT_RTCM_3 = 1;
+    /** Source data format is 3GPP RTK Rel-15 */
+    DATA_FORMAT_3GPP_RTK_R15 = 2;
+}
+
+enum  DgnssStatus{
+    STATUS_DUMMY = 0;
+    /** Dgnss subsystem doesn't support the data source */
+    DATA_SOURCE_NOT_SUPPORTED = 1;
+    /** Dgnss subsystem doesn't support the data format */
+    DATA_FORMAT_NOT_SUPPORTED = 2;
+    /** After the source injects the data, dgnss subsystem discovers there is
+    *  another higher priority source injecting the data at the
+    *  same time, and the current injected data is dropped */
+    OTHER_SOURCE_IN_USE = 3;
+    /** There is a parsing error such as unrecognized format, CRC
+    *  check failure, value range check failure, etc.; the injected
+    *  data is dropped */
+    MESSAGE_PARSE_ERROR = 4;
+    /** Data source is not usable anymore */
+    DATA_SOURCE_NOT_USABLE = 5;
+}
+
+message CreateSourceRequest {
+    DgnssDataFormat dgnss_data_format = 1;
+}
+
+message FileSource {
+    string file_path = 1;
+}
+
+message ServerSource {
+
+}
+
+message InjectCorrectionDataRequest {
+    uint32 buffer_size = 1;
+    oneof Source {
+        FileSource file_source = 2;
+        ServerSource server_source = 3;
+    }
+}
+
+message DgnssInitServiceRequest {
+//    common.SubsystemReadinessType type = 1;
+    DgnssDataFormat dgnss_data_format = 2;
+}
+
+message InjectCorrectionDataReply{
+    repeated DgnssStatus error_list = 1;
+}

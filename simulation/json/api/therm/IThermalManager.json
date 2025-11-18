@@ -1,0 +1,19 @@
+{
+        "IThermalManager": {
+            "IsSubsystemReady": "SERVICE_AVAILABLE",
+            "IsSubsystemReadyDelay": 400,
+            "DefaultCallbackDelay" : 400,
+            "getThermalZones": {
+                "error": "SUCCESS"
+            },
+            "getCoolingDevices": {
+                "error": "SUCCESS"
+            },
+            "getThermalZone": {
+                "error": "SUCCESS"
+            },
+            "getCoolingDevice": {
+                "error": "SUCCESS"
+            }
+        }
+}

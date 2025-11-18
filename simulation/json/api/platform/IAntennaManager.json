@@ -1,0 +1,15 @@
+{
+    "IAntennaManager": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 500,
+        "DefaultCallbackDelay" : 400,
+        "GetActiveAntenna": {
+            "status": "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "SetActiveAntenna": {
+            "status": "SUCCESS",
+            "error" : "SUCCESS"
+        }
+    }
+}

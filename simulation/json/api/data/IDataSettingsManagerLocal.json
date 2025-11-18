@@ -1,0 +1,69 @@
+{
+    "IDataSettingsManager": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 400,
+        "DefaultCallbackDelay" : 400,
+        "setBackhaulPreference": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestBackhaulPreference": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "setBandInterferenceConfig": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestBandInterferenceConfig": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestDdsSwitch": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestCurrentDds": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "setWwanConnectivityConfig": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestWwanConnectivityConfig": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "setMacSecState": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestMacSecState": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "switchBackHaul": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "setIpPassThroughConfig": {
+            "error": "SUCCESS"
+        },
+        "setIpConfig": {
+            "error": "SUCCESS"
+        },
+        "getIpPassThroughConfig": {
+            "error": "SUCCESS"
+        },
+        "getIpConfig": {
+            "error": "SUCCESS"
+        },
+        "getIpPassThroughNatConfig": {
+            "error": "SUCCESS"
+        },
+        "setIpPassThroughNatConfig": {
+            "error": "SUCCESS"
+        }
+    }
+}

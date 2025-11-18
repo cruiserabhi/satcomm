@@ -1,0 +1,20 @@
+{
+    "IL2tpManager": {
+        "l2tpConfig" : {
+            "enable" : false,
+            "enableMtu" : false,
+            "enableTcpMss" : false,
+            "mtuSize" : 1422,
+            "tunnelConfigs" : [
+            ]
+        },
+        "sessionToBackhaulBindings" : [
+            {
+                "locId" : 1,
+                "backhaul" : "WWAN",
+                "slotId" : 1,
+                "profileId" : 1
+            }
+        ]
+    }
+}

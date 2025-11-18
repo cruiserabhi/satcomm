@@ -1,0 +1,13 @@
+{
+    "IDualDataManager": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 400,
+        "DefaultCallbackDelay" : 400,
+        "getDualDataCapability": {
+            "error": "SUCCESS"
+        },
+        "getDualDataUsageRecommendation": {
+            "error": "SUCCESS"
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "IDataFilterManager": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 400,
+        "DefaultCallbackDelay" : 400,
+        "setDataRestrictMode": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestDataRestrictMode": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "addDataRestrictFilter": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "removeAllDataRestrictFilters": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        }
+    }
+}

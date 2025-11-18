@@ -1,0 +1,8 @@
+{
+    "IVlanManager": {
+        "vlanConfig" : [
+        ],
+        "vlanBindConfig" : [
+        ]
+    }
+}

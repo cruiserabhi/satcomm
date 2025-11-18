@@ -1,0 +1,43 @@
+{
+    "ISuppServicesManager" :
+    {
+        "IsSubsystemReady" : "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay" : 300,
+        "DefaultCallbackDelay" : 400,
+        "failureCause" : "0xFFFF",
+        "comment_failureCause" : " For valid inputs, refer telux::tel::FailureCause ",
+        "setCallWaitingPref" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestCallWaitingPref" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "setForwardingPref" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestForwardingPref" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "setOirPref" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestOirPref" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS",
+            "suppSvcProvisionStatus" : 0,
+            "_comment_suppSvcProvisionStatus" :
+                " For valid inputs, refer telux::tel::SuppSvcProvisionStatus "
+        }
+    }
+}

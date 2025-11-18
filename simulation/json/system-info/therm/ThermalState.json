@@ -1,0 +1,1178 @@
+/* ##################################################### EXAMPLE ############################################################# */
+/* {                                                                                                                           */
+/*    "desc": "mdmss-0",              thermal zone name,                                          Valid value: 0 to 32 char    */
+/*    "id": 24,                       thermal zone id,                                            Valid value: 0 to INT32 max  */
+/*    "temp": 36400,                  thermal zone current temperature in millidegree Celsius,    Valid value: 0 to INT32 max  */
+/*    "passiveTemp": -274000,         thermal zone passive temperature in millidegree Celsius,    Valid value: 0 to INT32 max  */
+/*        "tripPoints": [             no of trip points associated with thermal zone                                           */
+/*            {                                                                                                                */
+/*                "id": 0,            trip point id,                                              Valid value: 0 to INT32 max  */
+/*                "temp": 135000,     trip point threshold temperature in millidegree Celsius,    Valid value: 0 to INT32 max  */
+/*                "hyst": 5000,       trip point hysteresis in millidegree Celsius,               Valid value: 0 to INT32 max  */
+/*                "type": "passive"   trip point type defined under telux::therm::TripType                                     */
+/*            },                                                                                                               */
+/*            {                                                                                                                */
+/*                "id": 1,            trip point id,                                              Valid value: 0 to INT32 max  */
+/*                "temp": 117000,     trip point threshold temperature in millidegree Celsius,    Valid value: 0 to INT32 max  */
+/*                "hyst": 3000,       trip point hysteresis in millidegree Celsius,               Valid value: 0 to INT32 max  */
+/*                "type": "passive"   trip point type defined under telux::therm::TripType                                     */
+/*            },                                                                                                               */
+/*            {                                                                                                                */
+/*                "id": 2,            trip point id,                                              Valid value: 0 to INT32 max  */
+/*                "temp": 120000,     trip point threshold temperature in millidegree Celsius,    Valid value: 0 to INT32 max  */
+/*                "hyst": 3000,       trip point hysteresis in millidegree Celsius,               Valid value: 0 to INT32 max  */
+/*                "type": "passive"   trip point type defined under telux::therm::TripType                                     */
+/*            },                                                                                                               */
+/*            {                                                                                                                */
+/*                "id": 3,            trip point id,                                              Valid value: 0 to INT32 max  */
+/*                "temp": 125000,     trip point threshold temperature in millidegree Celsius,    Valid value: 0 to INT32 max  */
+/*                "hyst": 5000,       trip point hysteresis in millidegree Celsius,               Valid value: 0 to INT32 max  */
+/*                "type": "passive"   trip point type defined under telux::therm::TripType                                     */
+/*            }                                                                                                                */
+/*        ],                                                                                                                   */
+/*        "boundCoolingDevices": [    no of cooling devices associated with each trip points                                   */
+/*            {                                                                                                                */
+/*                "id": 6,            cooling device id,                                          Valid value: 0 to INT32 max  */
+/*                "tripPoints": [     trip point associated with cooling device                                                */
+/*                    {                                                                                                        */
+/*                        "id": 1,    trip point id,                                              Valid value: 0 to INT32 max  */
+/*                        "level": 11,set level to be set when temp CROSS_OVER to trip id 1,      Valid value: 0 to INT32 max  */
+/*                        "clr": 0    clear level to be set when temp CROSSED_UNDER to trip id 1, Valid value: 0 to INT32 max  */
+/*                    },                                                                                                       */
+/*                    {                                                                                                        */
+/*                        "id": 2,     trip point id,                                              Valid value: 0 to INT32 max */
+/*                        "level": 255,set level to be set when temp CROSS_OVER to trip id 1,      Valid value: 0 to INT32 max */
+/*                        "clr": 11    clear level to be set when temp CROSSED_UNDER to trip id 1, Valid value: 0 to INT32 max */
+/*                    }                                                                                                        */
+/*                ]                                                                                                            */
+/*            },                                                                                                               */
+/*            {                                                                                                                */
+/*                "id": 8,            cooling device id,                                          Valid value: 0 to INT32 max  */
+/*                "tripPoints": [     trip point associated with cooling device                                                */
+/*                    {                                                                                                        */
+/*                        "id": 1,    trip point id,                                              Valid value: 0 to INT32 max  */
+/*                        "level": 11,set level to be set when temp CROSS_OVER to trip id 1,      Valid value: 0 to INT32 max  */
+/*                        "clr": 0    clear level to be set when temp CROSSED_UNDER to trip id 1, Valid value: 0 to INT32 max  */
+/*                    },                                                                                                       */
+/*                    {                                                                                                        */
+/*                        "id": 2,    trip point id,                                              Valid value: 0 to INT32 max  */
+/*                        "level": 255,set level to be set when temp CROSS_OVER to trip id 1,      Valid value: 0 to INT32 max */
+/*                        "clr": 11   clear level to be set when temp CROSSED_UNDER to trip id 1, Valid value: 0 to INT32 max  */
+/*                    }                                                                                                        */
+/*                ]                                                                                                            */
+/*            },                                                                                                               */
+/*            {                                                                                                                */
+/*                "id": 10,           cooling device id,                                          Valid value: 0 to INT32 max  */
+/*                "tripPoints": [     trip point associated with cooling device                                                */
+/*                    {                                                                                                        */
+/*                        "id": 1,    trip point id,                                              Valid value: 0 to INT32 max  */
+/*                        "level": 11,set level to be set when temp CROSS_OVER to trip id 1,      Valid value: 0 to INT32 max  */
+/*                        "clr": 0    clear level to be set when temp CROSSED_UNDER to trip id 1, Valid value: 0 to INT32 max  */
+/*                    }                                                                                                        */
+/*                ]                                                                                                            */
+/*          },                                                                                                                 */
+/*          {                                                                                                                  */
+/*              "id": 28,            cooling device id,                                          Valid value: 0 to INT32 max   */
+/*              "tripPoints": [      trip point associated with cooling device                                                 */
+/*                  {                                                                                                          */
+/*                      "id": 2,     trip point id,                                              Valid value: 0 to INT32 max   */
+/*                      "level": 3,  set level to be set when temp CROSS_OVER to trip id 1,      Valid value: 0 to INT32 max   */
+/*                      "clr": 0     clear level to be set when temp CROSSED_UNDER to trip id 1, Valid value: 0 to INT32 max   */
+/*                  }                                                                                                          */
+/*              ]                                                                                                              */
+/*          }                                                                                                                  */
+/*      ]                                                                                                                      */
+/* In the above example,                                                                                                       */
+/* Each ThermalZone consist of multiple tripPoints and bound cooling devices.                                                  */
+/* One or more bound cooling devices can be attached with multiple trip points.                                                */
+/* The boundCoolingDevice id 6, level is set to 11 if the temperature crosses over the trip id 1 threshold (117000).           */
+/* Next, the boundCoolingDevice id 6, level is set to 255 if the temperature crosses over the trip id 2 threshold (120000).    */
+/* Next, if the temperature crosses under the trip id 1 threshold (117000) immediately, the boundCoolingDevice id 6 level      */
+/* will be set to 11 instead of 0.                                                                                             */
+/* To reach bound cooling device level to 0, it requires another cycle of decreament in temprature since all the bound         */
+/* cooling devices are step down in nature.                                                                                    */
+/*                                                                                                                             */
+/*############################################# Cooling device example ####################################################### */
+/* {                                                                                                                           */
+/*     "id": 0,                      cooling device id,            Valid value: 0 to INT32 max                                 */
+/*     "desc": "cpu-hotplug1",       cooling device name,          Valid value: 0 to INT32 max                                 */
+/*     "maxCoolingLevel": 1,         cooling device maximum level, Valid value: 0 to INT32 max                                 */
+/*     "currentCoolingLevel": 0      cooling device current level, Valid value: 0 to INT32 max                                 */
+/* }                                                                                                                           */
+/* ########################################################################################################################### */
+{
+       "thermalZones": [
+           {
+               "desc": "sdr0_pa",
+               "id": 0,
+               "temp": 27000,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "sdr0",
+               "id": 1,
+               "temp": 27000,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "mmw0",
+               "id": 2,
+               "temp": 27000,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "mmw1",
+               "id": 3,
+               "temp": 27000,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "mmw2",
+               "id": 4,
+               "temp": 27000,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "mmw3",
+               "id": 5,
+               "temp": 27000,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "mmw_ific0",
+               "id": 6,
+               "temp": 27000,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "epm0",
+               "id": 7,
+               "temp": -273000,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "epm1",
+               "id": 8,
+               "temp": -273000,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "epm2",
+               "id": 9,
+               "temp": -273000,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "epm3",
+               "id": 10,
+               "temp": -273000,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "epm4",
+               "id": 11,
+               "temp": -273000,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "epm5",
+               "id": 12,
+               "temp": -273000,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "epm6",
+               "id": 13,
+               "temp": -273000,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "epm7",
+               "id": 14,
+               "temp": -273000,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "aoss-0",
+               "id": 15,
+               "temp": 35200,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 135000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 1,
+                           "temp": 125000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "cpuss-0",
+               "id": 16,
+               "temp": 36800,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 135000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 1,
+                           "temp": 118000,
+                           "hyst": 10000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 2,
+                           "temp": 125000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "cpuss-1",
+               "id": 17,
+               "temp": 36400,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 135000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 1,
+                           "temp": 118000,
+                           "hyst": 10000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 2,
+                           "temp": 125000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       }
+                   ],
+                   "boundCoolingDevices": [
+                       {
+                           "id": 0,
+                           "tripPoints": [
+                               {
+                                   "id": 1
+                               }
+                           ]
+                       }
+                   ]
+           },
+           {
+               "desc": "cpuss-2",
+               "id": 18,
+               "temp": 35600,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 135000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 1,
+                           "temp": 118000,
+                           "hyst": 10000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 2,
+                           "temp": 125000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       }
+                   ],
+                   "boundCoolingDevices": [
+                       {
+                           "id": 1,
+                           "tripPoints": [
+                               {
+                                   "id": 1
+                               }
+                           ]
+                       }
+                   ]
+           },
+           {
+               "desc": "cpuss-3",
+               "id": 19,
+               "temp": 35400,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 135000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 1,
+                           "temp": 118000,
+                           "hyst": 10000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 2,
+                           "temp": 125000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       }
+                   ],
+                   "boundCoolingDevices": [
+                       {
+                           "id": 2,
+                           "tripPoints": [
+                               {
+                                   "id": 1,
+                                   "level": 1,
+                                   "clr": 0
+                               }
+                           ]
+                       }
+                   ]
+           },
+           {
+               "desc": "ethphy-0",
+               "id": 20,
+               "temp": 36000,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 135000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 1,
+                           "temp": 125000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "mvmss-0",
+               "id": 21,
+               "temp": 35600,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 135000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 1,
+                           "temp": 125000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "mdmq6-0",
+               "id": 22,
+               "temp": 35800,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 135000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 1,
+                           "temp": 125000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "ctile",
+               "id": 23,
+               "temp": 35600,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 135000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 1,
+                           "temp": 125000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "mdmss-0",
+               "id": 24,
+               "temp": 36400,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 135000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 1,
+                           "temp": 117000,
+                           "hyst": 3000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 2,
+                           "temp": 120000,
+                           "hyst": 3000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 3,
+                           "temp": 125000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       }
+                   ],
+                   "boundCoolingDevices": [
+                       {
+                           "id": 6,
+                           "tripPoints": [
+                               {
+                                   "id": 1,
+                                   "level": 11,
+                                   "clr": 0
+                               },
+                               {
+                                   "id": 2,
+                                   "level": 255,
+                                   "clr": 11
+                               }
+                           ]
+                       },
+                       {
+                           "id": 8,
+                           "tripPoints": [
+                               {
+                                   "id": 1,
+                                   "level": 11,
+                                   "clr": 0
+                               },
+                               {
+                                   "id": 2,
+                                   "level": 255,
+                                   "clr": 11
+                               }
+                           ]
+                       },
+                       {
+                           "id": 10,
+                           "tripPoints": [
+                               {
+                                   "id": 1,
+                                   "level": 11,
+                                   "clr": 0
+                               }
+                           ]
+                       },
+                       {
+                           "id": 28,
+                           "tripPoints": [
+                               {
+                                   "id": 2,
+                                   "level": 3,
+                                   "clr": 0
+                               }
+                           ]
+                       }
+                   ]
+           },
+           {
+               "desc": "mdmss-1",
+               "id": 25,
+               "temp": 36400,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 135000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 1,
+                           "temp": 117000,
+                           "hyst": 3000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 2,
+                           "temp": 120000,
+                           "hyst": 3000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 3,
+                           "temp": 125000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       }
+                   ],
+                   "boundCoolingDevices": [
+                       {
+                           "id": 28,
+                           "tripPoints": [
+                               {
+                                   "id": 2,
+                                   "level": 3,
+                                   "clr": 0
+                               }
+                           ]
+                       },
+                       {
+                           "id": 10,
+                           "tripPoints": [
+                               {
+                                   "id": 1
+                               }
+                           ]
+                       },
+                       {
+                           "id": 8,
+                           "tripPoints": [
+                               {
+                                   "id": 1
+                               },
+                               {
+                                   "id": 2
+                               }
+                           ]
+                       },
+                       {
+                           "id": 6,
+                           "tripPoints": [
+                               {
+                                   "id": 1
+                               },
+                               {
+                                   "id": 2
+                               }
+                           ]
+                       }
+                   ]
+           },
+           {
+               "desc": "mdmss-2",
+               "id": 26,
+               "temp": 36400,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 135000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 1,
+                           "temp": 117000,
+                           "hyst": 3000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 2,
+                           "temp": 120000,
+                           "hyst": 3000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 3,
+                           "temp": 125000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       }
+                   ],
+                   "boundCoolingDevices": [
+                       {
+                           "id": 28,
+                           "tripPoints": [
+                               {
+                                   "id": 2,
+                                   "level": 3,
+                                   "clr": 0
+                               }
+                           ]
+                       },
+                       {
+                           "id": 10,
+                           "tripPoints": [
+                               {
+                                   "id": 1
+                               }
+                           ]
+                       },
+                       {
+                           "id": 8,
+                           "tripPoints": [
+                               {
+                                   "id": 1
+                               },
+                               {
+                                   "id": 2
+                               }
+                           ]
+                       },
+                       {
+                           "id": 6,
+                           "tripPoints": [
+                               {
+                                   "id": 1
+                               },
+                               {
+                                   "id": 2
+                               }
+                           ]
+                       }
+                   ]
+           },
+           {
+               "desc": "zeroc",
+               "id": 27,
+               "temp": 0,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 1,
+                           "hyst": 1,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 1,
+                           "temp": 1,
+                           "hyst": 1,
+                           "type": "passive"
+                       }
+                   ],
+                   "boundCoolingDevices": [
+                       {
+                           "id": 5,
+                           "tripPoints": [
+                               {
+                                   "id": 1,
+                                   "level": 1,
+                                   "clr": 0
+                               }
+                           ]
+                       }
+                   ]
+           },
+           {
+               "desc": "pmx75_tz",
+               "id": 28,
+               "temp": 37338,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 105000,
+                           "hyst": 0,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 1,
+                           "temp": 125000,
+                           "hyst": 0,
+                           "type": "critical"
+                       },
+                       {
+                           "id": 2,
+                           "temp": 155000,
+                           "hyst": 0,
+                           "type": "critical"
+                       }
+                   ]
+           },
+           {
+               "desc": "sys-therm-1",
+               "id": 29,
+               "temp": 34664,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 1,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "sys-therm-2",
+               "id": 30,
+               "temp": 35284,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 1,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "sys-therm-3",
+               "id": 31,
+               "temp": 34865,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 1,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "sys-therm-4",
+               "id": 32,
+               "temp": 36016,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 1,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "xo-therm",
+               "id": 33,
+               "temp": 36422,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       },
+                       {
+                           "id": 1,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+		   {
+               "desc": "tsens-max",
+               "id": 34,
+               "temp": 35600,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 135000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       },
+					   {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 5000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "sdr1_pa",
+               "id": 35,
+               "temp": 27000,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           },
+           {
+               "desc": "sdr1",
+               "id": 36,
+               "temp": 27000,
+               "passiveTemp": -274000,
+                   "tripPoints": [
+                       {
+                           "id": 0,
+                           "temp": 125000,
+                           "hyst": 1000,
+                           "type": "passive"
+                       }
+                   ]
+           }
+       ],
+       "coolingDevices": [
+           {
+               "id": 0,
+               "desc": "cpu-hotplug1",
+               "maxCoolingLevel": 1,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 1,
+               "desc": "cpu-hotplug2",
+               "maxCoolingLevel": 1,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 2,
+               "desc": "cpu-hotplug3",
+               "maxCoolingLevel": 1,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 3,
+               "desc": "cpufreq-cpu0",
+               "maxCoolingLevel": 9,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 4,
+               "desc": "cpu-cluster0",
+               "maxCoolingLevel": 9,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 5,
+               "desc": "modem_vdd",
+               "maxCoolingLevel": 1,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 6,
+               "desc": "modem_lte_dsc",
+               "maxCoolingLevel": 255,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 7,
+               "desc": "modem_lte_sub1_dsc",
+               "maxCoolingLevel": 255,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 8,
+               "desc": "modem_nr_dsc",
+               "maxCoolingLevel": 255,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 9,
+               "desc": "modem_nr_sub1_dsc",
+               "maxCoolingLevel": 255,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 10,
+               "desc": "modem_nr_scg_dsc",
+               "maxCoolingLevel": 255,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 11,
+               "desc": "modem_nr_scg_sub1_dsc",
+               "maxCoolingLevel": 255,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 12,
+               "desc": "sdr0_lte_dsc",
+               "maxCoolingLevel": 255,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 13,
+               "desc": "sdr0_nr_dsc",
+               "maxCoolingLevel": 255,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 14,
+               "desc": "pa_lte_sdr0_dsc",
+               "maxCoolingLevel": 255,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 15,
+               "desc": "pa_lte_sdr0_sub1_dsc",
+               "maxCoolingLevel": 255,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 16,
+               "desc": "pa_nr_sdr0_dsc",
+               "maxCoolingLevel": 255,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 17,
+               "desc": "pa_nr_sdr0_sub1_dsc",
+               "maxCoolingLevel": 255,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 18,
+               "desc": "pa_nr_sdr0_scg_dsc",
+               "maxCoolingLevel": 255,
+               "currentCoolingLevel": 0
+           },
+           {
+                "id": 19,
+                "desc": "pa_nr_sdr0_scg_sub1_dsc",
+                "maxCoolingLevel": 255,
+                "currentCoolingLevel": 0
+           },
+           {
+                "id": 20,
+                "desc": "mmw0_dsc",
+                "maxCoolingLevel": 255,
+                "currentCoolingLevel": 0
+           },
+           {
+                "id": 21,
+                "desc": "mmw0_sub1_dsc",
+                "maxCoolingLevel": 255,
+                "currentCoolingLevel": 0
+           },
+           {
+                "id": 22,
+                "desc": "mmw1_dsc",
+                "maxCoolingLevel": 255,
+                "currentCoolingLevel": 0
+           },
+           {
+                "id": 23,
+                "desc": "mmw1_sub1_dsc",
+                "maxCoolingLevel": 255,
+                "currentCoolingLevel": 0
+           },
+           {
+                "id": 24,
+                "desc": "mmw2_dsc",
+                "maxCoolingLevel": 255,
+                "currentCoolingLevel": 0
+           },
+           {
+                "id": 25,
+                "desc": "mmw2_sub1_dsc",
+                "maxCoolingLevel": 255,
+                "currentCoolingLevel": 0
+           },
+           {
+               "id": 26,
+               "desc": "mmw3_dsc",
+               "maxCoolingLevel": 255,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 27,
+               "desc": "mmw3_sub1_dsc",
+               "maxCoolingLevel": 255,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 28,
+               "desc": "modem_v2x",
+               "maxCoolingLevel": 3,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 29,
+               "desc": "modem_tj",
+               "maxCoolingLevel": 3,
+               "currentCoolingLevel": 0
+           },
+           {
+               "id": 30,
+               "desc": "modem_pa",
+               "maxCoolingLevel": 3,
+               "currentCoolingLevel": 0
+           }
+       ]
+}

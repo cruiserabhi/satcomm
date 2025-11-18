@@ -1,0 +1,10 @@
+Name: libtelux_sec_con
+Version: @SDK_VERSION@
+Description: Automotive telux framework for connection security services
+
+prefix=@CMAKE_INSTALL_PREFIX@
+includedir=@CMAKE_INSTALL_INCLUDEDIR@
+libdir=@CMAKE_INSTALL_LIBDIR@
+Cflags:-I${includedir} -I${includedir}/telux
+Libs: -L${libdir} -ltelux_sec_con
+

@@ -1,0 +1,1372 @@
+/*
+ * Copyright (c) 2023-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
+
+syntax = "proto3";
+
+package dataStub;
+import "google/protobuf/empty.proto";
+import "common_simulation.proto";
+
+/*******************************************************************
+* Services Definition                                             *
+*******************************************************************/
+
+/*
+* This service is used to execute DataConnectionManager related APIs.
+*/
+
+service DataConnectionManager {
+    rpc InitService(SlotInfo) returns (GetServiceStatusReply) {}
+    rpc GetServiceStatus(SlotInfo) returns (GetServiceStatusReply) {}
+    rpc IsSubsystemReady(google.protobuf.Empty) returns (IsSubsystemReadyReply) {}
+    rpc CleanUpService(ClientInfo) returns (google.protobuf.Empty) {}
+    rpc StartDatacall(DataCallInputParams) returns (DefaultReply) {}
+    rpc StopDatacall(DataCallInputParams) returns (DefaultReply) {}
+    rpc RequestDatacallStatistics(DataCallStatisticsRequest) returns
+        (RequestDataCallStatisticsReply) {}
+    rpc ResetDatacallStatistics(DataCallStatisticsRequest) returns (google.protobuf.Empty) {}
+    rpc RequestDatacallList(DataCallInputParams) returns (RequestDataCallListReply) {}
+    rpc SetDefaultProfile(SetDefaultProfileRequest) returns (DefaultReply) {}
+    rpc GetDefaultProfile(GetDefaultProfileRequest) returns (GetDefaultProfileReply) {}
+    rpc QueryDataCall(QueryDataCallRequest) returns (QueryDataCallReply) {}
+    rpc RequestDataCallBitRate(DataCallBitRateRequest) returns (RequestDataCallBitRateReply) {}
+    rpc SetRoamingMode(SetRoamingModeRequest) returns (DefaultReply) {}
+    rpc RequestRoamingMode(RequestRoamingModeRequest) returns (RequestRoamingModeReply) {}
+    rpc RequestThrottledApnInfo(SlotInfo) returns (ThrottleInfoReply) {}
+    rpc RegisterOnDataCallInfoChanged(google.protobuf.Empty) returns
+        (stream RegisterOnDataCallInfoChangedReply) {}
+    rpc DeRegisterOnDataCallInfoChanged(DeRegisterNotificationRequest) returns
+        (google.protobuf.Empty) {}
+    rpc RegisterOnServiceStatusChange(google.protobuf.Empty) returns
+        (stream RegisterOnServiceStatusChangeReply) {}
+    rpc DeRegisterOnServiceStatusChange(DeRegisterNotificationRequest) returns
+        (google.protobuf.Empty) {}
+    rpc requestConnectedDataCallLists(CachedDataCallsRequest) returns (CachedDataCalls) {}
+}
+
+ /*
+  * This service is used to execute DataProfileManager related APIs.
+  */
+
+service DataProfileManager {
+    rpc InitService(SlotInfo) returns (GetServiceStatusReply) {}
+    rpc GetServiceStatus(SlotInfo) returns (GetServiceStatusReply) {}
+    rpc IsSubsystemReady(SlotInfo) returns (IsSubsystemReadyReply) {}
+    rpc CleanUpService(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc CreateProfile(CreateProfileRequest) returns (CreateProfileReply) {}
+    rpc DeleteProfile(DeleteProfileRequest) returns (DefaultReply) {}
+    rpc RequestProfileList(RequestProfileListRequest) returns (RequestProfileListReply) {}
+    rpc RequestProfileById(RequestProfileByIdRequest) returns (RequestProfileByIdReply) {}
+    rpc ModifyProfile(ModifyProfileRequest) returns (DefaultReply) {}
+    rpc QueryProfile(QueryProfileRequest) returns (QueryProfileReply) {}
+}
+
+/*
+  * This service is used to execute DataFilterManager related APIs.
+  */
+
+service DataFilterManager {
+    rpc InitService(SlotInfo) returns (GetServiceStatusReply) {}
+    rpc CleanUpService(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc GetDataRestrictMode(GetDataRestrictModeRequest) returns (GetDataRestrictModeReply) {}
+    rpc SetDataRestrictMode(SetDataRestrictModeRequest) returns (DefaultReply) {}
+    rpc AddDataRestrictFilter(AddDataRestrictFilterRequest) returns (DefaultReply) {}
+    rpc RemoveAllDataRestrictFilter(RemoveDataRestrictFilterRequest) returns
+        (DefaultReply) {}
+}
+
+/*
+  * This service is used to execute VlanManager related APIs.
+  */
+
+  service VlanManager {
+    rpc InitService(InitRequest) returns (GetServiceStatusReply) {}
+    rpc CleanUpService(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc CreateVlan(CreateVlanRequest) returns (CreateVlanReply) {}
+    rpc RemoveVlan(RemoveVlanRequest) returns (DefaultReply) {}
+    rpc QueryVlanInfo(QueryVlanInfoRequest) returns (QueryVlanInfoReply);
+    rpc QueryVlanMappingList(QueryVlanMappingListRequest) returns (QueryVlanMappingListReply) {}
+    rpc BindToBackhaul(BindToBackhaulConfig) returns (DefaultReply) {}
+    rpc UnbindFromBackhaul(BindToBackhaulConfig) returns (DefaultReply) {}
+}
+
+/*
+  * This service is used to execute L2tpManager related APIs.
+  */
+
+  service L2tpManager {
+    rpc InitService(google.protobuf.Empty) returns (GetServiceStatusReply) {}
+    rpc CleanUpService(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc SetConfig(SetConfigRequest) returns (DefaultReply) {}
+    rpc RequestConfig(google.protobuf.Empty) returns (RequestConfigReply) {}
+    rpc AddTunnel(AddTunnelRequest) returns (DefaultReply) {}
+    rpc RemoveTunnel(RemoveTunnelRequest) returns (DefaultReply) {}
+    rpc AddSession(AddSessionRequest) returns (DefaultReply) {}
+    rpc RemoveSession(RemoveSessionRequest) returns (DefaultReply) {}
+    rpc BindSessionToBackhaul(SessionConfigRequest) returns (DefaultReply) {}
+    rpc UnBindSessionToBackhaul(SessionConfigRequest) returns (DefaultReply) {}
+    rpc QueryBindSessionToBackhaul(QueryBindSessionRequest) returns (QueryBindSessionReply) {}
+}
+
+/*
+  * This service is used to execute BridgeManager related APIs.
+  */
+
+  service BridgeManager {
+    rpc InitService(google.protobuf.Empty) returns (GetServiceStatusReply) {}
+    rpc SetInterfaceBridge(SetInterfaceBridgeRequest) returns (DefaultReply) {}
+    rpc GetInterfaceBridge(GetInterfaceBridgeRequest) returns (GetInterfaceBridgeReply) {}
+}
+
+/*
+  * This service is used to execute DataServingSystemManager related APIs.
+  */
+
+  service DataServingSystemManager {
+    rpc InitService(SlotInfo) returns (GetServiceStatusReply) {}
+    rpc CleanUpService(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc GetDrbStatus(GetDrbStatusRequest) returns (GetDrbStatusReply) {}
+    rpc RequestServiceStatus(ServingStatusRequest) returns (ServiceStatusReply) {}
+    rpc RequestRoamingStatus(RoamingStatusRequest) returns (RomingStatusReply) {}
+    rpc RequestNrIconType(NrIconTypeRequest) returns (NrIconTypeReply) {}
+    rpc MakeDormant (MakeDormantStatusRequest) returns (DefaultReply) {}
+}
+
+/*
+  * This service is used to execute SnatManager related APIs.
+  */
+
+  service SnatManager {
+    rpc InitService(InitRequest) returns (GetServiceStatusReply) {}
+    rpc AddStaticNatEntry(StaticNatRequest) returns (DefaultReply) {}
+    rpc RemoveStaticNatEntry(StaticNatRequest) returns (DefaultReply) {}
+    rpc RequestStaticNatEntries(RequestStaticNatEntriesRequest) returns
+        (RequestStaticNatEntriesReply) {}
+}
+
+/*
+  * This service is used to execute FirewallManager related APIs.
+  */
+
+  service FirewallManager {
+    rpc InitService(InitRequest) returns (GetServiceStatusReply) {}
+    rpc CleanUpService(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc SetFirewall(SetFirewallRequest) returns (DefaultReply) {}
+    rpc RequestFirewallStatus(FirewallStatusRequest) returns (RequestFirewallStatusReply) {}
+    rpc AddFirewallEntry(AddFirewallEntryRequest) returns (AddFirewallEntryReply) {}
+    rpc RequestFirewallEntries(FirewallEntriesRequest) returns (RequestFirewallEntriesReply) {}
+    rpc RemoveFirewallEntry(RemoveFirewallEntryRequest) returns (DefaultReply) {}
+    rpc EnableDMZ(EnableDMZRequest) returns (DefaultReply) {}
+    rpc DisableDMZ(DisableDmzRequest) returns (DefaultReply) {}
+    rpc RequestDMZEntry(DMZEntryRequest) returns (RequestDMZEntryReply) {}
+}
+
+/*
+  * This service is used to execute DataSettingsManager related APIs.
+  */
+
+  service DataSettingsManager {
+    rpc InitService(InitRequest) returns (GetServiceStatusReply) {}
+    rpc CleanUpService(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc setBackhaulPreference(setBackhaulPreferenceRequest) returns (DefaultReply) {}
+    rpc requestBackhaulPreference(RequestBackhaulPreference) returns (BackhaulPreferenceReply) {}
+    rpc RequestWwanConnectivityConfig(WwanConnectivityConfigRequest) returns
+        (WwanConnectivityConfigReply) {}
+    rpc SetWwanConnectivityConfig(SetWwanConnectivityConfigRequest) returns
+        (DefaultReply) {}
+    rpc RequestCurrentDdsSwitch(CurrentDdsSwitchRequest) returns
+        (CurrentDdsSwitchResponse) {}
+    rpc SetDdsSwitch(SetDdsSwitchRequest) returns (DefaultReply) {}
+    rpc SetMacSecState(SetMacSecStateRequest) returns (DefaultReply) {}
+    rpc RequestMacSecState(MacSecStateRequest) returns (MacSecStateReply) {}
+    rpc setBandInterferenceConfig(BandInterferenceConfig) returns (DefaultReply) {}
+    rpc requestBandInterferenceConfig(BandInterferenceRequest) returns (BandInterferenceReply) {}
+    rpc switchBackHaul(switchBackHaulRequest) returns (DefaultReply) {}
+    rpc getIpPassThroughConfig(getIpptConfigRequest) returns (getIpptConfigReply) {}
+    rpc setIpPassThroughConfig(setIpptConfigRequest) returns (setIpptConfigReply) {}
+    rpc getIpConfig(getIpConfigRequest) returns (getIpConfigReply) {}
+    rpc setIpConfig(setIpConfigRequest) returns (setIpConfigReply) {}
+    rpc SetIpPassThroughNatConfig(setIpptNatConfigRequest) returns (setIpptNatConfigReply) {}
+    rpc GetIpPassThroughNatConfig(google.protobuf.Empty) returns (getIpptNatConfigReply) {}
+    rpc RegisterOnWwanConnectivityConfigChange(google.protobuf.Empty) returns
+        (stream RegisterOnWwanConnectivityConfigChangeReply) {}
+    rpc DeRegisterOnWwanConnectivityConfigChange(DeRegisterNotificationRequest) returns
+        (google.protobuf.Empty) {}
+  }
+
+  service SocksManager {
+    rpc InitService(InitRequest) returns (GetServiceStatusReply) {}
+    rpc enableSocks(EnableSocksRequest) returns (DefaultReply) {}
+  }
+
+  service KeepAliveManager {
+    rpc InitService(InitRequest) returns (GetServiceStatusReply) {}
+  }
+  service DualDataManager {
+    rpc InitService(InitRequest) returns (GetServiceStatusReply) {}
+    rpc GetDualDataCapability(google.protobuf.Empty) returns (GetDualDataCapabilityReply) {}
+    rpc GetDualDataUsageRecommendation(google.protobuf.Empty) returns
+        (GetDualDataUsageRecommendationReply) {}
+  }
+
+  service DataControlManager {
+    rpc InitService(google.protobuf.Empty) returns (commonStub.GetServiceStatusReply) {}
+    rpc SetDataStallParams(SetDataStallParamsRequest) returns (SetDataStallParamsReply) {}
+    rpc GetServiceStatus(google.protobuf.Empty) returns (commonStub.GetServiceStatusReply) {}
+  }
+
+  service DataLinkManager {
+    rpc InitService(google.protobuf.Empty) returns (commonStub.GetServiceStatusReply) {}
+    rpc SetEthDataLinkState(SetEthDatalinkStateRequest) returns (SetEthDatalinkStateReply) {}
+    rpc GetServiceStatus(google.protobuf.Empty) returns (commonStub.GetServiceStatusReply) {}
+  }
+
+  service QoSManager {
+    rpc InitService(InitRequest) returns (GetServiceStatusReply) {}
+  }
+
+/*******************************************************************
+ * Messages Definition                                             *
+ *******************************************************************/
+
+message GetDualDataCapabilityReply {
+    bool capability = 1;
+    commonStub.ErrorCode error = 2;
+}
+
+message DualDataCapabilityEvent {
+    bool capability = 1;
+}
+
+message UsageRecommendation {
+    enum Recommendation {
+        ALLOWED = 0;
+        NOT_ALLOWED = 1;
+        NOT_RECOMMENDED = 2;
+    }
+    Recommendation recommendation = 1;
+}
+
+message LinkStateEnum {
+    enum LinkState {
+        DUMMY = 0;
+        UP = 1;
+        DOWN = 2;
+    }
+    LinkState link_state = 1;
+}
+
+message GetDualDataUsageRecommendationReply {
+    UsageRecommendation usage_recommendation = 1;
+    commonStub.ErrorCode error = 2;
+}
+
+message DualDataUsageRecommendationEvent {
+    string recommendation = 1;
+}
+
+message ClientInfo {
+    int32 client_id = 1;
+}
+
+message StopDataCallEvent {
+    int32 profile_id = 2;
+    int32 slot_id = 3;
+    string ip_family_type = 4;
+}
+
+message StartDataCallEvent {
+    int32 profile_id = 1;
+    int32 slot_id = 2;
+    string iface_name = 3;
+    string ip_family_type = 4;
+    string ipv4_address = 5;
+    string gwv4_address = 6;
+    string v4dns_primary_address = 7;
+    string v4dns_secondary_address = 8;
+    string ipv6_address = 9;
+    string gwv6_address = 10;
+    string v6dns_primary_address = 11;
+    string v6dns_secondary_address = 12;
+}
+
+message CachedDataCalls {
+    repeated StartDataCallEvent datacalls = 1;
+}
+
+message CachedDataCallsRequest {
+    int32 slot_id = 1;
+}
+
+message NoActiveDataCall {
+    int32 slot_id = 1;
+}
+
+// Defines type of SubsystemReadiness APIs to be called old or new.
+// Required for backward compatibility.
+message SubsystemReadiness{
+    enum SubsystemReadinessType {
+      DUMMY = 0;
+      NEW = 1;
+      OLD = 2;
+    }
+    SubsystemReadinessType type = 1;
+}
+
+message IsSubsystemReadyReply {
+    bool is_ready = 1;
+}
+
+message IpFamilyType {
+    enum Type {
+        DUMMY = 0;
+        IPV4 = 0x04;
+        IPV6 = 0x06;
+        IPV4V6 = 0x0A;
+        UNKNOWN = -1;
+    }
+    Type ip_family_type = 1;
+}
+
+message TechPreference {
+    enum TechPref {
+        TP_3GPP = 0;
+        TP_3GPP2 = 1;
+        TP_ANY = 2;
+        UNKNOWN = -1;
+    }
+    TechPref tech_preference = 1;
+}
+
+message AuthProtocolType {
+    enum AuthProto {
+        AUTH_NONE = 0;
+        AUTH_PAP = 1;
+        AUTH_CHAP = 2;
+        AUTH_PAP_CHAP = 3;
+    }
+    AuthProto auth_type = 1;
+}
+
+
+enum OperationType {
+    DATA_LOCAL = 0;
+    DATA_REMOTE = 1;
+}
+
+enum InterfaceType {
+    UNKNOWN = 0;
+    WLAN = 1;
+    ETH = 2;
+    ECM = 3;
+    RNDIS = 4;
+    MHI = 5;
+    ETH2 = 6;
+    AP_PRIMARY = 7;
+    AP_SECONDARY = 8;
+    AP_TERTIARY = 9;
+    AP_QUATERNARY = 10;
+    VMTAP0 = 11;
+    VMTAP1 = 12;
+}
+
+message DataRestrictMode {
+    enum DataRestrictModeType {
+        DISABLE = 0;
+        ENABLE = 1;
+        UNKNOWN = -1;
+    }
+    DataRestrictModeType filter_mode = 1;
+    DataRestrictModeType filter_auto_exit = 2;
+}
+
+enum L2tpProtocol {
+    NONE = 0;
+    IP = 0x01;
+    UDP = 0x02;
+}
+
+message Network {
+    enum NetworkType {
+        DUMMY = 0;
+        UNKNOWN = -1;
+        LAN = 1;
+        WAN = 2;
+    }
+    NetworkType nw_type = 1;
+}
+
+message IpptOperation {
+    enum Operation {
+        DISABLE = 0;
+        UNKNOWN = -1;
+        ENABLE  = 1;
+    }
+    Operation ippt_opr = 1;
+}
+
+message IpType {
+   enum IpAssignType {
+        STATIC_IP  = 0;
+        UNKNOWN    = -1;
+        DYNAMIC_IP = 1;
+   }
+   IpAssignType ip_type = 1;
+}
+
+message IpAssign {
+   enum IpAssignOperation {
+        DISABLE     = 0;
+        UNKNOWN     = -1;
+        ENABLE      = 1;
+        RECONFIGURE = 2;
+   }
+   IpAssignOperation ip_assign = 1;
+}
+
+message SlotInfo {
+   int32 slot_id = 1;
+}
+
+message DataCallInputParams {
+    int32 slot_id = 1;
+    int32 profile_id = 2;
+    IpFamilyType ip_family_type = 3;
+    OperationType operation_type = 4;
+    int32 client_id = 5;
+    string iface_name = 6;
+}
+
+message GetServiceStatusReply {
+    ServiceStatus service_status = 1;
+    int32 delay = 2;
+}
+
+message DataCallReply {
+    int32 slot_id = 1;
+    int32 profile_id = 2;
+    OperationType operation_type = 3;
+    IpFamilyType ip_family_type = 4;
+    string interface_name = 5;
+    string datacall_status = 6;
+    repeated IpAddrInfo Ip_addr_info_list= 7;
+    string ipv4_info = 8;
+    string ipv6_info = 9;
+    string datacall_end_reason_type = 10;
+    int32 datacall_end_reason_code = 11;
+    string data_bearer_technology = 12;
+    string tech_preference = 13;
+}
+
+message IpAddrInfo {
+    string if_address = 1;
+    string if_mask = 2;
+    string gw_address = 3;
+    string gw_mask = 4;
+    string primary_dns_address = 5;
+    string secondary_dns_address = 6;
+}
+
+message getIpptConfigRequest {
+    int32 profile_id = 1;
+    int32 vlan_id = 2;
+    int32 slot_id = 3;
+}
+
+message getIpptConfigReply {
+    InterfaceType interface_type = 1;
+    string mac_address = 2;
+    IpptOperation ippt_opr = 3;
+    commonStub.ErrorCode error = 4;
+}
+
+message setIpptConfigRequest {
+    int32 profile_id = 1;
+    int32 vlan_id = 2;
+    int32 slot_id = 3;
+    InterfaceType interface_type = 4;
+    string mac_address = 5;
+    IpptOperation ippt_opr = 6;
+}
+
+message setIpptConfigReply {
+    commonStub.ErrorCode error = 1;
+}
+
+message getIpConfigRequest {
+    InterfaceType interface_type = 1;
+    IpFamilyType ip_family_type  = 2;
+    int32 vlan_id = 3;
+}
+
+message getIpConfigReply {
+    IpType ip_type = 1;
+    IpAssign ip_assign = 2;
+    IpAddrInfo ip_addr_info = 3;
+    commonStub.ErrorCode error = 4;
+}
+
+message setIpConfigRequest {
+    InterfaceType interface_type = 1;
+    IpFamilyType ip_family_type  = 2;
+    int32 vlan_id = 3;
+    IpType ip_type = 4;
+    IpAssign ip_assign = 5;
+    IpAddrInfo ip_addr_info = 6;
+}
+
+message setIpptNatConfigRequest {
+    bool enable_nat = 1;
+}
+
+message setIpptNatConfigReply {
+    commonStub.ErrorCode error = 1;
+}
+
+message getIpptNatConfigReply {
+    bool enable_nat = 1;
+    commonStub.ErrorCode error = 2;
+}
+
+message setIpConfigReply {
+    commonStub.ErrorCode error = 1;
+}
+message DataCallStatisticsRequest{
+    int32 slot_id = 1;
+    int32 profile_id = 2;
+}
+
+message RequestDataCallStatisticsReply {
+    int64 packets_tx = 1;
+    int64 packets_rx = 2;
+    int64 bytes_tx = 3;
+    int64 bytes_rx = 4;
+    int64 packets_dropped_tx = 5;
+    int64 packets_dropped_rx = 6;
+}
+
+message RequestDataCallBitRateReply {
+    uint64 tx_rate = 1;
+    uint64 rx_rate = 2;
+    uint64 max_tx_rate = 3;
+    uint64 max_rx_rate = 4;
+}
+
+message RequestDataCallListReply {
+    DefaultReply reply = 1;
+    repeated DataCallReply data_call_list = 2;
+}
+
+message DataCallBitRateRequest {
+    DataCallStatisticsRequest bit_rate = 1;
+}
+
+message SetDefaultProfileRequest {
+    int32 slot_id = 1;
+    int32 profile_id = 2;
+    OperationType operation_type = 3;
+}
+
+message DefaultReply {
+    commonStub.ErrorCode error = 1;
+    commonStub.Status status = 2;
+    int32 delay = 3;
+}
+
+message GetDefaultProfileRequest {
+    int32 slot_id = 1;
+    OperationType operation_type = 2;
+}
+
+message GetDefaultProfileReply {
+    DefaultReply reply = 1;
+    int32 slot_id = 2;
+    int32 profile_id = 3;
+}
+
+message QueryDataCallRequest {
+    int32 slot_id = 1;
+    int32 profile_id = 2;
+}
+
+message QueryDataCallReply {
+    bool is_call_connected = 1;
+}
+
+message InitRequest {
+    OperationType operation_type = 1;
+}
+
+message SetRoamingModeRequest {
+    int32 slot_id = 1;
+    int32 profile_id = 2;
+    OperationType operation_type = 3;
+    bool roaming_mode = 4;
+}
+
+message RequestRoamingModeRequest {
+    int32 slot_id = 1;
+    int32 profile_id = 2;
+    OperationType operation_type = 3;
+}
+
+message RequestRoamingModeReply {
+    DefaultReply reply = 1;
+    int32 profile_id = 2;
+    int32 roaming_mode = 3;
+}
+
+message RegisterOnDataCallInfoChangedReply {
+    int32 client_id = 1;
+    int32 slot_id = 2;
+    int32 profile_id = 3;
+    OperationType operation_type = 4;
+    IpFamilyType ip_family_type = 5;
+    string interface_name = 6;
+    string datacall_status = 7;
+    repeated IpAddrInfo Ip_addr_info_list= 8;
+    string ipv4_info = 9;
+    string ipv6_info = 10;
+    string datacall_end_reason_type = 11;
+    int32 datacall_end_reason_code = 12;
+    string data_bearer_technology = 13;
+    string tech_preference = 14;
+}
+
+message DeRegisterNotificationRequest {
+    int32 client_id = 1;
+}
+
+enum EmergencyCapability {
+    UNSPECIFIED = 0;
+    ALLOWED = 0x01;
+    NOT_ALLOWED = 0x02;
+}
+
+message CreateProfileRequest {
+    string profile_name = 1;
+    string apn_name = 2;
+    string user_name = 3;
+    string password = 4;
+    string apn_types = 5;
+    TechPreference tech_preference = 6;
+    AuthProtocolType auth_type = 7;
+    IpFamilyType ip_family_type = 8;
+    int32 slot_id = 9;
+    EmergencyCapability emergency_capability = 10;
+}
+
+message CreateProfileReply {
+    DefaultReply reply = 1;
+    int32 profile_id = 2;
+}
+
+message Request {
+    int32 slot_id = 1;
+    int32 profile_id = 2;
+    TechPreference tech_preference = 3;
+}
+
+message DeleteProfileRequest {
+    Request profile = 1;
+}
+
+message RequestProfileByIdRequest {
+    Request profile = 1;
+}
+
+message RequestProfileListRequest {
+    int32 slot_id = 1;
+}
+
+message ModifyProfileRequest {
+    int32 slot_id = 1;
+    int32 profile_id = 2;
+    string profile_name = 3;
+    string apn_name = 4;
+    string user_name = 5;
+    string password = 6;
+    string apn_types = 7;
+    TechPreference tech_preference = 8;
+    AuthProtocolType auth_type = 9;
+    IpFamilyType ip_family_type = 10;
+    EmergencyCapability emergency_capability = 11;
+}
+
+message QueryProfileRequest {
+    int32 slot_id = 1;
+    string profile_name = 2;
+    string apn_name = 3;
+    string user_name = 4;
+    string password = 5;
+    string apn_types = 6;
+    TechPreference tech_preference = 7;
+    AuthProtocolType auth_type = 8;
+    IpFamilyType ip_family_type = 9;
+    EmergencyCapability emergency_capability = 10;
+}
+
+message Profile {
+    int32 profile_id = 1;
+    string profile_name = 2;
+    string apn_name = 3;
+    string user_name = 4;
+    string password = 5;
+    string apn_types = 6;
+    IpFamilyType ip_family_type = 7;
+    TechPreference tech_preference = 8;
+    AuthProtocolType auth_type = 9;
+    EmergencyCapability emergency_capability = 10;
+}
+
+message RequestProfileByIdReply {
+    DefaultReply reply = 1;
+    Profile profile = 2;
+}
+
+message RequestProfileListReply {
+    DefaultReply reply = 1;
+    repeated Profile profiles = 2;
+}
+
+message QueryProfileReply {
+    DefaultReply reply = 1;
+    repeated Profile profiles = 2;
+}
+
+message GetDataRestrictModeRequest {
+    int32 slot_id = 1;
+}
+
+message GetDataRestrictModeReply {
+    DefaultReply reply = 1;
+    DataRestrictMode filter_mode = 2;
+}
+
+message SetDataRestrictModeRequest {
+    int32 slot_id = 1;
+    DataRestrictMode filter_mode = 2;
+}
+
+message AddDataRestrictFilterRequest {
+    int32 slot_id = 1;
+}
+
+message RemoveDataRestrictFilterRequest {
+    int32 slot_id = 1;
+}
+
+message CreateVlanRequest {
+    OperationType operation_type = 1;
+    InterfaceType interface_type = 2;
+    int32 vlan_id = 3;
+    bool is_accelerated = 4;
+    int32 priority = 5;
+    bool create_bridge = 6;
+    Network nw_type = 7;
+}
+
+message CreateVlanReply {
+    bool is_accelerated = 1;
+    DefaultReply reply = 2;
+}
+
+message RemoveVlanRequest {
+    OperationType operation_type = 1;
+    InterfaceType interface_type = 2;
+    int32 vlan_id = 3;
+}
+
+message QueryVlanInfoRequest {
+    OperationType operation_type = 1;
+}
+
+message VlanConfig {
+    InterfaceType interface_type = 1;
+    int32 vlan_id = 2;
+    bool is_accelerated = 3;
+    int32 priority = 4;
+    bool create_bridge = 5;
+    Network nw_type = 6;
+}
+
+message QueryVlanInfoReply {
+    repeated VlanConfig vlan_config = 1;
+    DefaultReply reply = 2;
+}
+
+message QueryVlanMappingListRequest {
+    OperationType operation_type = 1;
+    int32 slot_id = 2;
+    BackhaulPreference backhaul_type = 3;
+}
+
+message VlanMapping {
+    int32 profile_id = 1;
+    int32 vlan_id = 2;
+    int32 backhaul_vlan_id = 3;
+
+}
+
+message QueryVlanMappingListReply {
+    repeated VlanMapping vlan_mapping = 1;
+    DefaultReply reply = 2;
+}
+
+message BindUnBindRequest {
+    int32 slot_id = 1 ;
+    OperationType operation_type = 2;
+    int32 profile_id = 3;
+    int32 vlan_id = 4;
+}
+
+message BindWithProfileRequest {
+    BindUnBindRequest bind_with_profile = 1;
+}
+
+message UnBindWithProfileRequest {
+    BindUnBindRequest unbind_with_profile = 2;
+}
+
+message SetConfigRequest {
+    bool enable_config = 1;
+    bool enable_mss = 2;
+    bool enable_mtu = 3;
+    int32 mtu_size = 4;
+}
+
+message L2tpSessionConfig {
+    uint32 loc_id = 1;
+    uint32 peer_id = 2;
+}
+
+message L2tpTunnelConfig {
+    L2tpProtocol l2tp_prot = 1;
+    uint32 loc_id = 2;
+    uint32 peer_id = 3;
+    uint32 local_udp_port = 4;
+    uint32 peer_udp_port = 5;
+    string peer_ipv6_addr = 6;
+    string peer_ipv6_gw_addr = 7;
+    string peer_ipv4_addr = 8;
+    string peer_ipv4_gw_addr = 9;
+    string loc_iface = 10;
+    IpFamilyType ip_family_type = 11;
+    repeated L2tpSessionConfig session_config = 12;
+}
+
+message RequestConfigReply {
+    repeated L2tpTunnelConfig l2tp_tunnel_config = 1;
+    bool enable_mtu = 2;
+    bool enable_tcp_mss = 3;
+    int32 mtu_size = 4;
+    DefaultReply reply = 5;
+}
+
+message AddTunnelRequest {
+    L2tpTunnelConfig l2tp_tunnel_config = 1;
+}
+
+message AddSessionRequest {
+    L2tpSessionConfig session_config = 1;
+    uint32 tunnel_id = 2;
+}
+
+message RemoveSessionRequest {
+    uint32 session_id = 1;
+    uint32 tunnel_id = 2;
+}
+
+message SessionConfigRequest {
+    int32 loc_id = 1;
+    BackhaulPreference backhaul_type = 2;
+    int32 slot_id = 3;
+    int32 profile_id = 4;
+}
+
+message QueryBindSessionRequest {
+    BackhaulPreference backhaul_type = 1;
+}
+
+message QueryBindSessionReply {
+    repeated SessionConfigRequest session_configs = 1;
+    DefaultReply reply = 2;
+}
+
+message RemoveTunnelRequest {
+    int32 tunnel_id = 1;
+}
+
+message EnableBridgeRequest {
+    bool enable_bridge = 1;
+}
+
+
+message BridgeIface {
+    enum BridgeIfaceType {
+        UNKNOWN = 0;
+        WLAN_AP = 1;
+        WLAN_STA = 2;
+        ETH = 3;
+    }
+    BridgeIfaceType bridge_iface_type = 1;
+}
+
+message BridgeInfo {
+    string iface_name = 1;
+    BridgeIface iface_type = 2;
+    uint32 bandwidth = 3;
+}
+
+message AddBridgeRequest {
+    BridgeInfo bridge_info = 1;
+}
+
+message GetBridgeInfoReply {
+    repeated BridgeInfo bridge_info = 1;
+}
+
+message RemoveBridgeRequest {
+    string interface = 1;
+}
+
+
+message StatusRequest {
+    int32 slot_id = 1;
+}
+
+message GetDrbStatusRequest {
+    StatusRequest drb_status = 1;
+}
+
+message DrbStatus {
+    enum Status {
+        ACTIVE = 0;
+        DORMANT = 1;
+        UNKNOWN = 2;
+    }
+    Status drb_status = 1;
+}
+
+message GetDrbStatusReply {
+    DrbStatus drb_status = 1;
+}
+
+message ServingStatusRequest {
+    StatusRequest serving_status = 1;
+}
+
+message RoamingStatusRequest {
+    StatusRequest roaming_status = 1;
+}
+
+message MakeDormantStatusRequest {
+    StatusRequest make_dormant_status = 1;
+}
+
+message DataServiceState {
+    enum ServiceState {
+        UNKNOWN = 0;
+        IN_SERVICE = 1;
+        OUT_OF_SERVICE = 2;
+    }
+    ServiceState data_service_state = 1;
+}
+
+message NetworkRat {
+    enum Rat {
+        UNKNOWN = 0;
+        CDMA_1X = 1;
+        CDMA_EVDO = 2;
+        GSM = 3;
+        WCDMA = 4;
+        LTE = 5;
+        TDSCDMA = 6;
+        NR5G = 7;
+    }
+    Rat network_rat = 1;
+}
+
+message RoamingType {
+    enum Type {
+        UNKNOWN = 0;
+        DOMESTIC = 1;
+        INTERNATIONAL = 2;
+    }
+    Type roaming_type = 1;
+}
+
+message NrIconType {
+    enum Type {
+        NONE = 0;
+        BASIC = 1;
+        UWB = 2;
+    }
+    Type nr_icon_type  = 1;
+}
+
+message ServiceStatusReply {
+    DataServiceState data_service_state = 1;
+    NetworkRat network_rat = 2;
+    DefaultReply reply = 3;
+}
+
+message RomingStatusReply {
+    bool is_roaming = 1;
+    RoamingType roaming_type = 2;
+    DefaultReply reply = 3;
+}
+
+message NrIconTypeRequest {
+    StatusRequest nr_icon_status = 1;
+}
+
+message NrIconTypeReply {
+    NrIconType nr_icon_type = 1;
+    DefaultReply reply = 2;
+}
+
+message NatConfig {
+    string address = 1;
+    uint32 port = 2;
+    uint32 global_port = 3;
+    string ip_protocol = 4;
+}
+
+message StaticNatEntryRequest {
+    int32 profile_id = 1;
+    int32 slot_id = 2;
+    int32 vlan_id = 3;
+    OperationType operation_type = 4;
+    BackhaulPreference backhaul_type = 5;
+    NatConfig nat_config = 6;
+}
+
+message StaticNatRequest {
+    StaticNatEntryRequest static_nat_entry = 1;
+}
+
+message RequestStaticNatEntriesRequest {
+    int32 slot_id = 1;
+    int32 profile_id = 2;
+    int32 vlan_id = 3;
+    OperationType operation_type = 4;
+    BackhaulPreference backhaul_type = 5;
+}
+
+message RequestStaticNatEntriesReply {
+    repeated NatConfig nat_config = 1;
+    DefaultReply reply = 2;
+}
+
+message SetFirewallRequest {
+    int32 profile_id = 1;
+    bool fw_enable = 2;
+    bool allow_packets = 3;
+    int32 slot_id = 4;
+    BackhaulPreference backhaul_type = 5;
+}
+
+message FirewallStatusRequest {
+    int32 slot_id = 1;
+    int32 profile_id = 2;
+    BackhaulPreference backhaul_type = 5;
+}
+
+message RequestFirewallStatusReply {
+    int32 fw_enable = 1;
+    int32 allow_packets = 2;
+    DefaultReply reply = 3;
+}
+
+message Ipv4Params {
+    string ipv4_src_address = 1;
+    string ipv4_src_subnet_mask = 2;
+    string ipv4_dest_address = 3;
+    string ipv4_dest_subnet_mask = 4;
+    int32 ipv4_tos_val = 5;
+    int32 ipv4_tos_mask = 6;
+}
+
+message Ipv6Params {
+    string ipv6_src_address = 1;
+    string ipv6_dest_address = 2;
+    int32 ipv6_src_prefix_len = 3;
+    int32 ipv6_dest_prefix_len = 4;
+    int32 trf_value = 5;
+    int32 trf_mask = 6;
+    int32 flow_label = 7;
+    int32 nat_enabled = 8;
+}
+
+message ProtocolParams {
+    int32 source_port = 1;
+    int32 source_port_range = 2;
+    int32 dest_port = 3;
+    int32 dest_port_range = 4;
+    int32 icmp_type = 5;
+    int32 icmp_code = 6;
+    int32 esp_spi = 7;
+}
+
+message Direction {
+    enum Fw_Direction {
+        DUMMY = 0;
+        UPLINK = 1;
+        DOWNLINK = 2;
+    }
+    Fw_Direction fw_direction = 1;
+}
+
+message BindToBackhaulConfig {
+    int32 vlan_id = 1;
+    int32 slot_id = 2;
+    int32 profile_id = 3;
+    BackhaulPreference backhaul_type = 4;
+    OperationType operation_type = 5;
+    int32 backhaul_vlan_id = 6;
+}
+
+message AddFirewallEntryRequest {
+    int32 slot_id = 1;
+    int32 profile_id = 2;
+    BackhaulPreference backhaul_type = 3;
+    Direction fw_direction = 4;
+    string protocol = 5;
+    IpFamilyType ip_family_type = 6;
+    Ipv4Params ipv4_params = 7;
+    Ipv6Params ipv6_params = 8;
+    ProtocolParams protocol_params = 9;
+    bool is_hw_accelerated = 10;
+}
+
+message AddFirewallEntryReply {
+    int32 handle = 1;
+    DefaultReply reply = 2;
+}
+
+message FirewallEntriesRequest {
+    int32 slot_id = 1;
+    int32 profile_id = 2;
+    BackhaulPreference backhaul_type = 3;
+    bool is_hw_accelerated = 4;
+}
+
+message FirewallEntry {
+    Direction fw_direction = 1;
+    string protocol = 2;
+    IpFamilyType ip_family_type = 3;
+    Ipv4Params ipv4_params = 4;
+    Ipv6Params ipv6_params = 5;
+    ProtocolParams protocol_params = 6;
+    int32 firewall_handle = 7;
+}
+
+message RequestFirewallEntriesReply {
+    repeated FirewallEntry firewall_entries = 1;
+    DefaultReply reply = 2;
+}
+
+message RemoveFirewallEntryRequest {
+    int32 slot_id = 1;
+    int32 profile_id = 2;
+    int32 entry_handle = 3;
+}
+
+message EnableDMZRequest {
+    int32 slot_id = 1;
+    int32 profile_id = 2;
+    int32 vlan_id = 3;
+    BackhaulPreference backhaul_type = 4;
+    string ip_address = 5;
+}
+
+message DisableDmzRequest {
+    int32 slot_id = 1;
+    int32 profile_id = 2;
+    int32 vlan_id = 3;
+    BackhaulPreference backhaul_type = 4;
+    IpFamilyType ip_family_type = 5;
+}
+
+message DMZEntryRequest {
+    int32 slot_id = 1;
+    int32 profile_id = 2;
+    int32 vlan_id = 3;
+    BackhaulPreference backhaul_type = 4;
+}
+
+message RequestDMZEntryReply {
+    repeated string dmz_entries = 1;
+    DefaultReply reply = 2;
+}
+
+enum ServiceStatus {
+    SERVICE_UNAVAILABLE = 0;
+    SERVICE_AVAILABLE = 1;
+    SERVICE_FAILED = 2;
+}
+
+message RegisterOnServiceStatusChangeReply {
+    int32 client_id = 1;
+    ServiceStatus status = 2;
+}
+
+message WwanConnectivityConfigRequest {
+    int32 slot_id = 1;
+    OperationType operation_type = 2;
+}
+
+message WwanConnectivityConfigReply {
+    bool is_wwan_connectivity_allowed = 1;
+    DefaultReply reply = 2;
+}
+
+message SetWwanConnectivityConfigRequest {
+    int32 slot_id = 1;
+    OperationType operation_type = 2;
+    bool is_wwan_connectivity_allowed = 3;
+}
+
+message CurrentDdsSwitchRequest {
+    OperationType operation_type = 1;
+}
+
+message CurrentDdsSwitchResponse {
+    int32 slot_id = 1;
+    int32 current_switch = 2;
+    DefaultReply reply = 3;
+}
+
+message SetDdsSwitchRequest {
+    int32 slot_id = 1;
+    OperationType operation_type = 2;
+    int32 switch_type = 3;
+}
+
+message SetMacSecStateRequest {
+    bool enabled = 1;
+    OperationType operation_type = 2;
+}
+
+message MacSecStateRequest {
+    OperationType operation_type = 1;
+}
+
+message MacSecStateReply {
+    bool enabled = 1;
+    DefaultReply reply = 2;
+}
+
+message RegisterOnWwanConnectivityConfigChangeReply {
+    int32 client_id = 1;
+    int32 slot_id = 2;
+    bool is_wwan_connectivity_allowed = 3;
+}
+
+enum BackhaulPreference {
+    PREF_ETH = 0;
+    PREF_USB = 1;
+    PREF_WLAN = 2;
+    PREF_WWAN = 3;
+    PREF_BLE = 4;
+    INVALID = 5;
+}
+
+message setBackhaulPreferenceRequest {
+    OperationType operation_type = 1;
+    repeated BackhaulPreference backhaul_pref = 2;
+}
+
+message RequestBackhaulPreference {
+    OperationType operation_type = 1;
+}
+
+message BackhaulPreferenceReply {
+    repeated BackhaulPreference backhaul_pref = 1;
+    DefaultReply reply = 2;
+}
+
+message BandInterferenceConfig {
+    bool enable = 1;
+    int32 priority = 2;
+    int32 wlan_wait_time_in_sec = 3;
+    int32 n79_wait_time_in_sec = 4;
+    OperationType operation_type = 5;
+}
+
+message BandInterferenceRequest {
+    OperationType operation_type = 1;
+}
+
+message BandInterferenceReply {
+    BandInterferenceConfig config = 1;
+    DefaultReply reply = 2;
+}
+
+message switchBackHaulRequest {
+    BackhaulPreference backhaul_type = 1;
+    int32 slot_id = 2;
+    int32 profile_id = 3;
+    OperationType operation_type = 5;
+}
+
+message EnableSocksRequest {
+    bool enable = 1;
+    OperationType operation_type = 2;
+}
+
+message SetInterfaceBridgeRequest {
+    InterfaceType interface_type = 1;
+    int32 bridge_id = 2;
+}
+
+message GetInterfaceBridgeRequest {
+    InterfaceType interface_type = 1;
+}
+
+message GetInterfaceBridgeReply {
+    int32 bridge_id = 1;
+    DefaultReply reply = 2;
+}
+
+message SetDataStallParamsRequest {
+    int32 slot_id = 1;
+}
+
+message SetDataStallParamsReply {
+    commonStub.ErrorCode error = 1;
+}
+
+message APNThrottleInfoList{
+    repeated APNThrottleInfo rep_apn_throttle_info = 1;
+}
+
+message ThrottleInfoReply{
+    DefaultReply reply = 1;
+    APNThrottleInfoList apn_throttle_info_list = 2;
+}
+
+message APNThrottleInfo{
+    string apn_name = 1;
+    repeated int32 profile_ids = 2;
+    uint32 ipv4time = 3;
+    uint32 ipv6time = 4;
+    bool is_blocked = 5;
+    string mcc = 6;
+    string mnc = 7;
+}
+
+message SetEthDatalinkStateRequest {
+    LinkStateEnum eth_datalink_state = 1;
+}
+
+message SetEthDatalinkStateReply {
+    commonStub.ErrorCode error = 1;
+}
+
+message OnEthDataLinkStateChangeReply {
+    LinkStateEnum eth_datalink_state = 1;
+}

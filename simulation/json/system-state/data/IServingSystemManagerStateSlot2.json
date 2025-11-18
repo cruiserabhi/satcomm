@@ -1,0 +1,18 @@
+{
+    "IServingSystemManager": {
+        "getDrbStatus": {
+            "drbStatus": "ACTIVE"
+        },
+        "requestServiceStatus": {
+            "serviceState": "IN_SERVICE",
+            "networkRat": "LTE"
+        },
+        "requestRoamingStatus": {
+            "isRoaming": false,
+            "type": "DOMESTIC"
+        },
+        "requestNrIconType": {
+            "type": "BASIC"
+        }
+    }
+}

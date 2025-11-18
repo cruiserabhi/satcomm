@@ -1,0 +1,33 @@
+/**
+@page using_sample_apps Sample Applications
+
+Sample applications provided by TelSDK quickly demonstrates how TelSDK APIs can be used to achieve end functionality. Full source code for all sample applications is in /telux/public/apps/samples directory.
+
+<b>Note</b>: Some of the applications contain default values for parameters that might differ from product to product. These values can be overridden by using configuration files used by these applications. The configuration is specified in the form of key-value pair. For example, the number to dial used by make_call_app can be specified by DIAL_NUMBER item and then application can be run passing this file as command-line argument to application.
+
+\code{.cpp}
+# Contents of /data/make_call_app.conf
+DIAL_NUMBER = +1234512345
+
+# Run the application
+$ make_call_app /data/make_call_app.conf
+\endcode
+
+- @subpage audio
+- @subpage cv2x
+- @subpage phone
+- @subpage data
+- @subpage location
+- @subpage modem_config
+- @subpage power
+- @subpage thermal
+- @subpage sensor
+- @subpage platform
+- @subpage crypto
+- @subpage crypto_accelerator
+- @subpage cellular_connection_security
+- @subpage wifi_connection_security
+- @subpage wlan
+- @subpage diag
+
+*/

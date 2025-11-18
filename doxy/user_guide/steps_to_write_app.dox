@@ -1,0 +1,90 @@
+/**
+@page steps_to_write_app  Steps to writing an App
+
+This section has instructions to create a sample application using Telematics APIs.
+
+You need to have the following in order to proceed:
+ - Linux Yocto Platform SDK Installer created by the system integrator or created using section 2 (Building Platform SDK)
+
+@section setup_build_environment Setup the build environment
+
+Install the Linux platform SDK created by the platform developer for the intended device. Let's assume that the installer is named sdk_installer.sh.
+
+- Open the terminal, Copy the sdk_installer.sh into your working directory, say for example "my_sdk_install".
+      \code{.sh}
+      $ mkdir my_sdk_install; cd my_sdk_install
+      $ ./sdk_installer.sh
+      // Choose to install to my_sdk_install when the SDK installer asks
+      \endcode
+
+- Setup the build environment as follows:
+      \code{.sh}
+      $ cd my_sdk_install; source environment-setup-cortexa8hf-vfp-neon-oe-linux-gnueabi
+      \endcode
+
+Now your development environment is set for the terminal, start your development.
+
+@section get_started_with_development To get started with a sample app
+
+- Create a sample folder
+      \code{.sh}
+      $ mkdir sample_app
+      \endcode
+
+- Create a sample application as follows:
+\code{.cpp}
+ 
+//  FileName:      SampleApp.cpp
+//  Description:   Sample program to check the status of telux::tel::PhoneManager.
+ 
+#include <iostream>
+#include <memory>
+ 
+#include <telux/tel/PhoneFactory.hpp>
+ 
+// This is sample program to get an instance of PhoneManager 
+// and check for telephony sub system status
+ 
+int main() {
+ 
+   // Get the PhoneFactory and PhoneManager instances
+   auto &phoneFactory = telux::tel::PhoneFactory::getInstance();
+   auto phoneManager = phoneFactory.getPhoneManager();
+ 
+   // Check if telephony subsystem is ready
+   bool status = phoneManager->isSubsystemReady();
+   std::cout << "PhoneManager Ready? " << (status? "Yes":"No") << std::endl;
+ 
+   // If telephony subsystem is not ready, wait for it to be ready
+   if(!status) {
+      std::cout << "wait unconditionally for it to be ready " << std::endl;
+      std::future<bool> f = phoneManager->onSubsystemReady();
+      // If we want to wait unconditionally for telephony subsystem to be ready
+      status = f.get();
+   }
+   std::cout << "PhoneManager Ready? " << (status? "Yes":"No") << std::endl;
+ 
+   // Now the application ready for SDK services like Phone, SMS, CardServices
+   return 0;
+}
+ 
+\endcode
+
+@section compile_the_sample Compile the program
+
+- Now compile your source code
+   \code{.sh}
+   user@machine:/sample_app$ ${CC} SampleApp.cpp -ltelux_tel -std=c++11 -lstdc++ -o sample_app
+   \endcode
+
+@section install_the_sample Install program on the device
+
+- Push your binary to the /data location on the device
+      \code{.sh}
+      user@machine:/sample_app$ adb push sample_app /data/
+      user@machine:/sample_app$ adb shell
+      $ cd data
+      $ chmod +x sample_app
+      $ ./sample_app
+      \endcode
+*/

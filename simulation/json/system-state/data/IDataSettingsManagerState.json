@@ -1,0 +1,43 @@
+{
+    "IDataSettingsManager": {
+        "requestMacSecState" : {
+            "enabled" : false
+        },
+        "requestDdsSwitch" : {
+            "DdsType" : "PERMANENT",
+            "SlotId" : 1
+        },
+        "requestBandInterferenceConfig" : {
+            "enable" : false,
+            "priority" : "N79",
+            "wlanWaitTimeInSec" : 30,
+            "n79WaitTimeInSec" : 30
+        },
+        "requestWwanConnectivityConfig" : {
+            "isAllowed" : [true, true]
+        },
+        "requestBackhaulPreference" : {
+            "backhaulPref" : ["ETH", "USB", "WLAN", "WWAN", "BLE"]
+        },
+        "switchBackHaul" : {
+            "backhaul" : "WWAN",
+            "slotId" : 1,
+            "profileId" : -1
+        },
+        "getIpPassThroughConfig" : [
+            {
+                "slotId" : 1,
+                "ipptConfig": [
+                ]
+            },
+            {
+                "slotId" : 2,
+                "ipptConfig": [
+                ]
+            }
+        ],
+        "getIpPassThroughNatConfig" : {
+                "natEnable": 1
+        }
+    }
+}

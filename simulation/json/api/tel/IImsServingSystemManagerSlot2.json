@@ -1,0 +1,23 @@
+{
+    "IImsServingSystemManager" :
+    {
+        "IsSubsystemReady" : "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay" : 300,
+        "DefaultCallbackDelay" : 400,
+        "requestRegistrationInfo" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestServiceInfo" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestPdpStatus" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        }
+    }
+}

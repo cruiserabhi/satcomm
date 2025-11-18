@@ -1,0 +1,1 @@
+{"totalTx": true, "totalRx": true, "totalRSUs": true, "totalRVs": true, "decodeFails": true, "securityFails": true, "mbdAlerts": true, "txBSMs": true, "rxBSMs": true, "rxSignedBSMs": true, "monitorRate": true,"timeframe": true, "timestamp": true, "close": true}

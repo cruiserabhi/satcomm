@@ -1,0 +1,244 @@
+/*
+ *  Copyright (c) 2017-2021, The Linux Foundation. All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are
+ *  met:
+ *    * Redistributions of source code must retain the above copyright
+ *      notice, this list of conditions and the following disclaimer.
+ *    * Redistributions in binary form must reproduce the above
+ *      copyright notice, this list of conditions and the following
+ *      disclaimer in the documentation and/or other materials provided
+ *      with the distribution.
+ *    * Neither the name of The Linux Foundation nor the names of its
+ *      contributors may be used to endorse or promote products derived
+ *      from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED
+ *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ *  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT
+ *  ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS
+ *  BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+ *  IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+/*
+ *  Changes from Qualcomm Innovation Center, Inc. are provided under the following license:
+ *
+ *  Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted (subject to the limitations in the
+ *  disclaimer below) provided that the following conditions are met:
+ *
+ *      * Redistributions of source code must retain the above copyright
+ *        notice, this list of conditions and the following disclaimer.
+ *
+ *      * Redistributions in binary form must reproduce the above
+ *        copyright notice, this list of conditions and the following
+ *        disclaimer in the documentation and/or other materials provided
+ *        with the distribution.
+ *
+ *      * Neither the name of Qualcomm Innovation Center, Inc. nor the names of its
+ *        contributors may be used to endorse or promote products derived
+ *        from this software without specific prior written permission.
+ *
+ *  NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE
+ *  GRANTED BY THIS LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT
+ *  HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
+ *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ *  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ *  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+ *  IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ *  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+ *  IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*=============================================================================
+                             Edit History
+
+when       who     what, where, why
+--------   ---     ------------------------------------------------------------
+Jun 2017   SVM      Created to support V2X API
+=============================================================================*/
+                         /* BEGIN TITLEPAGE */
+                   /* BEGIN MODULE GROUPING DEFINITIONS */
+/**
+@defgroup chapter_telematics_sdk Telematics SDK APIs
+@latexonly \setcounter{table}{0} @endlatexonly
+
+  @addtogroup chapter_telematics_sdk
+  @{
+    @defgroup chapter_telematics_sdk_tel Telephony
+    This section contains APIs related to Telephony.
+
+    @addtogroup chapter_telematics_sdk_tel
+    @{
+      @defgroup telematics_phone  Phone
+      This section contains APIs related to Phone, Signal Strength and interfaces to register global listeners to event notifications.
+      @defgroup telematics_call  Call
+      This section contains APIs related to Call.
+      @defgroup telematics_ecall eCall
+      This section contains APIs related to emergency call management and configuration.
+      @defgroup telematics_sms SMS
+      This section contains APIs related to Sending and Receiving SMS.
+      @defgroup telematics_card SIM Card Services
+      This section contains APIs related to Card Services.
+      @defgroup telematics_cellbroadcast Cell Broadcast
+      This section contains APIs related to configure, activate and receive 3GPP ETWS/CMAS cell broadcast messages.
+      @defgroup telematics_ims_settings IMS Settings
+      This section contains APIs related to IMS Configuration.
+      @defgroup telematics_multi_sim Multi SIM
+      This section contains APIs related to Multi SIM DSDA Configuration.
+      @defgroup telematics_subscription Subscription Management
+      This section contains APIs related to Subscription Management.
+      @defgroup telematics_network_selection Network Selection
+      Network Selection Manager provides the interface to get and set network selection mode (Manual or Automatic), scan available networks and set and get preferred networks list.
+      @defgroup telematics_serving_system Serving System
+      Serving System Manager class provides the interface to request and set service domain preference and radio access technology mode preference for  searching and registering (CS/PS domain, RAT and operation mode)
+      @defgroup telematics_rsp Remote SIM Provisioning
+      This section contains APIs related to Remote SIM provisioning.
+      @defgroup telematics_remote_sim Remote SIM
+      This section contains APIs related to Remote SIM operations.
+      @defgroup telematics_supp_services Supplementary Services
+      This section contains APIs related to supplementary services to provide services like call forwarding, call waiting.
+    @}
+
+    @defgroup chapter_telematics_sdk_loc Location
+    This section contains APIs related to Location.
+    @addtogroup chapter_telematics_sdk_loc
+    @{
+      @defgroup telematics_location Location Services
+      This section contains APIs related to Location Services.
+    @}
+
+    @defgroup telematics_data Cellular Data
+    This section contains APIs related to Cellular Data Services.
+    @addtogroup telematics_data
+    @{
+      @addtogroup telematics_data_net net
+      This section contains APIs related to data network configuration.
+    @}
+
+    @defgroup telematics_common Common
+    This section contains APIs related to Logger, Command Callbacks, Error Codes and Version information.
+    Also contains Macros to print message at different log level.
+
+    @defgroup telematics_cv2x Cellular V2X
+    This section contains APIs related to Cellular-V2X operation. The SDK has C and C++ APIs. The C APIs are legacy and are being maintained for backwards compatibility purposes. These APIs are mostly wrappers over the C++ APIs. New features and functionality will be added to C++ APIs. For anyone writing new Cv2x software, it is recommended to use the C++ APIs.
+    @addtogroup telematics_cv2x
+    @{
+      @addtogroup telematics_cv2x_c C APIs
+      This section contains C APIs related to Cellular-V2X operation.
+      @{
+        @defgroup telematics_cv2x_c_common C Common APIs
+        This section contains C Common APIs related to Cellular-V2X operation.
+        @defgroup telematics_cv2x_c_kinematics C Kinematics APIs
+        This section contains C Kinematics APIs related to Cellular-V2X operation. For any new CV2x development, it is recommended to use the C++ telux::loc::ILocationManager APIs.
+        @defgroup telematics_cv2x_c_radio C Radio APIs
+        This section contains C Radio APIs related to Cellular-V2X operation. Applications need to have "radio" Linux group permissions to be able to operate successfully with underlying services. For any new CV2x development, it is recommended to use the C++ telux::cv2x::* APIs.
+        @defgroup telematics_cv2x_c_vehicle C Vehicle APIs
+        This section contains C Vehicle APIs related to Cellular-V2X operation. These APIs are provided as reference APIs to work with QTI reference hardware. Customers would need to modify the implementation of these APIs based on the specific H/W and CAN controller being used.
+        @defgroup telematics_cv2x_c_config C Config APIs
+        This section contains C Config APIs related to Cellular-V2X operation. These APIs are provided as an abstraction of the CV2X configuration relevant interfaces.
+        @defgroup telematics_cv2x_c_packet C Packet APIs
+        This section contains C Packet APIs related to Cellular-V2X packet analysis operation.
+      @}
+      @defgroup telematics_cv2x_cpp CPP APIs
+      This section contains C++ APIs related to Cellular-V2X operation. Applications need to have "radio" Linux group permissions to be able to operate successfully with underlying services.
+    @}
+
+    @defgroup telematics_audio Audio
+    This section contains APIs related to audio.
+    @addtogroup telematics_audio
+    @{
+      @defgroup telematics_audio_manager Audio Manager
+      This section contains APIs related to Audio Manager operation.
+      @defgroup telematics_audio_stream Audio Streams
+      This section contains APIs related to Audio Stream operation.
+      @defgroup telematics_audio_transcoder Transcoder
+      This section contains APIs related to Audio Transcoder operation.
+      @defgroup telematics_audio_player Audio player
+      This section contains audio player APIs.
+    @}
+
+    @defgroup telematics_therm Thermal
+    This section contains APIs related to thermal.
+    @addtogroup telematics_therm
+    @{
+      @defgroup telematics_therm_management Thermal Management
+      This section contains APIs related to Thermal Management such as read list of thermal zones, cooling devices and binding info.
+      @defgroup telematics_therm_shutdown_management Thermal Shutdown Management
+      This section contains APIs related to Thermal Shutdown Management such as set/get thermal auto-shutdown mode, receive notifications on every auto-shutdown update.
+    @}
+
+    @defgroup telematics_power Power
+    This section contains APIs related to power.
+    @addtogroup telematics_power
+    @{
+      @defgroup telematics_power_manager TCU Activity Manager
+      This section contains APIs related to TCU activity state management.
+    @}
+
+    @defgroup telematics_config Modem Configuration
+    This section contains APIs related to Modem config.
+    @addtogroup telematics_config
+    @{
+      @defgroup telematics_config_manager Modem Config
+      This section contains APIs related to Modem Config operations.
+    @}
+
+    @defgroup telematics_sensor Sensor
+    This section contains APIs related to sensor configuration, control, data acquisition and sensor feature control.
+    @{
+      @defgroup telematics_sensor_service Sensor Service
+      This section contains APIs, data structures and components to access the sensor sub-system.
+      @defgroup telematics_sensor_control Sensor Control
+      This section contains APIs related to sensor configuration, sensor control and data acquisition from sensors.
+      @defgroup telematics_sensor_feature_control Sensor Feature Control
+      This section contains APIs related to controlling the features the sensor sub-system offers.
+    @}
+
+    @defgroup telematics_platform Platform
+    This section contains APIs related to configure platform functionalities and acquire information from the sub-components.
+    @{
+      @defgroup telematics_platform_filesystem Filesystem
+      This section contains APIs, data structures and components to configure and acquire information from the filesystem manager.
+      @defgroup telematics_platform_deviceinfo DeviceInfo
+      This section contains APIs related to device info management for retrieving IMEI and platform version.
+      @defgroup telematics_platform_hardware_antenna Hardware Antenna
+      This section contains APIs related to antenna management to set or get the active antenna's configuration.
+      @defgroup telematics_platform_time Time
+      This section contains APIs related to time management to register and deregister a listener for time reports.
+    @}
+
+    @defgroup telematics_sec_mgmt Security Management
+    This section contains APIs related to security management.
+
+    @defgroup telematics_wlan_config Wlan
+    This section contains APIs related to WLAN management operations.
+    @addtogroup telematics_wlan_config
+    @{
+      @defgroup telematics_wlan WLAN Device Management
+      This section contains APIs related to device configuration management, such as the number of access points and stations enabled, WLAN enable/disable, etc
+      @defgroup telematics_wlan_ap Access Point Management
+      This section contains APIs related to access point configuration management, such as private/guest, internet/local access, etc.
+      @defgroup telematics_wlan_station Station Management
+      This section contains APIs related to station configuration management, such as static/dynamic IP, bridge/router mode, etc.
+    @}
+
+    @defgroup telematics_satcom NTN Management
+    This section contains APIs related to NTN management.
+
+    @defgroup telematics_diagnostics Diagnostics Services
+    This section contains APIs related to diagnostics services.
+  @}
+*/

@@ -1,0 +1,9 @@
+Name: libtelux_power
+Version: @SDK_VERSION@
+Description: This simulation library provides ability to simulate behavior of the power management APIs in the TelSDK.
+
+prefix=@CMAKE_INSTALL_PREFIX@
+includedir=@CMAKE_INSTALL_INCLUDEDIR@
+libdir=@CMAKE_INSTALL_LIBDIR@
+Cflags:-I${includedir} -I${includedir}/telux
+Libs: -L${libdir} -ltelux_power

@@ -1,0 +1,24 @@
+VersionInfo.hpp
+FileInfo.hpp
+
+# Ignore doxygen generated files
+doxy/api_reference/html
+doxy/api_reference/html/**
+doxy/api_reference/latex
+doxy/api_reference/latex/**
+doxy/api_reference/logs
+doxy/api_reference/logs/**
+doxy/api_reference/rtf/**
+
+doxy/user_guide/html
+doxy/user_guide/html/**
+doxy/user_guide/latex
+doxy/user_guide/latex/**
+doxy/user_guide/logs
+doxy/user_guide/logs/**
+doxy/user_guide/rtf/**
+
+simulation/protos/proto-src/*.cc
+simulation/protos/proto-src/*.h
+build/
+rootfs/

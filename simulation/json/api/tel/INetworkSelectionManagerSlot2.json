@@ -1,0 +1,41 @@
+{
+    "INetworkSelectionManager" :
+    {
+        "IsSubsystemReady" : "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay" : 300,
+        "DefaultCallbackDelay" : 400,
+        "setNetworkSelectionMode" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestNetworkSelectionMode" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "performNetworkScan" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestPreferredNetworks" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "setPreferredNetworks" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "setLteDubiousCell" :
+        {
+            "error" : "SUCCESS"
+        },
+        "setNrDubiousCell" :
+        {
+            "error" : "SUCCESS"
+        }
+    }
+}

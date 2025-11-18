@@ -1,0 +1,243 @@
+/*
+ *  Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
+ *  SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
+
+syntax = "proto3";
+
+package cv2xStub;
+import "google/protobuf/empty.proto";
+import "event_simulation.proto";
+import "common_simulation.proto";
+
+/*******************************************************************
+ * Services Definition                                             *
+ *******************************************************************/
+service Cv2xManagerService {
+    rpc initService(google.protobuf.Empty) returns (GetServiceStatusReply) {}
+    rpc startCv2x(google.protobuf.Empty) returns (Cv2xCommandReply) {}
+    rpc stopCv2x(google.protobuf.Empty) returns (Cv2xCommandReply) {}
+    rpc setPeakTxPower(Cv2xPeakTxPower) returns (Cv2xCommandReply) {}
+    rpc requestCv2xStatus(google.protobuf.Empty) returns (Cv2xRequestStatusReply) {}
+    rpc injectCoarseUtcTime(CoarseUtcTime) returns (Cv2xCommandReply) {}
+    rpc getSlssRxInfo(google.protobuf.Empty) returns (SlssRxInfoReply) {}
+    rpc setL2Filters(L2FilterInfos) returns (Cv2xCommandReply) {}
+    rpc removeL2Filters(L2Ids) returns (Cv2xCommandReply) {}
+}
+/*
+ *  Cv2x Configuration service
+ */
+service Cv2xConfigService {
+    rpc initService(google.protobuf.Empty) returns (GetServiceStatusReply) {}
+    rpc updateConfiguration(Cv2xConfigPath) returns (Cv2xCommandReply){}
+    rpc retrieveConfiguration(Cv2xConfigPath) returns (Cv2xCommandReply){}
+}
+service Cv2xRadioService {
+    rpc requestCv2xStatus(google.protobuf.Empty) returns (Cv2xRequestStatusReply) {}
+    rpc addRxSubscription(RxSubscription) returns (Cv2xCommandReply) {}
+    rpc delRxSubscription(RxSubscription) returns (Cv2xCommandReply) {}
+    rpc enableRxMetaDataReport(RxSubscription) returns (Cv2xCommandReply) {}
+    rpc registerFlow(FlowInfo) returns (Cv2xRadioFlowReply) {}
+    rpc deregisterFlow(FlowInfo) returns (Cv2xRadioFlowReply) {}
+    rpc updateSrcL2Info(google.protobuf.Empty) returns (Cv2xCommandReply) {}
+    rpc updateTrustedUEList(google.protobuf.Empty) returns (Cv2xCommandReply) {}
+    rpc getIfaceNameFromIpType(IpType) returns (IfaceNameReply) {}
+    rpc enableTxStatusReport(UintNum) returns (Cv2xCommandReply) {}
+    rpc disableTxStatusReport(UintNum) returns (Cv2xCommandReply) {}
+    rpc setGlobalIPInfo(google.protobuf.Empty) returns (Cv2xCommandReply) {}
+    rpc setGlobalIPUnicastRoutingInfo(google.protobuf.Empty) returns (Cv2xCommandReply) {}
+    rpc requestDataSessionSettings(google.protobuf.Empty) returns (Cv2xCommandReply) {}
+    rpc injectVehicleSpeed(UintNum) returns (Cv2xCommandReply) {}
+}
+
+service Cv2xThrottleManagerService {
+    rpc initService(google.protobuf.Empty) returns (GetServiceStatusReply) {}
+    rpc getServiceStatus(google.protobuf.Empty) returns (GetServiceStatusReply) {}
+    rpc setVerificationLoad(UintNum) returns (Cv2xCommandReply) {}
+}
+
+message Cv2xConfigPath {
+    string path = 1;
+}
+
+message GetServiceStatusReply {
+     commonStub.ServiceStatus status = 1;
+     int32 delay = 2;
+}
+
+message Cv2xCommandReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+message Cv2xPeakTxPower {
+   int32 txPower = 1;
+}
+
+message CoarseUtcTime {
+   uint64 utc = 1;
+}
+
+message ConfigEventInfo {
+    enum ConfigSourceType {
+        UNKNOWN = 0;   /**< V2X config file source is unknown */
+        PRECONFIG = 1; /**< V2X config file source is preconfig */
+        SIM_CARD = 2;  /**< V2X config file source is SIM card */
+        OMA_DM = 4;    /**< V2X config file source is OMA-DM */
+    }
+
+    enum ConfigEvent {
+        CHANGED = 0;
+        EXPIRED = 1;
+    }
+
+    ConfigSourceType source = 1;
+    ConfigEvent event = 2;
+}
+
+message Cv2xStatus {
+    enum StatusType {
+        INACTIVE = 0;
+        ACTIVE = 1;
+        SUSPENDED = 2;
+        Status_UNKNOWN = 3;
+    }
+    enum Cause {
+        TIMING = 0;
+        CONFIG = 1;
+        UE_MODE = 2;
+        GEOPOLYGON = 3;
+        THERMAL = 4;
+        THERMAL_ECALL = 5;
+        GEOPOLYGON_SWITCH = 6;
+        SENSING = 7;
+        LPM = 8;
+        DISABLED = 9;
+        NO_GNSS = 10;
+        INVALID_LICENSE = 11;
+        NOT_READY = 12;
+        NTN = 13;
+
+        NO_DATA_CALL = 14;
+        CAUSE_UNKNOWN = 15;
+    }
+
+    StatusType  rxStatus = 1;
+    StatusType  txStatus = 2;
+    Cause rxCause  = 3;
+    Cause txCause  = 4;
+}
+
+message Cv2xRequestStatusReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    Cv2xStatus cv2xStatus = 4;
+}
+
+message SyncRefUeInfo {
+    enum SlssSyncPattern {
+        OFFSET_IND_1 = 0;
+        OFFSET_IND_2 = 1;
+        OFFSET_IND_3 = 2;
+        OOD_RESERVED = 3;
+        EVEN_RESERVED = 4;
+        UNKNOWN = 5;
+    }
+
+    uint32 slssId = 1;
+    bool inCoverage = 2;
+    SlssSyncPattern pattern = 3;
+    uint32 rsrp = 4;
+    bool selected = 5;
+}
+
+message SlssRxInfoReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    repeated SyncRefUeInfo info = 4;
+}
+
+message L2FilterInfo {
+    uint32 srcL2Id = 1;
+    uint32 durationMs = 2;
+    uint32 pppp = 3;
+}
+
+message L2FilterInfos {
+    repeated L2FilterInfo info = 1;
+}
+
+message L2Ids {
+    repeated uint32 id = 1;
+}
+
+message RxSubscription {
+    uint32 portNum = 1;
+    uint32 ipType = 2;
+    repeated uint32 ids = 3;
+}
+
+message FlowInfo {
+    uint32 ipType = 1;
+    uint32 serviceId = 2;
+    uint32 spsPort = 3;
+    uint32 eventPort = 4;
+    int32 flowId = 5;
+}
+
+message Cv2xRadioFlowReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    int32 flowId = 4;
+}
+
+message IpType {
+    uint32 type = 1;
+}
+
+message IfaceNameReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+    string name = 4;
+}
+
+message UintNum {
+    uint32 num = 1;
+}
+
+message FilterEvent {
+    uint32 filter = 1;
+}
+
+message SanityEvent {
+    uint32 state = 1;
+}
+
+message SrcL2Id {
+    uint32 id = 1;
+}
+
+message MacAddrCloneAttach {
+    bool detected = 1;
+}
+
+message SpsSchedulingInfo {
+    uint32 spsId = 1;
+    uint64 utcTime = 2;
+    uint32 periodicity = 3;
+}
+
+message TxPoolIdInfo {
+    uint32 poolId = 1;
+    uint32 minFreq = 2;
+    uint32 maxFreq = 3;
+}
+
+message RadioCapabilites {
+    repeated TxPoolIdInfo pools = 1;
+}

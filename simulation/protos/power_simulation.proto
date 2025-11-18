@@ -1,0 +1,103 @@
+/*
+ *  Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
+ *  SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
+
+syntax = "proto3";
+
+package powerStub;
+import "google/protobuf/empty.proto";
+import "common_simulation.proto";
+import "event_simulation.proto";
+
+/*******************************************************************
+ * Services Definition                                             *
+ *******************************************************************/
+
+service PowerManagerService{
+   rpc InitService (PowerClientConnect) returns (GetServiceStatusReply) {}
+   rpc RegisterTcuStateEvent (MachineTcuState) returns (TcuStateEventReply) {}
+   rpc SendActivityState (SetActivityState) returns (PowerManagerCommandReply) {}
+   rpc SendModemActivityState (SetActivityState) returns (PowerManagerCommandReply) {}
+   rpc SendActivityStateAck (SlaveAck) returns (google.protobuf.Empty) {}
+   rpc DeregisterFromServer (PowerClientConnect) returns (google.protobuf.Empty) {}
+}
+
+
+/*******************************************************************
+ * Messages Definition                                             *
+ *******************************************************************/
+
+enum MachineName {
+    MACH_LOCAL = 0;
+    MACH_ALL = 1;
+}
+
+message PowerClientConnect {
+    int32 clienttype = 1;
+    string clientname = 2;
+    string machinename = 3;
+}
+
+enum TcuState {
+    STATE_RESUME = 0;
+    STATE_SUSPEND = 1;
+    STATE_SHUTDOWN = 2;
+    STATE_UNKNOWN = 3;
+}
+
+message GetServiceStatusReply {
+    commonStub.ServiceStatus service_status = 1;
+    int32 delay = 2;
+}
+
+message MachineTcuState {
+    MachineName mach_name = 1;
+}
+
+message TcuStateEventReply {
+    TcuState initialstate = 1;
+}
+
+message SetActivityState {
+    TcuState powerstate = 1;
+    MachineName mach_name = 2;
+}
+
+message PowerManagerCommandReply {
+    commonStub.Status status = 1;
+    commonStub.ErrorCode error = 2;
+    int32 delay = 3;
+}
+
+message TcuStateUpdateEvent {
+    TcuState power_state = 1;
+    MachineName mach_name = 2;
+}
+
+enum AckType {
+    ACK_SUSPEND = 0;
+    ACK_SHUTDOWN = 1;
+    NACK_SUSPEND = 2;
+    NACK_SHUTDOWN = 3;
+}
+
+message SlaveAck {
+    AckType ack_type = 1;
+    string clientname = 2;
+}
+
+message ConsolidatedAcksEvent {
+    repeated string nack_client_list = 1;
+    repeated string noack_client_list = 2;
+    MachineName mach_name = 3;
+}
+
+enum MachineState {
+    MACH_AVAILABLE = 0;
+    MACH_UNAVAILABLE = 1;
+}
+
+message MachineUpdateEvent {
+    MachineState mach_state = 1;
+}

@@ -1,0 +1,9 @@
+Name: libtelux_wlan
+Version: @SDK_VERSION@
+Description: This library contains APIs for wlan management services
+
+prefix=@CMAKE_INSTALL_PREFIX@
+includedir=@CMAKE_INSTALL_INCLUDEDIR@
+libdir=@CMAKE_INSTALL_LIBDIR@
+Cflags:-I${includedir} -I${includedir}/telux
+Libs: -L${libdir} -ltelux_wlan

@@ -1,0 +1,306 @@
+{
+        "ICardManager" :
+        {
+        "Pin1password" : "1234",
+        "Pin2password" : "5678",
+        "Puk1password" : 11111111,
+        "Puk2password" : 22222222,
+        "EFs" :
+        {
+            "ADF" :
+            [
+                {
+                    "AppId" : "a0000000871002fffff00189000001ff",
+                    "LinearFixedEFFiles" :
+                    [
+                        {
+                            "fileId" : 1234,
+                            "numberOfRecords" : 3
+                        },
+                        {
+                            "data" : "255 254 253 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255",
+                            "payload" : "fffefdffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                            "sw1" : 140,
+                            "sw2" : 0
+                        },
+                        {
+                            "data" : "255 254 252 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255",
+                            "payload" : "fffefcffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                            "sw1" : 141,
+                            "sw2" : 1
+                        },
+                        {
+                            "data" : "255 254 252 10 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255",
+                            "payload" : "fffefcaffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                            "sw1" : 144,
+                            "sw2" : 0
+                        },
+                        {
+                            "fileId" : 5678,
+                            "numberOfRecords" : 1
+                        },
+                        {
+                            "data" : "255 254 252 10 10 45 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255",
+                            "payload" : "fffefcaa2dffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                            "sw1" : 14,
+                            "sw2" : 1
+                        },
+                        {
+                            "fileId" : 7676,
+                            "numberOfRecords" : 4
+                        },
+                        {
+                            "data" : "255 254 252 10 34 52 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255",
+                            "payload" : "fffefca2234ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                            "sw1" : 14,
+                            "sw2" : 1
+                        },
+                        {
+                            "data" : "255 254 252 10 80 90 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255",
+                            "payload" : "fffefca505affffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                            "sw1" : 14,
+                            "sw2" : 1
+                        },
+                        {
+                            "data" : "255 254 252 10 100 87 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255",
+                            "payload" : "fffefca6457ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                            "sw1" : 14,
+                            "sw2" : 1
+                        },
+                        {
+                            "data" : "255 254 252 10 87 12 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255",
+                            "payload" : "fffefca57cffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                            "sw1" : 14,
+                            "sw2" : 1
+                        }
+                    ],
+                    "TransparentEFFiles" :
+                    [
+                        {
+                            "fileId" : 1234,
+                            "data" : "255 255 45 67 55 56 89 67 90 10 ",
+                            "payload" : "ffff2d43373859435aa",
+                            "sw1" : 144,
+                            "sw2" : 0
+                        },
+                        {
+                            "fileId" : 5648,
+                            "data" : "255 255 45 67 55 56 89 67 90 10 ",
+                            "payload" : "ffff2d43373859435aa",
+                            "sw1" : 14,
+                            "sw2" : 0
+                        },
+                        {
+                            "fileId" : 7777,
+                            "data" : "255 255 45 67 55 56 89 67 90 10 ",
+                            "payload" : "ffff2d43373859435aa",
+                            "sw1" : 14,
+                            "sw2" : 0
+                        }
+                    ]
+                },
+                {
+                    "AppId" : "a0000000871004f310ffff89080000ff",
+                    "LinearFixedEFFiles" :
+                    [
+                        {
+                            "fileId" : 1234,
+                            "numberOfRecords" : 3
+                        },
+                        {
+                            "data" : "255 254 252 76 97 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255",
+                            "payload" : "fffefca4c61ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                            "sw1" : 140,
+                            "sw2" : 0
+                        },
+                        {
+                            "data" : "255 254 252 10 10 12 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255",
+                            "payload" : "fffefcaacffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                            "sw1" : 141,
+                            "sw2" : 1
+                        },
+                        {
+                            "data" : "255 254 252 10 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255",
+                            "payload" : "fffefcaacffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                            "sw1" : 144,
+                            "sw2" : 0
+                        }
+                    ],
+                "TransparentEFFiles" :
+                [
+                    {
+                        "fileId" : 1234,
+                        "data" : "255 255 45 67 55 56 89 67 90 10 ",
+                        "payload" : "ffff2d43373859435aa",
+                        "sw1" : 144,
+                        "sw2" : 0
+                    },
+                    {
+                        "fileId" : 5648,
+                        "data" : "255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255",
+                        "payload" : "fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                        "sw1" : 144,
+                        "sw2" : 0
+                    }
+                ]
+                },
+                {
+                    "AppId" : "a000000063504b43532d3135",
+                    "LinearFixedEFFiles" :
+                    [
+                        {
+                            "fileId" : 1234,
+                            "numberOfRecords" : 3
+                        },
+                        {
+                            "data" : "255 254 252 10 10 8 8 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255",
+                            "payload" : "fffefcaa88ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                            "sw1" : 140,
+                            "sw2" : 0
+                        },
+                        {
+                            "data" : "255 254 252 10 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255",
+                            "payload" : "fffefcaffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                            "sw1" : 141,
+                            "sw2" : 1
+                        },
+                        {
+                        "data" : "255 254 252 10 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255",
+                        "payload" : "fffefcaffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                        "sw1" : 144,
+                        "sw2" : 0
+                        }
+                    ]
+                }
+            ],
+            "DFLinearFixedEFRecords" :
+            [
+                {
+                    "fileId" : 1234,
+                    "numberOfRecords" : 3
+                },
+                {
+                    "data" : "255 255 45 67 55 56 89 67 90 10",
+                    "payload" : "ffff2d43373859435aa",
+                    "sw1" : 144,
+                    "sw2" : 0
+                },
+                {
+                    "data" : "255 254 252 10 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255",
+                    "payload" : "fffefcaffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                    "sw1" : 144,
+                    "sw2" : 0
+                },
+                {
+                    "data" : "255 254 252 10 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255",
+                    "payload" : "fffefcaffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                    "sw1" : 144,
+                    "sw2" : 0
+                },
+                {
+                    "fileId" : 5678,
+                    "numberOfRecords" : 1
+                },
+                {
+                    "data" : "255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255",
+                    "payload" : "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                    "sw1" : 144,
+                    "sw2" : 0
+                }
+            ],
+            "DFTransparentEFRecords" :
+            [
+                {
+                    "fileId" : 3456,
+                    "data" : "255 255 45 67 55 56 89 67 90 10 ",
+                    "payload" : "ffff2d43373859435aa",
+                    "sw1" : 144,
+                    "sw2" : 0
+                },
+                {
+                    "fileId" : 5666,
+                    "data" : "255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255",
+                    "payload" : "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+                    "sw1" : 144,
+                    "sw2" : 0
+                }
+            ]
+        },
+        "changeCardPassword" :
+        {
+            "retryCountPin1" : 3,
+            "retryCountPin2" : 3
+        },
+        "getApplications" :
+        [
+            {
+                "appId" : "a0000000871002fffff00189000001ff",
+                "appState" : 5,
+                "appType" : 2
+            },
+            {
+                "appId" : "a0000000871004f310ffff89080000ff",
+                "appState" : 5,
+                "appType" : 5
+            },
+            {
+                "appId" : "a000000063504b43532d3135",
+                "appState" : 1,
+                "appType" : 0
+            }
+        ],
+        "getState" :
+        {
+            "cardState" : 1
+        },
+        "openLogicalChannel" :
+        {
+            "isOpen" : false,
+            "onChannelResponseChannel" : 3
+        },
+        "setCardLock" :
+        {
+            "fdnState" : true,
+            "isPin1Available" : false,
+            "isPin2Available" : true
+        },
+        "setCardPower" :
+        {
+            "cardPowerState" : true
+        },
+        "transmitApduBasicChannel" :
+        {
+            "onChannelResponseData" : "255 255 45 67 55 56 89 67 90 10 ",
+            "onChannelResponsePayload" : "ffff2d43373859435aa",
+            "onChannelResponseSw1" : 144,
+            "onChannelResponseSw2" : 0
+        },
+        "transmitApduLogicalChannel" :
+        {
+            "onChannelResponseData" : "255 255 45 67 55 56 89 67 90 10 ",
+            "onChannelResponsePayload" : "ffff2d43373859435aa",
+            "onChannelResponseSw1" : 144,
+            "onChannelResponseSw2" : 0
+        },
+        "exchangeSimIO" :
+        {
+            "onChannelResponseData" : "255 255 45 67 55 56 89 67 90 10 ",
+            "onChannelResponsePayload" : "ffff2d43373859435aa",
+            "onChannelResponseSw1" : 144,
+            "onChannelResponseSw2" : 0
+        },
+        "requestEid" :
+        {
+            "eid" : "711111"
+        },
+        "unlockCardByPuk" :
+        {
+            "retryCountPin1" : 10,
+            "retryCountPin2" : 10
+        },
+        "isNtnProfileActive" :
+        {
+            "state" : false
+        }
+    }
+}

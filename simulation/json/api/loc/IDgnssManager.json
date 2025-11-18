@@ -1,0 +1,17 @@
+{
+    "IDgnssManager": {
+        "DefaultCallbackDelay": 400,
+        "SubSystemInit": true,
+        "SubSystemStatus" : "AVAILABLE",
+        "SubSystemReadinessDelay": 500,
+		"createSource": {
+			"status": "SUCCESS"
+		},
+		"releaseSource": {
+			"status": "SUCCESS"
+		},
+		"injectCorrectionData": {
+			"status": "SUCCESS"
+		}
+    }
+}

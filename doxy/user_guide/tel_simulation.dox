@@ -1,0 +1,506 @@
+/**
+@page tel_simulation Telephony Simulation
+<br>
+- - -
+@section tel_overview Overview of Telephony Simulation
+- - -
+This page and the sub-pages provide information about usage of simulation for the telephony
+sub-system that are part of the telux::tel namespace of the Telematics SDK.
+
+@anchor fig_tel_sim_overview
+@latexonly
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.50]{simulation_telephony_overview.PNG}
+  \renewcommand{\thefigure}{\thechapter-\arabic{figure}}
+  \caption{Telephony Simulation Framework}
+  \label{fig_tel_sim_overview}
+\end{figure}
+@endlatexonly
+
+@html_image{simulation_telephony_overview.png,"",50,50,Telephony Simulation Framework}
+
+<br>
+- - -
+@section tel_files APIs supported by the Simulation framework
+- - -
+
+-SMS: ISmsManager,ISmsListener, ISmscAddressCallback, SmsMessage<br>
+-Card: ICardApp, ICardFileHandler, ICardManager, ICardListener, ICard<br>
+-Subscription: ISubscriptionManager, ISubscriptionListener, ISubscription<br>
+-Phone: IPhoneManager, IPhone, IPhoneListener <br>
+-Call: ICallManager, ICallListener, ICall <br>
+-ServingSystem: IServingSystemManager, IServingSystemListener <br>
+-ImsSettings: IImsSettingsManager, IImsSettingsListener <br>
+
+<br>
+- - -
+@section tel_resp Telephony APIs Response handling
+- - -
+
+@subsection tel_Sms SMS
+
+The framework allows responses to each API to be configured using a JSON file.<br>
+Each manager has its own JSON configuration file present under <i>simulation/json/api/tel/</i> <br>
+
+Example for API command response for telux::tel::ISmsManager::SendSms<br>
+<pre>
+"SendSms" :
+    [
+        {   "numberOfSegments" : 2,
+            "status" : "SUCCESS"
+        },
+        {
+            "smsResponseCbErrorCode" : "SUCCESS",
+            "smsResponseCbDelay" : 9000,
+            "smsResponseCbMsgRefs" : "1 2"
+        },
+        {
+            "onDeliveryReportErrorCode" : "SUCCESS",
+            "onDeliveryReportMsgRef" : 1,
+            "onDeliveryReportCallbackDelay" : 12000
+        },
+        {
+            "onDeliveryReportErrorCode" : "SUCCESS",
+            "onDeliveryReportMsgRef" : 2,
+            "onDeliveryReportCallbackDelay" : 12000
+        }
+    ]
+</pre>
+Here, clients are expected to provide the inputs for JSON attributes of API according to an encoded message.
+<br>
+The table explains the configuration for API response parameters of <i>simulation/json/api/tel/ISmsManagerSlot1.json and simulation/json/api/tel/ISmsManagerSlot2.json</i>.
+@table{2,{\raggedright}p{2.00in},{\raggedright}p{4.80in}}
+@trfirsthdg
+@thmultcol{1,|c|} Json Attribute @thmultcolend @thmultcollast{1,c|} Description @thmultcollastend
+@trfirsthdgend
+@trhdg
+@thdg{1,|c|,Json Attribute} @thdglast{1,c|,Description}
+@trhdgend
+
+@tr @td numberOfSegments @tdend @tdlast Signifies number of segments present in encoded message. @tdlastend @trend
+@tr @td status @tdend @tdlast Status of request. @tdlastend @trend
+@tr @td sentCallbackErrorCode, smsResponseCbErrorCode @tdend @tdlast Response callback errorcode. @tdlastend @trend
+@tr @td sentCallbackDelay, smsResponseCbDelay @tdend @tdlast Response callback delay. @tdlastend @trend
+@tr @td sentCallbackMsgRefs, smsResponseCbMsgRefs @tdend @tdlast Add reference number for every message segment according to numberOfSegments with one space between the digits. @tdlastend @trend
+@tr @td deliveryCallbackErrorCode @tdend @tdlast Delivery report for individual segment is invoked using delivery callback error @tdlastend @trend
+@tr @td deliveryCallbackDelay, onDeliveryReportCallbackDelay @tdend @tdlast Delivery report for individual segment is invoked using delivery callback delay. @tdlastend @trend
+@tr @td onDeliveryReportErrorCode @tdend @tdlast Delivery callback errorcode. @tdlastend @trend
+@tr @td onDeliveryReportMsgRef @tdend @tdlast Delivery report for message reference of a segment. @tdlastend @trend
+@tr @td receiverAddress @tdend @tdlast Input receiver address according to encoded pdu. @tdlastend @trend
+
+@tableend
+
+<br>
+
+@subsection tel_Call Call
+
+Currently the simulation framework supports outgoing, incoming voice calls and regulatory ECalls.It provides the flexibility to configure ECall HLAP timer failures maintained by NAD device.
+Support for conference calls will be added in upcoming releases.
+
+Details of parameters that can be configured in the Simulation framework. <br>
+
+- "configureFailureForRegulatoryECall" : To configure ECall HLAP timer expiry. <br>
+Supported Values: SUCCESS, T5FAILED, T6FAILED , T7FAILED. <br>
+<br>
+ -SUCCESS: Successful behavior during an eCall.<br>
+   <br>
+ -T5FAILED: This configuration would lead to expiry of T5 timer. The simulation framework depicts that SEND-MSD signal is not decoded successfully by PSAP so it shall terminate eCall specific behaviour (i.e. it shall not proceed with the sending of MSD data).<br>
+   When it is configured, T5 timer's timeout is set to 5 sec as per EN 16062:2015. <br>
+   <br>
+ -T6FAILED: This configuration would lead to expiry of T6 timer. The simulation framework depicts that AL-ACK message is not recieved by IVS-NAD so it shall mark the transfer of the MSD as unsuccessful and terminate eCall specific behaviour. <br>
+   When it is configured, T6 timer's timeout is set to 5 sec as per EN 16062:2015. <br>
+   <br>
+ -T7FAILED: This configuration would lead to expiry of T7 timer. The simulation framework depicts that LL-ACK message is not recieved by IVS-NAD so it shall mark the transfer of the MSD as unsuccessful and terminate eCall specific behaviour. <br>
+   Timer can be configured using telux::tel::ICallManager::getECallConfig(EcallConfig::t7Timer). <br>
+
+- "eCallType" : To configure service domain for regulatory ECall.  <br>
+Supported Values: NGeCall , CSeCall. <br>
+
+These parameters can be configured via <i> simulation/json/api/tel/ICallManagerSlot1.json and simulation/json/api/tel/ICallManagerSlot2.json</i> . <br>
+
+- - -
+@section tel_states Telephony data handling
+- - -
+
+@subsection tel_Card Card
+
+Details of parameters currently configured in the Simulation framework to perform pin operations. <br>
+
+- "Pin1password" : "1234"  - Password for PIN1 operations for public APIs changeCardPassword, unlockCardByPin, changeCardPassword.<br>
+- "Pin2password" : "5678" - Password for PIN2 operations for public API changeCardPassword, unlockCardByPin, changeCardPassword.<br>
+- "Puk1password" : 11111111 - Password for puk1 for public API unlockCardByPuk.<br>
+- "Puk2password" : 22222222 - Password for puk2 for public API unlockCardByPuk.<br>
+
+file: <i>simulation/json/system-state/tel/ICardManagerStateSlot1.json and simulation/json/system-state/tel/ICardManagerStateSlot2.json</i> <br>
+
+@subsubsection tel_Cardfiles Details of supported apps, EF files, and records
+
+
+All the EF files are considered to be present at same file structure directory of simulated SIM files.<br>
+User input for filepaths provided using APIs present under telux::tel::ICardFileHandler is not validated in the simulation library.<br>
+<h3>ADF files</h1>
+@table{4,{\raggedright}p{2.20in},{\raggedright}p{0.60in},{\raggedright}p{2.00in},{\raggedright}p{2.00in}}
+@trfirsthdg
+@thmultcol{1,|c|} AppId @thmultcolend @thmultcol{1,c|} AppType @thmultcolend @thmultcol{1,c|} Transparent EFs @thmultcolend @thmultcol{1,c|} Linear Fixed EFs @thmultcollastend
+@trfirsthdgend
+@trhdg
+@thdg{1,|c|,AppId} @thdg{1,c|,AppType} @thdg{1,c|,Transparent EFs} @thdglast{1,c|,Linear Fixed EFs}
+@trhdgend
+
+@tr @td a0000000871004f310ffff89080000ff @tdend @td ISIM  @tdend @td File Id 1234, 5648 @tdend @tdlast File Id 1234 , No of records 3 @tdlastend @trend
+@tr @td a000000063504b43532d3135 @tdend @td Unknown  @tdend @td No files present @tdend @tdlast File Id 1234 , No of records 3 @tdlastend @trend
+@tr @td a0000000871002fffff00189000001ff @tdend @td USIM  @tdend @td File Id 1234, 5648, 7777 @tdend @tdlast File Id 1234 , No of records 3 File Id 5678 , No of records 1 File Id 7676 , No of records 4 @tdlastend @trend
+@tableend
+
+<h3>DF files</h1>
+@table{2,{\raggedright}p{2.00in},{\raggedright}p{2.00in}}
+@trfirsthdg
+@thmultcol{1,|c|} Transparent EFs @thmultcolend @thmultcol{1,c|} Linear Fixed EFs @thmultcollastend
+@trfirsthdgend
+@trhdg
+@thdg{1,|c|,Transparent EFs} @thdglast{1,c|,Linear Fixed EFs}
+@trhdgend
+
+@tr @td File Id 3456 , File Id 5666 @tdend @tdlast File Id 1234 , No of records 3, File Id 5678 , No of records 1 @tdlastend @trend
+@tableend
+
+Note: Data stored in every record of Linear fixed EF file should be of same length.<br>
+
+@subsection tel_phone Phone
+
+Currently, the simulation framework supports the APIs for <i>telux::tel::IPhoneManager</i> and <i>telux::tel::IPhone</i> using the canned response configured in the JSON file: <i>simulation/json/api/tel/IPhoneManagerSlot*.json</i>, and events are injected through the event-injector utility using the JSON file: <i>simulation/json/Events.json</i>. When using events related to the phone, refer to <i>Events.json</i> and look for events under <i>tel_phone</i>.
+
+Performing operations such as setting the operating mode (<i>telux::tel::IPhoneManager::setOperatingMode</i> API) on the target can have system-level impact, which could alter the response of other APIs within the same class or different classes, such as getting signal strength (<i>telux::tel::IPhone::requestSignalStrength</i> API), etc. Currently, this behavior is not implemented in entirety, but it will be in future releases.
+
+Note: Some APIs, such as <i>telux::tel::PhoneManager::requestCellularCapabilityInfo</i> and <i>telux::tel::PhoneManager::requestOperatingMode</i>, provide device-specific information and are not specific to a particular subscription/slot. For these APIs, the JSON configuration is defined only in <i>simulation/json/api/tel/IPhoneManagerStateSlot1.json</i> pertaining to the first slot.
+
+@subsection tel_serving_system Serving system
+
+Currently, the simulation framework supports the APIs for <i>telux::tel::IServingSystemManager</i> using the canned response configured in the JSON file: <i>simulation/json/api/tel/IServingSystemSlot*.json</i>, and events are injected through the event-injector utility using the JSON file: <i>simulation/json/Events.json</i>. When using events related to the serving system, refer to <i>Events.json</i> and look for events under <i>tel_serv</i>.
+
+Performing operations such as setting the RAT mode preference or service domain preference (<i>telux::tel::IServingSystemManager::setRatPreference</i> API or <i>telux::tel::IServingSystemManager::setServiceDomainPreference</i> API) on the target can have system-level impact, which could alter the response of other APIs within the same class or different classes, such as getting signal strength notifications or change of current serving RAT etc. Currently, this behavior is not implemented, but it will be in future releases.
+<br>
+- - -
+@section tel_events Telephony event handling
+- - -
+
+@subsection event_1 Incoming SMS
+To simulate an incoming SMS, event injector is used by providing the inputs of encoded and decoded attributes of a message.<br>
+The client is expected to construct all the members of <i>telux::tel::SmsMessage</i> and send the message segment using event injector.<br>
+Simulation framework maintains the database to store the message attributes of an incoming SMS.<br>
+
+<b>Sample input:</b><br>
+Segment-1 of multipart message:<br>
+\code{.sh}
+telsdk_event_injector -f tel_sms -e incomingsms 1 2 1 1 GSM7 1 07918185690700F0240B918189486537F300003280126063128A0F54741934AFBB41F2F4BC3C07A501 +18988456733 The sun rises i
+\endcode
+<br>
+Segment-2 of multipart message:<br>
+\code{.sh}
+telsdk_event_injector -f tel_sms -e incomingsms 1 2 1 2 GSM7 1 07918185690700F0240B918189486537F300003280126014208A0A6E101D5D0695C3733A +18988456733 n the east
+\endcode
+
+- Incoming SMS will be stored on the simulation server only when the preferred storage type is set to SIM.
+- It can be changed using <i>telux::tel::ISmsManager::setPreferredStorage</i>
+- Memory full indication ( <i>telux::tel::ISmsListener::onMemoryFull</i> ) will be sent to all the clients when the messages count on
+  the simulation server exceeds the defined count specified in <i>simulation/json/api/tel/ISmsManagerSlot1.json and simulation/json/api/tel/ISmsManagerSlot2.json</i>
+<pre>
+"requestStorageDetails" :
+{
+    "requestStorageDetailsCb_maxCount" : 10
+}
+</pre>
+\htmlonly
+<BR>
+\endhtmlonly
+<br>
+
+@subsection event_2 Update subscription information
+The event injector allows you to inject event for subscription information change.
+
+<b>Sample input:</b><br>
+\code{.sh}
+telsdk_event_injector -f tel_sub -e subscriptionInfoChanged 1 Carrier-1 8984653739 89010020000011293999 310 11 310018984653739 ffffffffffffffff ffffffffffffffff
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+<br>
+
+@subsection event_3 Update cell information list
+The event injector allows you to inject event for cell information change related to current cell and neighboring cells.
+
+Sample: <i>telsdk_event_injector -f tel_phone -e cellInfoListUpdate <slotId> ,<cellType1> <isRegistered> <p1> <p2> <p3> <....> ,<cellType2> <isRegistered> <p1> <p2> <p3> <....></i><br>
+
+<i>Note:</i> Cell information is separated by commas.
+
+- **slotId:** An integer representing valid slotIds, which are 1 and 2 only.
+- **cellType:** An integer representing valid cellTypes. The supported types are:-
+ - GSM - 1
+ - LTE - 3
+ - WCDMA - 4
+ - NR5G - 6
+ - (CDMA and TDSCDMA are not supported)
+- **isRegistered:** An integer indicating whether the cell is registered or not. Valid values are 1 (registered) or 0 (not registered).<br>
+
+Refer below for configuring different cells with their respective attributes in the same pre-determined order:-
+
+- **GSM cell info:**
+ - <cellType> <isRegistered> <p1-MCC> <p2-MNC> <p3-LAC> <p4-CID> <p5-ARFCN> <p6-BSIC> <p7-Signal Strength> <p8-Bit Error Rate>
+- **WCDMA cell info:**
+ - <cellType> <isRegistered> <p1-MCC> <p2-MNC> <p3-LAC> <p4-CID> <p5-PSC> <p6-UARFCN> <p7-Signal Strength> <p8-Bit Error Rate> <p9-ECIO> <p10-RSCP>
+- **LTE cell info:**
+ - <cellType> <isRegistered> <p1-MCC> <p2-MNC> <p3-CI> <p4-PCI> <p5-TAC> <p6-EARFCN> <p7-Signal Strength> <p8-RSRP> <p9-RSRQ> <p10-RSSNR> <p11-CQI> <p12-Timing Advance>
+- **NR5G cell info:**
+ - <cellType> <isRegistered> <p1-MCC> <p2-MNC> <p3-CI> <p4-PCI> <p5-TAC> <p6-ARFCN> <p7-RSRP> <p8-RSRQ> <p9-RSSNR>
+
+Please note that CDMA and TDSCDMA are deprecated.<br>
+
+<b>Sample input:</b>
+\code{.sh}
+telsdk_event_injector -f tel_phone -e "cellInfoListUpdate 1 ,1 1 310 00 70 81 10 1 28 5,4 0 311 00 70 81 10 1 30 3 -10 -54,3 0 312 00 10 11 13 14 23 -50 -5 200 13 11,6 0 313 00 10 20 30 40 -50 15 300"
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+<br>
+
+@subsection event_4 Update signal strength information
+The event injector allows you to inject event for signal strength change with different RATs.
+
+Sample: <i>telsdk_event_injector -f tel_phone -e signalStrengthUpdate <slotId> ,<Rat1> <p1> <p2> <p3> <...> ,<Rat2> <p1> <p2> <p3> <...></i><br>
+
+<i>Note:</i> Similarly to cell info updates, the signal strength event with different RATs is separated by commas.
+
+- **RAT:** A string representing the RAT type. RAT is used for retrieving Signal Strength information. Valid values are GSM, LTE, WCDMA, and NR5G.
+
+Refer below for configuring different RAT signal strength with their respective attributes in the same pre-determined order:-
+
+- **GSM:** Use the following parameters:
+ - p1 - Signal Strength
+ - p2 - Bit Error Rate
+
+- **LTE:** Use the following parameters:
+ - p1 - Signal Strength
+ - p2 - RSRP
+ - p3 - RSRQ
+ - p4 - RSSNR
+ - p5 - CQI
+ - p6 - Timing Advance
+
+- **WCDMA:** Use the following parameters:
+ - p1 - Signal Strength
+ - p2 - Bit Error Rate
+ - p3 - ECIO
+ - p4 - RSCP
+
+- **NR5G:** Use the following parameters:
+ - p1 - RSRP
+ - p2 - RSRQ
+ - p3 - RSSNR
+
+Please note that CDMA and TDSCDMA are deprecated.<br>
+
+<b>Sample input:</b>
+\code{.sh}
+telsdk_event_injector -f tel_phone -e "signalStrengthUpdate 1 ,GSM 28 3 ,WCDMA 29 6 -10 -54,LTE 23 -50 -5 200 13 11 ,NR5G -50 -15 300"
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+<br>
+
+@subsection event_5 Trigger an incoming call
+To simulate ICallManager event - telux::tel::ICallListener::onIncomingCall<br>
+Sample input:<br>
+\code{.sh}
+telsdk_event_injector -f tel_call -e incomingCall 1 999999999
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+@subsection event_6 Hangup a voice call or an eCall
+Sample input:<br>
+\code{.sh}
+telsdk_event_injector -f tel_call -e hangupCall 1 1
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+@subsection event_7 Request to update Minimum Set of Data (MSD) for an eCall
+To simulate ICallManager event - telux::tel::ICallListener::OnMsdUpdateRequest<br>
+Sample input:<br>
+\code{.sh}
+telsdk_event_injector -f tel_call -e msdUpdateRequest 1
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+
+@subsection event_8 Trigger an modification request to change the call from a normal voice call to
+a real time text (RTT) call.
+To simulate ICallManager event - telux::tel::ICallListener::onModifyCallRequest<br>
+Sample input:<br>
+\code{.sh}
+telsdk_event_injector -f tel_call -e modifyCallRequest 1 1
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+@subsection event_9 Trigger an event to send RTT message from a remote party
+To simulate ICallManager event - telux::tel::ICallListener::onRttMessage<br>
+Sample input:<br>
+\code{.sh}
+telsdk_event_injector -f tel_call -e rttMessageRequest 1 GoodDay
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+@subsection event_10 Update RAT preference and service domain preference
+To simulate IServingSystemManager event - telux::tel::IServingSystemListener::onRatPreferenceChanged
+and telux::tel::IServingSystemListener::onServiceDomainPreferenceChanged <br>
+
+Command: <i>telsdk_event_injector -f tel_serv -e systemSelectionPreferenceUpdate <slotId> <serviceDomainPreference> <ratPreferences></i> <br>
+<b>Parameters of event injector command:</b> <br>
+ - slotId: valid slotIds are 1 & 2 only<br>
+ - serviceDomainPreference: valid integer value is filled as per telux::tel::ServiceDomainPreference<br>
+ - ratPreferences: valid integer value is filled as per telux::tel::RatPrefType<br>
+example - ratPreferences input is 012 for RAT preference PREF_CDMA_1X , PREF_CDMA_EVDO and PREF_GSM<br>
+
+Sample input:<br>
+\code{.sh}
+telsdk_event_injector -f tel_serv -e systemSelectionPreferenceUpdate 1 0 012
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+@subsection event_11 Update current system information<br>
+To simulate IServingSystemManager event - telux::tel::IServingSystemListener::onSystemInfoChanged
+and telux::tel::IServingSystemListener::onDcStatusChanged <br>
+
+Command: <i>telsdk_event_injector -f tel_serv -e systemInfoUpdate <slotId> <currentServingRat> <currentServingDomain> <endcAvailability> <dcnrRestriction></i> <br>
+<b>Parameters of event injector command:</b> <br>
+ - slotId: valid slotIds are 1 & 2 only<br>
+ - currentServingRat: valid integer value is filled as per telux::tel::RadioTechnology <br>
+ - currentServingDomain: valid integer value is filled as per telux::tel::ServiceDomain <br>
+ - endcAvailability: valid integer value is filled as per telux::tel::endcAvailability <br>
+ - dcnrRestriction: valid integer value is filled as per telux::tel::dcnrRestriction <br>
+
+Sample input:<br>
+\code{.sh}
+telsdk_event_injector -f tel_serv -e systemInfoUpdate 1 16 3 0 1
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+@subsection event_12 Update network time information<br>
+To simulate IServingSystemManager event - telux::tel::IServingSystemListener::onNetworkTimeChanged <br>
+
+Command: <i>telsdk_event_injector -f tel_serv -e networkTimeUpdate <slotId> <year> <month> <day> <hour> <minute> <second> <dayOfWeek> <timeZone> <dstAdj> <nitzTime></i> <br>
+<b>Parameters of event injector command:</b> <br>
+ - slotId:    valid slotIds are 1 & 2 only<br>
+ - year:      valid integer value is filled as per telux::tel::NetworkTimeInfo <br>
+ - month:     valid integer value is filled as per telux::tel::NetworkTimeInfo<br>
+ - day:       valid integer value is filled as per telux::tel::NetworkTimeInfo<br>
+ - hour:      valid integer value is filled as per telux::tel::NetworkTimeInfo<br>
+ - minute:    valid integer value is filled as per telux::tel::NetworkTimeInfo<br>
+ - second:    valid integer value is filled as per telux::tel::NetworkTimeInfo<br>
+ - dayOfWeek: valid integer value is filled as per telux::tel::NetworkTimeInfo<br>
+ - timeZone:  valid integer value is filled as per telux::tel::NetworkTimeInfo<br>
+ - dstAdj:    valid integer value is filled as per telux::tel::NetworkTimeInfo<br>
+ - nitzTime:  valid string value is filled as per telux::tel::NetworkTimeInfo<br>
+
+Sample input:<br>
+\code{.sh}
+telsdk_event_injector -f tel_serv -e networkTimeUpdate 1 2004 08 01 06 11 23 8 3444 2024/01/12
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+@subsection event_13 Update RF band information<br>
+To simulate IServingSystemManager event - telux::tel::IServingSystemListener::onRFBandInfoChanged <br>
+
+Command: <i>telsdk_event_injector -f tel_serv -e rFBandInfoUpdate <slotId> <band> <channel> <bandWidth></i> <br>
+<b>Parameters of event injector command:</b> <br>
+ - slotId:    valid slotIds are 1 & 2 only<br>
+ - band:      valid integer value is filled as per telux::tel::RFBand<br>
+ - channel:   valid integer value is filled as per telux::tel::RFBandInfo<br>
+ - bandWidth: valid integer value is filled as per telux::tel::RFBandWidth<br>
+
+Sample input:<br>
+\code{.sh}
+telsdk_event_injector -f tel_serv -e rFBandInfoUpdate 1 86 88 23
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+@subsection event_14 Trigger network registration rejection<br>
+To simulate IServingSystemManager event - telux::tel::IServingSystemListener::onNetworkRejection <br>
+
+Command: <i>telsdk_event_injector -f tel_serv -e networkRejectionUpdate <slotId> <rejectSrvInfoRat> <rejectSrvInfoDomain> <rejectCause> <mcc> <mnc></i> <br>
+<b>Parameters of event injector command:</b> <br>
+ - slotId:    valid slotIds are 1 & 2 only<br>
+ - rejectSrvInfoRat :    valid integer value is filled as per telux::tel::ServingSystemInfo<br>
+ - rejectSrvInfoDomain : valid integer value is filled as per telux::tel::ServingSystemInfo<br>
+ - rejectCause :         valid integer value is filled as per telux::tel::NetworkRejectInfo<br>
+ - mcc :                 valid string value is filled as per telux::tel::NetworkRejectInfo<br>
+ - mnc :                 valid string value is filled as per telux::tel::NetworkRejectInfo<br>
+Sample input:<br>
+\code{.sh}
+telsdk_event_injector -f tel_serv -e networkRejectionUpdate 1 14 2 1 810 10
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+@subsection event_15 Trigger IMS service configuration<br>
+To simulate IImsSettingsManager event - telux::tel::IImsSettingsListener::onImsServiceConfigsChange <br>
+
+Command: <i>telsdk_event_injector -f tel_ims_setting -e imsServiceConfigsUpdate <slotId> <imsServiceEnabled> <voImsEnabled> <smsEnabled> <rttEnabled></i> <br>
+<b>Parameters of event injector command:</b> <br>
+ - slotId:                valid slotIds are 1 & 2 only<br>
+ - imsServiceEnabled:     default value is 0, valid integer value is filled as per telux::tel::ImsServiceConfig<br>
+ - voImsEnabled:          default value is 0, valid integer value is filled as per telux::tel::ImsServiceConfig<br>
+ - smsEnabled:            default value is 0, valid integer value is filled as per telux::tel::ImsServiceConfig<br>
+ - rttEnabled:            default value is 0, valid integer value is filled as per telux::tel::ImsServiceConfig<br>
+Sample input:<br>
+\code{.sh}
+telsdk_event_injector -f tel_ims_setting -e imsServiceConfigsUpdate 1 1 1 1 0
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+@subsection event_16 Trigger IMS sip user agent<br>
+To simulate IImsSettingsManager event - telux::tel::IImsSettingsListener::onImsSipUserAgentChange <br>
+Command: <i>telsdk_event_injector -f tel_ims_setting -e imsSipUserAgentUpdate <slotId> <sipUserAgent></i> <br>
+- slotId:                valid slotIds are 1 & 2 only<br>
+- sipUserAgent:          default, it is not configured, valid string sip user agent(i.e. SA525M_LE_XXX)<br>
+Sample input:<br>
+\code{.sh}
+telsdk_event_injector -f tel_ims_setting -e imsSipUserAgentUpdate 1 sa525m_le_3.0
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+<br>
+
+- - -
+@section tel_linm Additional Notes
+- - -
+
+Currently, the simulation behavior for Telephony is as follows:-
+1. Support for encoding of text messages provided by the client for <i>telux::tel::ISmsManager::sendSms</i> will be added in future releases.
+2. Support for subsystem restart notifications provided using <i>telux::common::IServiceStatusListener::onServiceStatusChange</i> will be added in future releases.
+<br>
+*/

@@ -1,0 +1,19 @@
+Setting Wlan mode via telux::wlan::IWlanDeviceManager::setMode API configures Wlan subsystem for
+enabled number of AP and Sta. Each enabled AP/Sta will have assigned telux::wlan::Id.
+
+First enabled AP will get telux::wlan::Id::PRIMARY, second enabled AP will get
+telux::wlan::Id::SECONDARY, and so on.
+Similarly, the first enabled Sta will get telux::wlan::Id::PRIMARY and second enabled Sta will get
+telux::wlan::Id::SECONDARY, and so on.
+
+Depending on whether Sta is enabled (number of enabled Sta is not 0) or not, each enabled
+AP/Sta will get its settings from configuration files listed below:
+
+If Stan mode is not enabled, AP configuration files are located at:
+    AP telux::wlan::Id::PRIMARY      /etc/misc/wifi/hostapd.conf
+    AP telux::wlan::Id::SECONDARY    /etc/misc/wifi/hostapd-wlan1.conf
+    AP telux::wlan::Id::TERTIARY     /etc/misc/wifi/hostapd-wlan2.conf
+If Sta mode is enabled, configuration files are located at:
+    STA telux::wlan::Id::PRIMARY     /etc/misc/wifi/wpa_supplicant.conf
+    AP telux::wlan::Id::PRIMARY      /etc/misc/wifi/sta_mode_hostapd.conf
+    AP telux::wlan::Id::SECONDARY    /etc/misc/wifi/hostapd-wlan2.conf

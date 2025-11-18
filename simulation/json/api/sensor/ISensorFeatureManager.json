@@ -1,0 +1,16 @@
+{
+    "ISensorFeatureManager": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 500,
+        "DefaultCallbackDelay": 400,
+        "enableFeature":{
+            "status": "SUCCESS"
+        },
+        "disableFeature":{
+            "status": "SUCCESS"
+        },
+        "getAvailableFeatures":{
+            "status": "SUCCESS"
+        }
+    }
+}

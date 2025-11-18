@@ -1,0 +1,276 @@
+{
+    "IPhoneManager" :
+    {
+        "cellularCapabilityInfo" :
+        {
+            "voiceTech" : ["GW_CSFB", "VOLTE"],
+            "simCount" : 2,
+            "maxActiveSims" : 2,
+            "SimRATCapabilities" :
+            [
+                {
+                    "slotId" : 1,
+                    "capabilities" : ["GSM", "WCDMA", "LTE", "NR5G", "NR5GSA"]
+                },
+                {
+                     "slotId" : 2,
+                     "capabilities" : ["GSM", "WCDMA", "LTE", "NR5G", "NR5GSA", "NB1_NTN"]
+                }
+            ],
+            "DeviceRATCapabilities" :
+            [
+                {
+                    "slotId" : 1,
+                    "capabilities" : ["GSM", "WCDMA", "LTE", "NR5G", "NR5GSA", "NB1_NTN"]
+                },
+                {
+                     "slotId" : 2,
+                     "capabilities" : ["GSM", "WCDMA", "LTE", "NR5G", "NR5GSA", "NB1_NTN"]
+                }
+            ]
+        },
+
+        "operatingModeInfo" :
+        {
+            "operatingMode" : 0
+        },
+
+        "voiceServiceStateInfo" :
+        {
+            "voiceServiceState" : 1,
+            "voiceServiceDenialCause" : 17,
+            "radioTech" : 14
+        },
+
+        "radioPowerState" :
+        {
+            "enable" : true
+        },
+
+        "cellInfo" :
+        {
+            "cellList" :
+            [
+                {
+                    "cellType" : 3,
+                    "registered" : 1,
+                    "gsmCellInfo":
+                    {
+                        "gsmCellIdentity" :
+                        {
+                            "mcc" : "310",
+                            "mnc" : "01",
+                            "lac" : 701,
+                            "cid" : 81,
+                            "arfcn" : 93,
+                            "bsic" : -1
+                        },
+                        "gsmSignalStrengthInfo" :
+                        {
+                            "gsmSignalStrength" : 2147483647,
+                            "gsmBitErrorRate" : 2147483647
+                        }
+                    },
+                    "wcdmaCellInfo" :
+                    {
+                        "wcdmaCellIdentity" :
+                        {
+                            "mcc" : "310",
+                            "mnc" : "01",
+                            "lac" : 702,
+                            "cid" : 36372561,
+                            "psc" : 81,
+                            "uarfcn" : 9800
+                        },
+                        "wcdmaSignalStrengthInfo" :
+                        {
+                            "signalStrength" : 2147483647,
+                            "bitErrorRate" : 2147483647,
+                            "ecio" : 2147483647,
+                            "rscp" : 2147483647
+                        }
+                    },
+                    "lteCellInfo" :
+                    {
+                        "lteCellIdentity" :
+                        {
+                            "mcc" : "310",
+                            "mnc" : "01",
+                            "ci" : 78849,
+                            "pci" : 411,
+                            "tac" : 702,
+                            "earfcn" : 400
+                        },
+                        "lteSignalStrengthInfo" :
+                        {
+                            "lteSignalStrength" : 31,
+                            "lteRsrp" : -83,
+                            "lteRsrq" : -10,
+                            "lteRssnr" : 29,
+                            "lteCqi" : 2147483647,
+                            "timingAdvance" : 1
+                        }
+                    },
+                    "nr5gCellInfo" :
+                    {
+                        "nr5gCellIdentity" :
+                        {
+                            "mcc" : "310",
+                            "mnc" : "01",
+                            "ci" :  5111814,
+                            "pci" : 605,
+                            "tac" : 101,
+                            "arfcn" : 152890
+                        },
+                        "nr5gSignalStrengthInfo" :
+                        {
+                            "rsrp" : 2147483647,
+                            "rsrq" : 2147483647,
+                            "rssnr" : 2147483647
+                        }
+                    },
+                    "nb1NtnCellInfo" :
+                    {
+                        "nb1NtnCellIdentity" :
+                        {
+                            "mcc" : "310",
+                            "mnc" : "01",
+                            "ci" : 78849,
+                            "tac" : 702,
+                            "earfcn" : 400
+                        },
+                        "nb1NtnSignalStrengthInfo" :
+                        {
+                            "signalStrength" : 2147483647,
+                            "rsrp" : 2147483647,
+                            "rsrq" : 2147483647,
+                            "rssnr" : 2147483647
+                        }
+                    }
+                }
+            ]
+        },
+
+        "cellInfoListRate" :
+        {
+            "timeInterval" : 1
+        },
+
+        "signalStrengthInfo" :
+        {
+            "gsmSignalStrengthInfo" :
+            {
+                "gsmSignalStrength" : 2147483647,
+                "gsmBitErrorRate" : 2147483647
+            },
+            "wcdmaSignalStrengthInfo" :
+            {
+                "signalStrength" : 2147483647,
+                "bitErrorRate" : 2147483647,
+                "ecio" : 2147483647,
+                "rscp" : 2147483647
+
+            },
+            "lteSignalStrengthInfo" :
+            {
+                "lteSignalStrength" : 31,
+                "lteRsrp" : -83,
+                "lteRsrq" : -10,
+                "lteRssnr" : 29,
+                "lteCqi" : 2147483647,
+                "timingAdvance" : 1
+            },
+            "nr5gSignalStrengthInfo" :
+            {
+                "rsrp" : 2147483647,
+                "rsrq" : 2147483647,
+                "rssnr" : 2147483647
+            },
+            "nb1NtnSignalStrengthInfo" :
+            {
+                "signalStrength" : 2147483647,
+                "rsrp" : 2147483647,
+                "rsrq" : 2147483647,
+                "rssnr" : 2147483647
+            }
+        },
+
+        "eCallOperatingMode" :
+        {
+            "ecallMode" : 0,
+            "ecallModeReason" : 0
+        },
+
+        "operatorNameInfo" :
+        {
+            "longName" : "Operator1",
+            "shortName" : "Operator1",
+            "plmn" : "plmn1",
+            "home" : true
+        },
+
+        "configureSignalStrengthInfo" :
+        [
+           {
+               "radioSignalType" : 4,
+               "configType"      : 1,
+               "delta"           : 50
+           },
+           {
+               "radioSignalType" : 5,
+               "configType"      : 1,
+               "delta"           : 50
+           }
+        ],
+
+        "serviceStateInfo" :
+        {
+            "serviceState" : 1
+        },
+
+        "voiceRatInfo" :
+        {
+            "rat" : 14
+        },
+
+        "configureSignalStrengthExInfo" :
+        {
+           "configureSignalStrengthExInfoList" :
+           [
+              {
+                  "radioTech"         : 14,    /* Refer telux::tel::RadioTechnology for more
+                                                  details. */
+                  "configExType"      : [ 1 ], /* Refer telux::tel::SignalStrengthConfigExType
+                                                  for more details. */
+                  "sigMeasType"       : 0,     /* Refer telux::tel::SignalStrengthMeasurementType
+                                                  for more details. */
+                  "delta"             : 50     /* Refer telux::tel::SignalStrengthConfigData::delta
+                                                  for more details. */
+               },
+               {
+                  "radioTech"         : 10,    /* Refer telux::tel::RadioTechnology for more
+                                                  details. */
+                  "configExType"      : [ 2, 3 ], /* Refer telux::tel::SignalStrengthConfigExType
+                                                  for more details. */
+
+                  "sigMeasType"       : 0,     /* Refer telux::tel::SignalStrengthMeasurementType
+                                                  for more details. */
+
+                  "thresholdList"     : [-1130, -1040, -940, -840],
+                                               /* Refer telux::tel::SignalStrengthConfigData::
+                                                  thresholdList for more details. */
+                  "hysteresisDb"      : 50     /* Refer telux::tel::SignalStrengthConfigData::
+                                                  hysteresisDb for more details. */
+               }
+           ],
+           "hysteresisMs"             : 0     /* Refer telux::tel::configureSignalStrength API
+                                                 for hysteresisMs. */
+        },
+        "lastNotificationInfo" :
+        {
+           "ssNotificationTimeStamp" : ""   /* Last signal strength notification arrived. This
+                                               is to compare with signal strength criteria to
+                                               notify user. */
+        }
+    }
+}

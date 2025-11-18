@@ -1,0 +1,9 @@
+Name: libtelux_tel
+Version: @SDK_VERSION@
+Description: Automotive telux framework for telephony features like Phone, SMS and CardServices
+
+prefix=@CMAKE_INSTALL_PREFIX@
+includedir=@CMAKE_INSTALL_INCLUDEDIR@
+libdir=@CMAKE_INSTALL_LIBDIR@
+Cflags:-I${includedir} -I${includedir}/telux
+Libs: -L${libdir} -ltelux_tel

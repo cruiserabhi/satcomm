@@ -1,0 +1,17 @@
+{
+    "IDataControlManager": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 400,
+        "DefaultCallbackDelay" : 400,
+        "setDataStallParams": [
+                {
+                        "slotId": 1,
+                        "error": "SUCCESS"
+                },
+                {
+                        "slotId": 2,
+                        "error": "SUCCESS"
+                }
+        ]
+    }
+}

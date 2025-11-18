@@ -1,0 +1,30 @@
+{
+    "ISubscriptionManager" :
+    {
+        "IsSubsystemReady" : "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay" : 300,
+        "Subscription" :
+        [
+            {
+                "carrierName" : "Carrier-1" ,
+                "phoneNumber" : "1984653739" ,
+                "iccId" : "89010020000011293999",
+                "mcc" : 810,
+                "mnc" : 99,
+                "imsi" : "310012345566677",
+                "gid1" : "ffffffffffffffff",
+                "gid2" : "ffffffffffffffff"
+            },
+            {
+                "carrierName" : "Carrier-2" ,
+                "phoneNumber" : "1984653739" ,
+                "iccId" : "89010020000011293999" ,
+                "mcc" : 819,
+                "mnc" : 99,
+                "imsi" : "310012345566688",
+                "gid1" : "ffffffffffffffff",
+                "gid2" : "ffffffffffffffff"
+            }
+        ]
+    }
+}

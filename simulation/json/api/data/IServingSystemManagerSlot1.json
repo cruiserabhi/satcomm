@@ -1,0 +1,23 @@
+{
+    "IServingSystemManager": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 400,
+        "DefaultCallbackDelay" : 400,
+        "getDrbStatus": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestServiceStatus": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestRoamingStatus": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestNrIconType": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        }
+    }
+}

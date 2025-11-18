@@ -1,0 +1,18 @@
+cmake_minimum_required(VERSION 3.10.2)
+
+set(TARGET_APP bt_hf_voice_call)
+
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(TELUXAUDIO REQUIRED telux-audio)
+
+set(APP_SOURCES BTHF.cpp)
+
+add_executable(${TARGET_APP} ${APP_SOURCES})
+
+target_include_directories(${TARGET_APP} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+target_compile_options(${TARGET_APP} PRIVATE -std=c++11 -Wall -Werror)
+
+target_link_libraries(${TARGET_APP} PRIVATE ${TELUXAUDIO_LIBRARIES} pthread)
+
+install(TARGETS ${TARGET_APP} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

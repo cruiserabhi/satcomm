@@ -1,0 +1,36 @@
+{
+    "ISensorClient": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 500,
+        "DefaultCallbackDelay" : 400,
+        "configure": {
+            "status": "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "getConfiguration": {
+            "status": "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "getSensorInfo":{
+            "status": "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "activate":{
+            "status": "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "deactivate":{
+            "status": "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "selfTest":{
+            "status": "SUCCESS",
+            "callbackDelay": 400,
+            "error" : "SUCCESS"
+        },
+        "sensorUpdateRotationMatrix": {
+            "status": "SUCCESS",
+            "error": "SUCCESS"
+        }
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "sensors":[
+        {
+            "id": "1",
+            "sensor_type": "Accelerometer_Uncalibrated",
+            "sensor_name": "Accel",
+            "vendor": "STMicroelectronics-ASM330",
+            "sampling_rate": [12.00 ,26.00, 52.00, 104.00, 208.00,416.00],
+            "max_sampling_rate": "104.00",
+            "max_batch_count": "50",
+            "min_batch_count": "10",
+            "range": "2",
+            "version": "1",
+            "resolution": "0.000598",
+            "max_range": "19.59466"
+        },
+        {
+            "id": "2",
+            "sensor_type": "Gyroscope_Uncalibrated",
+            "sensor_name": "Gyro",
+            "vendor": "STMicroelectronics-ASM330",
+            "sampling_rate": [12.00 ,26.00, 52.00, 104.00, 208.00,416.00],
+            "max_sampling_rate": "104.00",
+            "max_batch_count": "50",
+            "min_batch_count": "10",
+            "range": "125",
+            "version": "1",
+            "resolution": "0.000076",
+            "max_range": "2.490292"
+        }
+    ]
+}

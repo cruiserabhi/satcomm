@@ -1,0 +1,43 @@
+{
+    "IL2tpManager": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 400,
+        "DefaultCallbackDelay" : 400,
+        "setConfig": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestConfig": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "addTunnel": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "removeTunnel": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "addSession": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "removeSession": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "bindSessionToBackhaul": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "unbindSessionFromBackhaul": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "querySessionToBackhaulBindings": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        }
+    }
+}

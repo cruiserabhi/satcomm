@@ -1,0 +1,338 @@
+/**
+@page sdk_simulation Simulation with TelSDK
+
+TelSDK simulation enables development of applications using the SDK's APIs on any Linux based hardware. The simulation is intended to enable software development, even before the actual Telematics hardware is available. Users can run the simulation on a Linux desktop if they choose.<br>
+
+The Simulation framework provides libraries which are compile time equivalent to the actual concrete libraries. The simulation libraries provide the behavior of APIs similar to the behavior seen on an actual Telematics device with the concrete libraries.<br>
+
+This allows applications to be developed, compiled, and executed using this framework. An application can link to the simulation libraries to use the functionality of the SDK APIs in this framework. The same application can then be recompiled for the target Telematics device without requiring any redevelopment or code changes.<br>
+
+The Simulation framework is designed to be configurable to tweak the behavior and the responses of the APIs. This provides flexibility to exercise the client code in multiple ways and scenarios.
+Users can run the Simulation framework within a docker as well if desired.
+
+@anchor fig_telsdk_overview
+@latexonly
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.60]{telsdk_overview.PNG}
+  \renewcommand{\thefigure}{\thechapter-\arabic{figure}}
+  \caption{TelSDK On-Target Architecture}
+  \label{fig_telsdk_overview}
+\end{figure}
+@endlatexonly
+
+@anchor fig_telsdk_sim_overview
+@latexonly
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.60]{telsdk_simulation_overview.PNG}
+  \renewcommand{\thefigure}{\thechapter-\arabic{figure}}
+  \caption{TelSDK Simulation Architecture}
+  \label{fig_telsdk_sim_overview}
+\end{figure}
+@endlatexonly
+
+\htmlonly
+<table>
+<tr>
+<td><img src="images/telsdk_overview.PNG" height="400" width ="450"></td>
+<td> <img src="images/telsdk_simulation_overview.PNG" height="400" width="450"></td>
+</tr>
+</table>
+\endhtmlonly
+
+<br>
+- - -
+@section components Components of the simulation framework
+- - -
+
+This section provides an overview of the components involved in the TelSDK simulation framework.
+
+@subsection libraries SDK Simulation Libraries
+
+The telematics simulation library runs in the user space of the Linux system. It interacts with the simulation server and other subsystems to provide various services like phone calls, SMS, etc. These services are exposed by the SDK through the same fixed public APIs that are available on all Telematics platforms that support SDK.
+
+@subsection server Simulation Server
+
+This is the main daemon that interacts with all the clients using the Simulation framework and provides the functionality for all the public APIs.
+
+@subsection injector Event Injector
+
+Event injector allows the users to inject unsolicited events. It is a Linux based command-line utility that injects events into the simulation framework.<br> For example: <i>telsdk_event_injector -f tel_card -e cardInfoChanged <slotId> <cardPower> <isNtnProfileActive></i> could be triggered to change the card power state or to know the Non-terrestrial networks(NTN) profile active status.
+
+
+Syntax for injecting events: <i>telsdk_event_injector -f <filter/subsystem/manager> -e <event> <arguments></i>
+
+- -f: specifies the filter.
+- -e: specifies the event that is triggered.
+
+<h3 id="help">To get help related to the events supported by TelSDK simulation.</h3>
+
+- <i>telsdk_event_injector -h</i>: provides the list of subsystems for which events are available.
+- <i>telsdk_event_injector -h <subsystem></i>: provides the list of supported events in that particular subsystem.
+- <i>telsdk_event_injector -h <subsystem> <event></i>: provides detailed information ,i.e., the syntax and arguments for that event.
+
+
+<br>
+- - -
+@section script Build Steps
+- - -
+To build various components of the Simulation framework:
+
+1. Fetch the source code
+\code{.sh}
+$ git clone https://git.codelinaro.org/clo/le/platform/vendor/qcom-opensource/snaptel-sdk.git -b telsdk.lnx.2.0.r11-rel telux
+$ cd telux/
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+2. Set up Build dependencies
+\code{.sh}
+#Install jsoncpp, cmake 3.15.3, gRPC.
+$ ./build_sim.sh setup <DESTINATION_FOLDER_ROOT_PATH>
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+3. Build simulation libraries, TelSDK sample apps, and test apps
+\code{.sh}
+$ ./build_sim.sh all <DESTINATION_FOLDER_ROOT_PATH>
+\endcode
+<b>Note:</b> All the required TelSDK simulation include files, libs, and binaries get installed in <DESTINATION_FOLDER_ROOT_PATH>
+\htmlonly
+<BR>
+<BR>
+\endhtmlonly
+
+4. Export path
+\code{.sh}
+$ source <DESTINATION_FOLDER_ROOT_PATH>/bin/setup_simulation.sh
+\endcode
+The above script would setup different environment variables like <i>PATH, LD_LIBRARY_PATH, PKG_CONFIG_PATH, CC, CXX</i>, etc.
+\htmlonly
+<BR>
+<BR>
+\endhtmlonly
+
+
+5. To perform a build for user applications using cmake
+\code{.sh}
+$ cmake -DCMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES=<DESTINATION_FOLDER_ROOT_PATH>/include -DCMAKE_INSTALL_PREFIX=<DESTINATION_FOLDER_ROOT_PATH> <APPS_CMAKE_PATH> && make install
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+<br>
+- - -
+@section docker Run apps with docker
+- - -
+To run applications within the docker container:
+
+1. Install docker
+\code{.sh}
+$ sudo apt update
+$ sudo apt install apt-transport-https ca-certificates curl software-properties-common
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+$ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+$ sudo apt update
+$ sudo apt install docker-ce
+\endcode
+Once the installation is complete, we recommend that users do the following to add a docker affiliation group for the current user. This will make it easier to develop and avoid typing the "sudo" prefix every time.
+\code{.sh}
+$ sudo usermod -aG docker ${USER}
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+2. Build docker image
+\code{.sh}
+$ cd telux/
+$ ./build_sim.sh docker-image <DESTINATION_FOLDER_ROOT_PATH>
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+3. Run docker container
+\code{.sh}
+$ docker run -ti --rm -h telsdk_simulation -v telsdk_volume:/data/telux telsdk-sim-image
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+4. User application can be started or if users wish to run one of the SDK's sample app or test app within the docker, then
+\code{.sh}
+$ <APP_NAME>
+\endcode
+
+
+<b>Note:</b>
+1. The docker image built will have user application binaries installed to the docker container <i>/usr/bin/</i> path.
+2. When the docker container is started, it automatically starts the simulation server in the background.
+3. The path <i>/data/telux/</i> holds all TelSDK simulation related data.
+4. We are making use of the docker volume, to make this folder <i>/data/telux</i> persistent across multiple boots of the docker.
+5. To reset the persistent data, delete the docker volume.
+
+<br>
+- - -
+@section withoutdocker Run apps without docker
+- - -
+To run applications without the docker container:
+
+1. Export path, if not already done
+\code{.sh}
+$ source <DESTINATION_FOLDER_ROOT_PATH>/bin/setup_simulation.sh
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+2. Start simulation server in the background
+\code{.sh}
+$ telsdk_simulation_server &
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+3. User application can be started or if users wish to run one of the SDK's sample app or test app, then
+\code{.sh}
+$ <APP_NAME>
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+
+<b>Note:</b>
+1. In the host machine, application binaries are installed to the <i><DESTINATION_FOLDER_ROOT_PATH>/bin/</i>
+2. The path <i><DESTINATION_FOLDER_ROOT_PATH>/data/telux/</i> holds all TelSDK simulation related data.
+3. The path <i><DESTINATION_FOLDER_ROOT_PATH>/etc/telux/tel.conf</i> holds TelSDK simulation configuration data.
+
+<br>
+- - -
+@section behavior Controlling the behavior of the simulation
+- - -
+
+@subsection subsystem Managing subsystem readiness or service availability
+TelSDK initializes various subsystems during startup. It marks each subsystem as ready once the initialization procedures are completed for that subsystem. The application must wait until the corresponding subsystem on which it needs to make API requests is ready. TelSDK provides APIs to check whether a subsystem is ready or not.<br>
+
+The Simulation framework simulates subsystem readiness. The behavior and timing of this can be configured via the API specific JSON file. These user configurable JSON files are located under the path <i>/data/telux/json/api/</i> and the name of the JSON file corresponds to the subsystem name specified in the public headers.<br>
+
+For example: IDataConnectionManager.json present in <i>/data/telux/json/api/</i>
+@table{2,{\raggedright}p{1.00in},{\raggedright}p{2.80in}}
+@trfirsthdg
+@thmultcol{1,|c|} JSON Attribute @thmultcolend @thmultcollast{1,c|} Description @thmultcollastend
+@trfirsthdgend
+@trhdg
+@thdg{1,|c|,JSON Attribute} @thdglast{1,c|,Description}
+@trhdgend
+
+@tr @td IsSubsystemReady @tdend @tdlast Specifies the subsystem readiness. @tdlastend @trend
+@tr @td IsSubsystemReadyDelay @tdend @tdlast Specifies time the simulation framework should take to indicate subsystem readiness. @tdlastend @trend
+
+@tableend
+
+<br>
+@subsection response Response Management
+
+TelSDK simulation framework allows simulating each API response via updating the API specific JSON file.
+The table shows the JSON attributes to modify the behavior of the API in simulation<br>
+
+@table{2,{\raggedright}p{1.00in},{\raggedright}p{2.80in}}
+@trfirsthdg
+@thmultcol{1,|c|} JSON Attribute @thmultcolend @thmultcollast{1,c|} Description @thmultcollastend
+@trfirsthdgend
+@trhdg
+@thdg{1,|c|,JSON Attribute} @thdglast{1,c|,Description}
+@trhdgend
+
+@tr @td DefaultCallbackDelay @tdend @tdlast For all the public APIs this delay would be the default delay and would only be considered if callbackDelay is not specified. @tdlastend @trend
+@tr @td status @tdend @tdlast It specifies the immediate synchronous response that application would receive when the TelSDK API is invoked. It is usually the return status of the API invoked. @tdlastend @trend
+@tr @td callbackDelay @tdend @tdlast specifies the time that simulation libraries shall take before invoking the callback function and -1 could be configured to avoid callback invocation. This would be given preference over DefaultCallbackDelay. @tdlastend @trend
+@tr @td error @tdend @tdlast Specifies ErrorCode that will be sent along with the user provided callback function. @tdlastend @trend
+
+@tableend
+
+<br>
+The JSON for API behavior could be updated dynamically by making use of the json_update script.<br>
+<br>
+For example: Considering the below API entry in JSON
+<pre>
+"getDefaultProfile": {
+	"callbackDelay": 400,
+	"error": "SUCCESS",
+	"status": "SUCCESS"
+},
+</pre>
+
+\code{.sh}
+$ json_update /api/data/IDataConnectionManager.json IDataConnectionManager getDefaultProfile callbackDelay 300
+\endcode
+\htmlonly
+<BR>
+\endhtmlonly
+
+Above would update callbackDelay to 300.<br>
+
+<b>Note:</b> There will be cases where additional fields in response management would be needed. For example: SMS management.
+
+<br>
+@subsection external Sending external events
+TelSDK simulation framework lets users simulate certain system level behaviors by injecting unsolicited event using event injector.
+Use the <a href="#help">event injector helper</a> option to get detailed information about the events supported by each subsystem.
+
+<br>
+- - -
+@section data Simulation data
+- - -
+The data stored and used by the simulation can be classified into three categories as mentioned below:
+
+- <b>API response data:</b> Specifies API responses as described in the section <i>Response Management</i> above. For example: synchronous response or asynchronous response. JSON files under the path <i>/data/telux/json/api/</i> hold the API responses. Users can modify this file to change the value returned in the response.
+- <b>Static system data:</b> Specifies static persistent data. For example: IMEI number, thermal zone information, etc. JSON files under the path <i>/data/telux/json/system-info/</i> hold the system static data. It is used internally by our TelSDK simulation libraries to maintain system states and shall not be altered externally.
+- <b>Dynamic system data:</b> Specifies dynamic persistent data. For example: RAT preference, VLAN configuration, Backhaul configuration, etc. JSON files under the path <i>/data/telux/json/system-state/</i> hold the system state. It is used internally by our TelSDK simulation libraries to maintain system states and shall not be altered externally.
+
+<br>
+- - -
+@section log Logging in simulation
+- - -
+TelSDK simulation framework supports logging. User configurable logger settings available in <i>/etc/telux/tel.conf</i> are listed below.<br>
+
+
+@table{2,{\raggedright}p{1.00in},{\raggedright}p{2.80in}}
+@tr @td LOGGER_LEVEL @tdend @tdlast Supported log levels are: <br><br><i>NONE</i> - No logging<br><i>PERF</i> - Prints messages with nanoseconds precision timestamp.<br><i>ERROR</i> - Very minimal logging. Prints error messages only.<br><i>WARNING</i> - Prints perf, error and warning messages.<br><i>INFO</i> - Prints errors, warning, and information messages.<br><i>DEBUG</i> - Full logging including debug messages.It is intended for debugging purposes only.@tdlastend @trend
+@tr @td LOGGER_TYPE @tdend @tdlast Supported log types are: <br><br><i>CONSOLE_LOG</i> - enables console logging<br><i>FILE_LOG</i> - enables file-based logging. Once file logging is enabled, LOG_FILE_NAME and LOG_FILE_PATH could further be configured by users.<br><i>SYSLOG_LOG</i> - enables syslog logging.@tdlastend @trend
+
+@tableend
+
+<br>
+- - -
+@section multisim Multi-SIM configuration in simulation
+- - -
+MULTISIM_CONFIG in <i>etc/telux/tel.conf</i> specifies type of multi-SIM configuration supported. By default, multi-SIM configuration is not enabled.
+
+<br>
+- - -
+@section rpcPort RPC port configuration in simulation
+- - -
+Default configuration uses 8089 for communication between simulation server & its clients. If needed, <i>RPC_PORT</i> can be updated in tel.conf.
+
+<br>
+- - -
+@section vertical_sim Simulation under different verticals
+- - -
+The details on how simulation of individual areas can be used and controlled are available below.
+
+
+1. @subpage tel_simulation
+2. @subpage loc_simulation
+3. @subpage audio_simulation
+4. @subpage data_simulation
+5. @subpage therm_simulation
+*/

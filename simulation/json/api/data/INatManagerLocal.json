@@ -1,0 +1,19 @@
+{
+    "INatManager": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 400,
+        "DefaultCallbackDelay" : 400,
+        "addStaticNatEntry": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "removeStaticNatEntry": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestStaticNatEntries": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        }
+    }
+}

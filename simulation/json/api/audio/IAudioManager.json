@@ -1,0 +1,124 @@
+{
+    "IAudioManager":
+    {
+        "IsSubsystemReady" : "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 200,
+        "DefaultCallbackDelay" : 300,
+
+        "getStreamTypes": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "getDevices": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "getCalibrationInitStatus":
+        {
+            "status" : "SUCCESS",
+            "error" : "NOTSUPPORTED"
+        },
+
+        "createStream": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "deleteStream": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "getVolume": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "setVolume": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "getMute": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "setMute": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "getDevice": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "setDevice": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "startAudio": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "stopAudio": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "playDtmfTone": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "stopDtmfTone": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "write": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "read": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "startTone": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "stopTone": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "createTranscoder": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "deleteTranscoder": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "flush": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+
+        "drain": {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        }
+    }
+}

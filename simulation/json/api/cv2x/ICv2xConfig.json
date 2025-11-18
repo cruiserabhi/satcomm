@@ -1,0 +1,15 @@
+{
+    "ICv2xConfig": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 400,
+        "DefaultCallbackDelay" : 400,
+        "updateConfiguration": {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "retrieveConfiguration": {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        }
+    }
+}

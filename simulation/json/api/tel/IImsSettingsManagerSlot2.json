@@ -1,0 +1,36 @@
+{
+    "IImsSettingsManager" :
+    {
+        "DefaultCallbackDelay" : 400,
+        "requestServiceConfig" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestSipUserAgent" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "setSipUserAgent" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "setServiceConfig" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestVonr" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "setVonr" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        }
+    }
+}

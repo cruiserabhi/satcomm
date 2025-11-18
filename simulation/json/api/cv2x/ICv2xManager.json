@@ -1,0 +1,39 @@
+{
+    "ICv2xManager": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 400,
+        "DefaultCallbackDelay" : 400,
+        "startCv2x": {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "stopCv2x": {
+            "error" : "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "setPeakTxPower": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestCv2xStatus": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "injectCoarseUtcTime": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "getSlssRxInfo": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "setL2Filters": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "removeL2Filters": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        }
+    }
+}

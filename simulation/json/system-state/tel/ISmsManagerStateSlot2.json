@@ -1,0 +1,79 @@
+{
+    "ISmsManager" :
+    {
+        "SmsDatabaseStorage" :
+        [
+            {
+                "messagePartInfo_numberOfSegments" : 1,
+                "messagePartInfo_refNumber" : 1,
+                "messagePartInfo_segmentNumber" : 1,
+                "smsMetaInfo_msgIndex" : 0,
+                "smsMetaInfo_tagType" : "MT_NOT_READ",
+                "encoding" : "GSM7",
+                "isMetaInfoValid" : true,
+                "pdu" : "07918185690700F0240B918189486537F300003280125013908A1CCD72999E769F41E939683E4697C97576990C0AD3413118BC0D",
+                "rawPdu" : "07918185690700F0240B918189486537F300003280125013908A1CCD72999E769F41E939683E4697C97576990C0AD3413118BC0D",
+                "receiver" : "123456789",
+                "sender" : "+18988456733",
+                "text" : "Meeting is scheduled at 10pm"
+            },
+            {
+                "messagePartInfo_numberOfSegments" : 1,
+                "messagePartInfo_refNumber" : 1,
+                "messagePartInfo_segmentNumber" : 1,
+                "smsMetaInfo_msgIndex" : 1,
+                "smsMetaInfo_tagType" : "MT_NOT_READ",
+                "encoding" : "GSM7",
+                "isMetaInfoValid" : true,
+                "pdu" : "07918185690700F0240B918189486537F300003280126091338A0CC7F79B0C6ABEE5EEB4FB0C",
+                "rawPdu" : "07918185690700F0240B918189486537F300003280126091338A0CC7F79B0C6ABEE5EEB4FB0C",
+                "receiver" : "123456789",
+                "sender" : "+18988456733",
+                "text" : "Good Morning"
+            },
+            {
+                "messagePartInfo_numberOfSegments" : 1,
+                "messagePartInfo_refNumber" : 1,
+                "messagePartInfo_segmentNumber" : 1,
+                "smsMetaInfo_msgIndex" : 2,
+                "smsMetaInfo_tagType" : "MT_READ",
+                "encoding" : "GSM7",
+                "isMetaInfoValid" : true,
+                "pdu" : "07918185690700F0240B918189486537F300003280126022438A0CC7F79B0C2ADACBEEB4FB0C",
+                "rawPdu" : "07918185690700F0240B918189486537F300003280126022438A0CC7F79B0C2ADACBEEB4FB0C",
+                "receiver" : "123456789",
+                "sender" : "+18988456733",
+                "text" : "Good Evening"
+            },
+            {
+                "messagePartInfo_numberOfSegments" : 1,
+                "messagePartInfo_refNumber" : 1,
+                "messagePartInfo_segmentNumber" : 1,
+                "smsMetaInfo_msgIndex" : 3,
+                "smsMetaInfo_tagType" : "MT_READ",
+                "encoding" : "GSM7",
+                "isMetaInfoValid" : true,
+                "pdu" : "07918185690700F0240B918189486537F300003280126052318A0EC7F79B0C0A9AE965B9FBFD7603",
+                "rawPdu" : "07918185690700F0240B918189486537F300003280126052318A0EC7F79B0C0A9AE965B9FBFD7603",
+                "receiver" : "123456789",
+                "sender" : "+18988456733",
+                "text" : "Good Afternoon"
+            }
+        ],
+        "setSmscAddress" :
+        {
+            "smscAddress" : "8989888222"
+        },
+        "setPreferredStorage" :
+        {
+            "storageType" : "SIM"
+        },
+        "calculateMessageAttributes" :
+        {
+            "messageAttributes_encoding" : "GSM7",
+            "messageAttributes_numberOfSegments" : 1,
+            "messageAttributes_segmentSize" : 160,
+            "messageAttributes_numberOfCharsLeftInLastSegment" : 82
+        }
+    }
+}

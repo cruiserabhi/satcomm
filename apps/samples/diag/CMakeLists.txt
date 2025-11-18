@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.10.2)
+
+add_subdirectory(mdm_whole_device_file)
+add_subdirectory(mdm_whole_device_callback)
+add_subdirectory(q6_on_mdm_from_mdm_file)

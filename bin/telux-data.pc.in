@@ -1,0 +1,9 @@
+Name: libtelux_data
+Version: @SDK_VERSION@
+Description: This library contains APIs for data connection and profile management services
+
+prefix=@CMAKE_INSTALL_PREFIX@
+includedir=@CMAKE_INSTALL_INCLUDEDIR@
+libdir=@CMAKE_INSTALL_LIBDIR@
+Cflags:-I${includedir} -I${includedir}/telux
+Libs: -L${libdir} -ltelux_data

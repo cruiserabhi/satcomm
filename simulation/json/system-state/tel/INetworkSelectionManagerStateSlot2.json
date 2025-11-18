@@ -1,0 +1,162 @@
+{
+    "INetworkSelectionManager" :
+    {
+        "NetworkSelectionMode" :
+        {
+            "networkSelectionMode" : 0,
+            "_comment_networkSelectionMode": "Refer telux::tel::NetworkModeInfo for more details",
+            "mcc" : "810",
+            "_comment_mcc": "Refer telux::tel::NetworkModeInfo for more details",
+            "mnc" : "99",
+            "_comment_mnc": "Refer telux::tel::NetworkModeInfo for more details"
+        },
+        "PreferredNetworksInfo" :
+        [
+            {
+                "mcc" : 810 ,
+                "_comment_mcc": "Refer telux::tel::PreferredNetworkInfo for more details",
+                "mnc" : 99,
+                "_comment_mnc": "Refer telux::tel::PreferredNetworkInfo for more details",
+                "ratTypes" : "15 14 7",
+                "_comment_ratTypes": "Refer telux::tel::PreferredNetworkInfo for more details"
+            },
+            {
+                "mcc" : 810,
+                "_comment_mcc": "Refer telux::tel::PreferredNetworkInfo for more details",
+                "mnc" : 99,
+                "_comment_mnc": "Refer telux::tel::PreferredNetworkInfo for more details",
+                "ratTypes" : "15 14 7",
+                "_comment_ratTypes": "Refer telux::tel::PreferredNetworkInfo for more details"
+            },
+            {
+                "mcc" : 810,
+                "_comment_mcc": "Refer telux::tel::PreferredNetworkInfo for more details",
+                "mnc" : 99,
+                "_comment_mnc": "Refer telux::tel::PreferredNetworkInfo for more details",
+                "ratTypes" : "15 14",
+                "_comment_ratTypes": "Refer telux::tel::PreferredNetworkInfo for more details"
+            },
+            {
+                "mcc" : 810,
+                "_comment_mcc": "Refer telux::tel::PreferredNetworkInfo for more details",
+                "mnc" : 99,
+                "_comment_mnc": "Refer telux::tel::PreferredNetworkInfo for more details",
+                "ratTypes" : "15",
+                "_comment_ratTypes": "Refer telux::tel::PreferredNetworkInfo for more details"
+            },
+            {
+                "mcc" : 810,
+                "_comment_mcc": "Refer telux::tel::PreferredNetworkInfo for more details",
+                "mnc" : 99,
+                "_comment_mnc": "Refer telux::tel::PreferredNetworkInfo for more details",
+                "ratTypes" : "15",
+                "_comment_ratTypes": "Refer telux::tel::PreferredNetworkInfo for more details"
+            }
+        ],
+        "PreferredNetworksStaticInfo" :
+        [
+            {
+                "mcc" : 810,
+                "_comment_mcc": "Refer telux::tel::PreferredNetworkInfo for more details",
+                "mnc" : 99,
+                "_comment_mnc": "Refer telux::tel::PreferredNetworkInfo for more details",
+                "ratTypes" : "15 14 7",
+                "_comment_ratTypes": "Refer telux::tel::PreferredNetworkInfo for more details"
+            },
+            {
+                "mcc" : 810,
+                "_comment_mcc": "Refer telux::tel::PreferredNetworkInfo for more details",
+                "mnc" : 99,
+                "_comment_mnc": "Refer telux::tel::PreferredNetworkInfo for more details",
+                "ratTypes" : "15 14 7",
+                "_comment_ratTypes": "Refer telux::tel::PreferredNetworkInfo for more details"
+            },
+            {
+                "mcc" : 810,
+                "_comment_mcc": "Refer telux::tel::PreferredNetworkInfo for more details",
+                "mnc" : 99,
+                "_comment_mnc": "Refer telux::tel::PreferredNetworkInfo for more details",
+                "ratTypes" : "15 14",
+                "_comment_ratTypes": "Refer telux::tel::PreferredNetworkInfo for more details"
+            },
+            {
+                "mcc" : 810,
+                "_comment_mcc": "Refer telux::tel::PreferredNetworkInfo for more details",
+                "mnc" : 99,
+                "_comment_mnc": "Refer telux::tel::PreferredNetworkInfo for more details",
+                "ratTypes" : "15",
+                "_comment_ratTypes": "Refer telux::tel::PreferredNetworkInfo for more details"
+            },
+            {
+                "mcc" : 810,
+                "_comment_mcc": "Refer telux::tel::PreferredNetworkInfo for more details",
+                "mnc" : 99,
+                "_comment_mnc": "Refer telux::tel::PreferredNetworkInfo for more details",
+                "ratTypes" : "15",
+                "_comment_ratTypes": "Refer telux::tel::PreferredNetworkInfo for more details"
+            }
+        ],
+        "NetworkScanResultsForSpecRats" :
+        {
+            "_comment_mcc": "Below is an example of a mobile country code (MCC), refer to telux::tel::OperatorInfo for more details:",
+            "mcc" : 460,
+            "_comment_mnc": "Below is an example of a mobile network code(MNC), refer to telux::tel::OperatorInfo for more details:",
+            "mnc" : 02,
+            "_comment_operator_status": "Below is an example of four operator states, refer to telux::tel::OperatorStatus for more details:",
+            "inUse" : 1,
+            "roaming" : 1,
+            "forbidden" : 2,
+            "preferred" : 1,
+            "_comment_networkName": "Below is an example of a network name, refer to telux::tel::OperatorInfo for more details:",
+            "networkName" : "UNICOM"
+        },
+        "NetworkScanResultsForAllRats" :
+        [
+            {
+                "_comment_mcc": "Below is an example of a mobile country code (MCC), refer to telux::tel::OperatorInfo for more details:",
+                "mcc" : 460,
+                "_comment_mnc": "Below is an example of a mobile network code(MNC), refer to telux::tel::OperatorInfo for more details:",
+                "mnc" : 00,
+                "_comment_operator_status": "Below is an example of four operator states, refer to telux::tel::OperatorStatus for more details:",
+                "inUse" : 1,
+                "roaming" : 1,
+                "forbidden" : 2,
+                "preferred" : 1,
+                "_comment_rat": "Below is an example of a radio technology, refer to telux::tel::RadioTechnology for more details:",
+                "rat" : 14,
+                "_comment_networkName": "Below is an example of a network name, refer to telux::tel::OperatorInfo for more details:",
+                "networkName" : "CMCC"
+            },
+            {
+                "_comment_mcc": "Below is an example of a mobile country code (MCC), refer to telux::tel::OperatorInfo for more details:",
+                "mcc" : 460,
+                "_comment_mnc": "Below is an example of a mobile network code(MNC), refer to telux::tel::OperatorInfo for more details:",
+                "mnc" : 01,
+                "_comment_operator_status": "Below is an example of four operator states, refer to telux::tel::OperatorStatus for more details:",
+                "inUse" : 2,
+                "roaming" : 2,
+                "forbidden" : 1,
+                "preferred" : 2,
+                "_comment_rat": "Below is an example of a radio technology, refer to telux::tel::RadioTechnology for more details:",
+                "rat" : 3,
+                "_comment_networkName": "Below is an example of a network name, refer to telux::tel::OperatorInfo for more details:",
+                "networkName" : "UNICOM"
+            },
+            {
+                "_comment_mcc": "Below is an example of a mobile country code (MCC), refer to telux::tel::OperatorInfo for more details:",
+                "mcc" : 460,
+                "_comment_mnc": "Below is an example of a mobile network code(MNC), refer to telux::tel::OperatorInfo for more details:",
+                "mnc" : 15,
+                "_comment_operator_status": "Below is an example of four operator states, refer to telux::tel::OperatorStatus for more details:",
+                "inUse" : 2,
+                "roaming" : 2,
+                "forbidden" : 2,
+                "preferred" : 2,
+                "_comment_rat": "Below is an example of a radio technology, refer to telux::tel::RadioTechnology for more details:",
+                "rat" : 20,
+                "_comment_networkName": "Below is an example of a network name, refer to telux::tel::OperatorInfo for more details:",
+                "networkName" : "CBN"
+            }
+        ]
+    }
+}

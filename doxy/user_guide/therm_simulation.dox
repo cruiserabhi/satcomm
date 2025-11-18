@@ -1,0 +1,91 @@
+/*
+ * Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
+
+/**
+@page therm_simulation Thermal Simulation
+<br>
+- - -
+@section therm_overview Overview of Thermal Simulation
+- - -
+This page and the subpages provide information about Thermal subsystem simulation.
+<br>
+
+@anchor fig_therm_sim_overview
+@latexonly
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{simulation_thermal_overview.PNG}
+  \renewcommand{\thefigure}{\thechapter-\arabic{figure}}
+  \caption{Thermal Simulation Framework}
+  \label{fig_therm_sim_overview}
+\end{figure}
+@endlatexonly
+
+@html_image{simulation_thermal_overview.png,"",50,50,Thermal Simulation Framework}
+
+<br>
+
+- - -
+@section therm_supp_interfaces Supported interfaces
+- - -
+
+IThermalManager, IThermalListener.
+
+<br>
+- - -
+@section therm_resp Thermal API response handling
+- - -
+A thermal API response can be configured through a JSON file.
+Thermal manager has its own JSON configuration file present under <i>simulation/json/api/therm/</i>.<br>
+If the client configures the API behavior to mimic an error scenario by setting the response error code
+to anything other than "SUCCESS", the thermal server's response will be modified to simulate the erroneous behavior.<br>
+
+@subsection therm_exp_1 Example 1:
+
+API command response for telux::therm::IThermalManager::getThermalZones<br>
+<pre>
+"getThermalZones": {
+        "error": "SUCCESS"
+},
+</pre>
+
+When the "error" field is set to SUCCESS, the server sends the response to the client without making any modifications.<br>
+
+@subsection therm_exp_2 Example 2:
+
+API command response for telux::therm::IThermalManager::getCoolingDevices<br>
+<pre>
+"getCoolingDevices": {
+        "error": "INTERNAL_ERR"
+},
+</pre>
+
+When the the "error" field is set to INTERNAL_ERR, the server sends nullptr as the response to the client.
+
+<br>
+To configure simulation with the static configuration describing the thermal zone, trip points and cooling devices in the system, one should refer and update the <i>simulation/json/system-info/therm/ThermalState.json</i>
+
+<br>
+- - -
+@section therm_events Thermal event handling
+- - -
+
+@subsection therm_events Thermal events
+The following thermal events can be simulated by changing the current temperature of any thermal zone.<br>
+(1)  telux::therm::IThermalListener::onCoolingDeviceLevelChange<br>
+(2)  telux::therm::IThermalListener::onTripEvent<br>
+
+Sample input:<br>
+\code{.sh}
+telsdk_event_injector -f therm -e setTemp <tzone_id> <tzone_temp>
+telsdk_event_injector -f therm -e setTemp 24 126000
+\endcode
+<br>
+
+- Above, 24 indicates the tzone Id and 126000 indicates the new temperature to be set for a thermal zone.
+- Based on the new temperature, the thermal subsystem will calculate the events for trip and cooling device level.
+<br>
+
+*/

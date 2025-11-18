@@ -1,0 +1,31 @@
+{
+    "IDataProfileManager": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 400,
+        "DefaultCallbackDelay" : 400,
+        "requestProfileList": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "createProfile": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "deleteProfile": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "modifyProfile": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "queryProfile": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestProfile": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        }
+    }
+}

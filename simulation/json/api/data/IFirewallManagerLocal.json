@@ -1,0 +1,47 @@
+{
+    "IFirewallManager": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 400,
+        "DefaultCallbackDelay" : 400,
+        "setFirewallConfig": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestFirewallConfig": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "addFirewallEntry": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestFirewallEntries": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "addHwAccelerationFirewallEntry": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestHwAccelerationFirewallEntries": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "removeFirewallEntry": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "enableDmz": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "disableDmz": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestDmzEntry": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        }
+    }
+}

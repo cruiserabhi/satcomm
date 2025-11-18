@@ -1,0 +1,40 @@
+{
+    "ICallManager" :
+    {
+        "ecallHlapTimerStatus" :
+        {
+            "T2Timer" : 0,
+            "T5Timer" : 0,
+            "T6Timer" : 0,
+            "T7Timer" : 0,
+            "T9Timer" : 0,
+            "T10Timer" : 0
+        },
+        "eCallConfig" :
+        {
+            "muteRxAudio" : 1,
+            "numType" : 0,
+            "overriddenNum" : "112",
+            "useCannedMsd" : 1,
+            "gnssUpdateInterval" : 5000,
+            "T2Timer" : 3600000,
+            "T7Timer" : 20000,
+            "T9Timer" : 3600000,
+            "T10Timer" : 43200000,
+            "msdVersion" : 2
+        },
+        "eCallHlapTimer" :
+        {
+            "t10" : 720
+        },
+        "ecbm" :
+        {
+            "ecbMode" : 0
+        },
+        "eCallRedialTimeGap" :
+        {
+            "callOrigFailure" : "5000 60000 60000 60000 180000 180000 180000 180000 180000 180000",
+            "callDrop" : "5000 60000"
+        }
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "IDataLinkManager": {
+            "eth0Config" : {
+                    "ethLinkState" : "DOWN"
+            }
+    }
+}

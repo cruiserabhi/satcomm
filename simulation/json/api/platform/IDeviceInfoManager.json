@@ -1,0 +1,13 @@
+{
+    "IDeviceInfoManager": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 500,
+        "DefaultCallbackDelay" : 400,
+        "GetPlatformVersion": {
+            "status": "SUCCESS"
+        },
+        "GetIMEI": {
+            "status": "SUCCESS"
+        }
+    }
+}

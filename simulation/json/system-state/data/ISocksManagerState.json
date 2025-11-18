@@ -1,0 +1,7 @@
+{
+    "ISocksManager": {
+        "sockConfig" : {
+            "enabled" : false
+        }
+    }
+}

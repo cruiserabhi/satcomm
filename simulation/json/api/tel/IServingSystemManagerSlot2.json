@@ -1,0 +1,73 @@
+{
+    "IServingSystemManager" :
+    {
+        "IsSubsystemReady" : "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay" : 300,
+        "DefaultCallbackDelay" : 400,
+        "setRatPreference" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestRatPreference" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "setServiceDomainPreference" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestServiceDomainPreference" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "getSystemInfo" :
+        {
+            "status" : "SUCCESS"
+        },
+        "requestNetworkTime" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestRFBandInfo" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "getNetworkRejectInfo" :
+        {
+            "status" : "SUCCESS"
+        },
+        "getCallBarringInfo" :
+        {
+            "status" : "SUCCESS"
+        },
+        "getSmsCapabilityOverNetwork" :
+        {
+            "status" : "SUCCESS"
+        },
+        "getLteCsCapability" :
+        {
+            "status" : "SUCCESS"
+        },
+        "requestRFBandPreferences" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "setRFBandPreferences" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestRFBandCapability" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        }
+    }
+}

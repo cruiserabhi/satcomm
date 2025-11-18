@@ -1,0 +1,39 @@
+{
+    "IDataConnectionManager": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 400,
+        "DefaultCallbackDelay" : 400,
+        "getDefaultProfile": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestDataCallList": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestRoamingMode": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "setDefaultProfile": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "setRoamingMode": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "startDataCall": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "stopDataCall": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "requestThrottledApnInfo": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        }
+    }
+}

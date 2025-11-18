@@ -1,0 +1,31 @@
+{
+    "IVlanManager": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 400,
+        "DefaultCallbackDelay" : 400,
+        "createVlan": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "removeVlan": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "queryVlanInfo": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "bindToBackhaul": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "unbindFromBackhaul": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        },
+        "queryVlanToBackhaulBindings": {
+            "error": "SUCCESS",
+            "status": "SUCCESS"
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "Image_Build_IDs": {
+        "aop": "AOP.HO.5.0.1-00082-PINNACLES_I-1",
+        "apps": "LE.UM.7.4.1.1-03902-sa525m-tele.Int-2",
+        "apps_fsl": "LE.AU_EAP.3.0-08300-eap-fsl.Int-1",
+        "apps_kernel": "KERNEL.PLATFORM.2.1-53102-kernel.1-1",
+        "boot": "BOOT.MXF.2.3-00535-PINNACLES-1",
+        "btfm_hsp": "BTFW.HSP.2.1.2-00018-PATCHZ-2",
+        "btfm_rome": "BTFM.RM.2.4.1-00065-QCABTFMSWPZ-3",
+        "common": "SA525M.LE.3.0-00159-STD.NAND.INT-1",
+        "cpucp": "CPUCP.FW.1.0-00027-PINNACLES_EXT-1",
+        "glue": "GLUE.SA525M_LE.3.0-00062-NOOP_TEST-1",
+        "modem": "MPSS.DE.7.0-01895.4-PINNACLES_GENAUTO_TEST-1",
+        "tz": "TZ.XF.5.28-00214-PINNACLESLE-1",
+        "tz_apps": "TZ.APPS.1.28-00064-PINNACLESAAAAANAZT-1",
+        "wlan_hsp": "WLAN.HSP.1.1.4-00943-QCAHSPSWPL_V1_V2_SILICONZ_WOS-1",
+        "wlan_rome": "WLAN.RM.4.5.3-00260-QCARMSWRZ-1"
+    },
+    "Metabuild_Info": {
+        "Meta_Build_ID": "SA525M.LE.3.0-00159-STD.NAND.INT-1",
+        "Product_Flavor": "['sa525m_pvm', 'sa525m_pvm_lxc', 'sa525m_pvm_chipset', 'sa525m_pvm_apq', 'sa525m_multi_vm', 'sa525m_multi_vm_chipset']",
+        "Current_Flavor": "sa525m_pvm",
+        "Time_Stamp": "2024-07-25 15:14:04"
+    },
+    "Version": "1.0"
+}

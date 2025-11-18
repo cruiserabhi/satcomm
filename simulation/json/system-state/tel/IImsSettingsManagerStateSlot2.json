@@ -1,0 +1,23 @@
+{
+    "IImsSettingsManager" :
+    {
+        "ImsServiceConfigInfo" :
+        {
+            "imsServiceEnabled" : false,
+            "_comment_imsServiceEnabled" : "Refer telux::tel::ImsServiceConfig::imsServiceEnabled for more details.",
+            "voImsEnabled" : false,
+            "_comment_voImsEnabled" : "Refer telux::tel::ImsServiceConfig::voImsEnabled for more details.",
+            "smsEnabled" : false,
+            "_comment_smsEnabled" : "Refer telux::tel::ImsServiceConfig::smsEnabled for more details.",
+            "rttEnabled" : false,
+            "_comment_rttEnabled" : "Refer telux::tel::ImsServiceConfig::rttEnabled for more details."
+        },
+        "ImsSipUserAgentInfo" :
+        {
+            "sipUserAgent" : "",
+            "_comment_sipUserAgent" : "Indicates the configured Sip UserAgent. Default, it is not configured."
+        },
+        "ImsVonrEnable": false,
+        "_comment_ImsVonrEnable" : "Indicates the status of IMS voice over NR service. Default, it is disabled."
+    }
+}

@@ -1,0 +1,77 @@
+/*
+ *  Copyright (c) 2024-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+ *  SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
+
+syntax = "proto3";
+
+package platformStub;
+import "google/protobuf/empty.proto";
+import "common_simulation.proto";
+
+/*******************************************************************
+ * Services Definition                                             *
+ *******************************************************************/
+
+service DeviceInfoManagerService {
+   rpc InitService (google.protobuf.Empty) returns (commonStub.GetServiceStatusReply) {}
+   rpc GetServiceStatus(google.protobuf.Empty) returns (commonStub.GetServiceStatusReply) {}
+   rpc GetPlatformVersion (google.protobuf.Empty) returns (PlatformVersionInfo) {}
+   rpc GetIMEI (google.protobuf.Empty) returns (PlatformImeiInfo) {}
+}
+
+service AntennaManagerService {
+   rpc InitService (google.protobuf.Empty) returns (commonStub.GetServiceStatusReply) {}
+   rpc GetServiceStatus(google.protobuf.Empty) returns (commonStub.GetServiceStatusReply) {}
+   rpc SetActiveAntenna (google.protobuf.Empty) returns (DefaultReply) {}
+   rpc GetActiveAntenna (google.protobuf.Empty) returns (DefaultReply) {}
+}
+
+service FsManagerService {
+   rpc InitService (google.protobuf.Empty) returns (commonStub.GetServiceStatusReply) {}
+   rpc GetServiceStatus(google.protobuf.Empty) returns (commonStub.GetServiceStatusReply) {}
+   rpc StartEfsBackup (google.protobuf.Empty) returns (DefaultReply) {}
+   rpc PrepareForEcall (google.protobuf.Empty) returns (DefaultReply) {}
+   rpc ECallCompleted (google.protobuf.Empty) returns (DefaultReply) {}
+   rpc PrepareForOta (FsEventName) returns (DefaultReply) {}
+   rpc OtaCompleted (google.protobuf.Empty) returns (DefaultReply) {}
+   rpc StartAbSync (google.protobuf.Empty) returns (DefaultReply) {}
+}
+
+/*******************************************************************
+ * Messages Definition                                             *
+ *******************************************************************/
+
+message DefaultReply {
+    commonStub.ErrorCode error = 1;
+    commonStub.Status status = 2;
+    int32 delay = 3;
+}
+
+message PlatformVersionInfo {
+    DefaultReply reply = 1;
+    string modem_details = 2;
+    string meta_details = 3;
+    string external_app = 4;
+    string integrated_app = 5;
+}
+
+message PlatformImeiInfo {
+    DefaultReply reply = 1;
+    string imei_info = 2;
+}
+
+message FsEventName {
+    string fs_event_name = 1;
+}
+
+message FsEventReply{
+    FsEventName fs_event_name = 1;
+    DefaultReply reply = 2;
+}
+
+message SubsystemStatusreply {
+    commonStub.OperationalStatus status = 1;
+    int32 subsystem = 2;
+    int32 proc_type = 3;
+}

@@ -1,0 +1,25 @@
+{
+    "IFsManager": {
+        "IsSubsystemReady": "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay": 500,
+        "DefaultCallbackDelay" : 400,
+        "startEfsBackup": {
+            "status": "SUCCESS"
+        },
+        "prepareForEcall": {
+            "status": "SUCCESS"
+        },
+        "eCallCompleted": {
+            "status": "SUCCESS"
+        },
+        "prepareForOta": {
+            "status": "SUCCESS"
+        },
+        "otaCompleted": {
+            "status": "SUCCESS"
+        },
+        "startAbSync": {
+            "status": "SUCCESS"
+        }
+    }
+}

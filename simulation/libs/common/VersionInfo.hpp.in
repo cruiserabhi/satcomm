@@ -1,0 +1,21 @@
+/*
+ *  Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
+ *  SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
+
+#ifndef VERSIONINFO_HPP
+#define VERSIONINFO_HPP
+
+// Type of release
+#define RELEASE_NAME "@RELEASE_NAME@"
+
+// SDK version (major.minor.patch)
+// Major version: This number will be incremented whenever significant changes
+// or features are introduced.
+// Minor version: This number will be incremented when smaller features with
+// some new APIs are introduced.
+// Patch version: If the release only contains bug fixes,
+// but no API change then the patch version would be incremented.
+#define SDK_VERSION "@SDK_VERSION@"
+
+#endif

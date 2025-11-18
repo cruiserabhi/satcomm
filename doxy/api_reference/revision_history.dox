@@ -1,0 +1,191 @@
+/*
+ *  Copyright (c) 2017-2021, The Linux Foundation. All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are
+ *  met:
+ *    * Redistributions of source code must retain the above copyright
+ *      notice, this list of conditions and the following disclaimer.
+ *    * Redistributions in binary form must reproduce the above
+ *      copyright notice, this list of conditions and the following
+ *      disclaimer in the documentation and/or other materials provided
+ *      with the distribution.
+ *    * Neither the name of The Linux Foundation nor the names of its
+ *      contributors may be used to endorse or promote products derived
+ *      from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED
+ *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ *  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT
+ *  ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS
+ *  BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+ *  IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+ *  Changes from Qualcomm Innovation Center, Inc. are provided under the following license:
+ *
+ *  Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted (subject to the limitations in the
+ *  disclaimer below) provided that the following conditions are met:
+ *
+ *      * Redistributions of source code must retain the above copyright
+ *        notice, this list of conditions and the following disclaimer.
+ *
+ *      * Redistributions in binary form must reproduce the above
+ *        copyright notice, this list of conditions and the following
+ *        disclaimer in the documentation and/or other materials provided
+ *        with the distribution.
+ *
+ *      * Neither the name of Qualcomm Innovation Center, Inc. nor the names of its
+ *        contributors may be used to endorse or promote products derived
+ *        from this software without specific prior written permission.
+ *
+ *  NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE
+ *  GRANTED BY THIS LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT
+ *  HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
+ *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ *  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ *  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+ *  IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ *  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+ *  IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*=============================================================================
+                             Edit History
+when       who     what, where, why
+--------   ---     ------------------------------------------------------------
+
+=============================================================================*/
+/**
+@page revision_history Revision History
+
+@latexonly
+{\LARGE\sf\textbf{Revision History}} \normalsize
+\vspace{.2cm} \sffamily
+\setcounter{page}{2}
+@endlatexonly
+
+@table{3,{\centering}p{0.63in},{\raggedright}p{0.63in},{\raggedright}p{4.70in}}
+@trfirsthdg
+@thmultcol{1,|c|} Revision @thmultcolend @thmultcol{1,c|} Date @thmultcolend @thmultcollast{1,c|} Description @thmultcollastend
+@trfirsthdgend
+@tblcapcont{Revision history (cont.)}
+@trhdg
+@thdg{1,|c|,Revision} @thdg{1,c|,Date} @thdglast{1,c|,Description}
+@trhdgend
+@tr @tdmulrow{1,AU} @tdmulrowend @td Apr 2024 @tdend @tdlast Updated documentation for SDK release V1.67.0 changes @tdlastend @trend
+@tr @tdmulrow{1,AT} @tdmulrowend @td Feb 2024 @tdend @tdlast Updated documentation for SDK release V1.66.0 changes @tdlastend @trend
+@tr @tdmulrow{1,AS} @tdmulrowend @td Jan 2024 @tdend @tdlast Updated documentation for SDK release V1.65.0 changes @tdlastend @trend
+@tr @tdmulrow{1,AR} @tdmulrowend @td Dec 2023 @tdend @tdlast Updated documentation for SDK release V1.64.0 changes @tdlastend @trend
+@tr @tdmulrow{1,AP} @tdmulrowend @td Oct 2023 @tdend @tdlast Updated documentation for SDK release V1.63.0 changes @tdlastend @trend
+@tr @tdmulrow{1,AN} @tdmulrowend @td Sep 2023 @tdend @tdlast Updated documentation for SDK release V1.62.0 changes @tdlastend @trend
+@tr @tdmulrow{1,AM} @tdmulrowend @td Aug 2023 @tdend @tdlast Updated documentation for SDK release V1.61.0 changes @tdlastend @trend
+@tr @tdmulrow{1,AL} @tdmulrowend @td Jul 2023 @tdend @tdlast Updated documentation for SDK release V1.60.0 changes @tdlastend @trend
+@tr @tdmulrow{1,AK} @tdmulrowend @td Jun 2023 @tdend @tdlast Updated documentation for SDK release V1.59.0 changes @tdlastend @trend
+@tr @tdmulrow{1,AJ} @tdmulrowend @td May 2023 @tdend @tdlast Updated documentation for SDK release V1.58.0 changes @tdlastend @trend
+@tr @tdmulrow{1,AH} @tdmulrowend @td Apr 2023 @tdend @tdlast Updated documentation for SDK release V1.57.0 changes @tdlastend @trend
+@tr @tdmulrow{1,AG} @tdmulrowend @td Mar 2023 @tdend @tdlast Added documentation for thermal notifications @tdlastend @trend
+@tr @tdmulrow{1,AF} @tdmulrowend @td Dec 2022 @tdend @tdlast Added documentation for crypto accelerator @tdlastend @trendcline
+@tr @tdmulrowempty @td Nov 2022 @tdend @tdlast Added support for Third Party Service (TPS) eCall over IMS @tdlastend @trend
+@tr @tdmulrow{1,AE} @tdmulrowend @td Nov 2022 @tdend @tdlast Updated documentation for SDK release V1.54.0 changes @tdlastend @trend
+@tr @tdmulrow{1,AD} @tdmulrowend @td Sep 2022 @tdend @tdlast Updated documentation for SDK release V1.53.0 changes @tdlastend @trend
+@tr @tdmulrow{1,AC} @tdmulrowend @td Jul 2022 @tdend @tdlast Updated documentation @tdlastend @trend
+@tr @tdmulrow{1,AB} @tdmulrowend @td Apr 2022 @tdend @tdlast Added documentation for API access control @tdlastend @trend
+@tr @tdmulrow{48,AA} @tdmulrowend @td Mar 2022 @tdend @tdlast Addition of documentation for Call flow of control filesystem for ECALL operation @tdlastend @trendcline
+@tr @tdmulrowempty @td Apr 2022 @tdend @tdlast Added crypto APIs call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Jan 2022 @tdend @tdlast Updated C-V2X radio call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Dec 2021 @tdend @tdlast Addition of documentation for sensor self test APIs @tdlastend @trendcline
+@tr @tdmulrowempty @td Dec 2021 @tdend @tdlast Addition of documentation for ECALL and OTA operation APIs @tdlastend @trendcline
+@tr @tdmulrowempty @td Nov 2021 @tdend @tdlast Support for Xtra feature in location @tdlastend @trendcline
+@tr @tdmulrowempty @td Sep 2021 @tdend @tdlast Addition of new sub system Readiness APIs for Modem Config @tdlastend @trendcline
+@tr @tdmulrowempty @td Aug 2021 @tdend @tdlast Addition of Subsystem Restart handling in Telsdk @tdlastend @trendcline
+@tr @tdmulrowempty @td Aug 2021 @tdend @tdlast Added further EFS API related information for platform sub-system @tdlastend @trendcline
+@tr @tdmulrowempty @td Jul 2021 @tdend @tdlast Updated thermal subsystem readiness flow for new methodology @tdlastend @trendcline
+@tr @tdmulrowempty @td Jun 2021 @tdend @tdlast Addition of Remote SIM provisioning APIs and related call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Jun 2021 @tdend @tdlast Addition of documentation for platform subsystem @tdlastend @trendcline
+@tr @tdmulrowempty @td Apr 2021 @tdend @tdlast Addition of documentation for sensor subsystem @tdlastend @trendcline
+@tr @tdmulrowempty @td Apr 2021 @tdend @tdlast Addition of Serving System Manager APIs for data @tdlastend @trendcline
+@tr @tdmulrowempty @td Mar 2021 @tdend @tdlast Addition of calibration init status API for audio @tdlastend @trendcline
+@tr @tdmulrowempty @td Feb 2021 @tdend @tdlast Addition of new sub system Readiness APIs for Audio @tdlastend @trendcline
+@tr @tdmulrowempty @td Jan 2021 @tdend @tdlast Updated Data Subsystem Readiness flow for new methodology @tdlastend @trendcline
+@tr @tdmulrowempty @td Feb 2021 @tdend @tdlast Addition of configure NMEA types in location SDK @tdlastend @trendcline
+@tr @tdmulrowempty @td Jan 2021 @tdend @tdlast Addition of Audio Subsystem Restart Support @tdlastend @trendcline
+@tr @tdmulrowempty @td Jan 2021 @tdend @tdlast Addition of terrestrial positioning APIs and callflows in location SDK @tdlastend @trendcline
+@tr @tdmulrowempty @td Nov 2020 @tdend @tdlast Addition of Year of hardware and configure engine state APIs in location and callflows @tdlastend @trendcline
+@tr @tdmulrowempty @td Nov 2020 @tdend @tdlast Addition of cv2x SE-linux interface documentation @tdlastend @trendcline
+@tr @tdmulrowempty @td Aug 2020 @tdend @tdlast Addition of Location Manager APIs, Location Configurator APIs and callflows @tdlastend @trendcline
+@tr @tdmulrowempty @td May 2020 @tdend @tdlast Addition of Public Logging API @tdlastend @trendcline
+@tr @tdmulrowempty @td May 2020 @tdend @tdlast Addition of L2TP to Data Networking APIs and call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Apr 2020 @tdend @tdlast Addition of Security section with SE-linux interface documentation @tdlastend @trendcline
+@tr @tdmulrowempty @td Mar 2020 @tdend @tdlast Addition of Robust Location API in Location Configurator and call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Feb 2020 @tdend @tdlast Addition of Location Configurator APIs and call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Jan 2020 @tdend @tdlast Addition of Socks Proxy to Data Networking APIs and call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Jan 2020 @tdend @tdlast Addition of Data software bridge management APIs and call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Nov 2019 @tdend @tdlast Addition of Compressed audio format playback on voice paths APIs and call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Nov 2019 @tdend @tdlast Addition of Data Networking APIs and call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Nov 2019 @tdend @tdlast Addition of Audio Format Transcoding APIs and call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Oct 2019 @tdend @tdlast Addition of Location constraint time uncertainty APIs and call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Oct 2019 @tdend @tdlast Addition of Location concurrent report APIs and call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Oct 2019 @tdend @tdlast Addition of Data Filter APIs and call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Sep 2019 @tdend @tdlast Addition of modem config APIs and related call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Sep 2019 @tdend @tdlast Addition of Audio APIs for compressed audio format playback and related call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Sep 2019 @tdend @tdlast Addition of Audio APIs for Loopback, Tone Generator and related call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Sep 2019 @tdend @tdlast Addition of Remote SIM APIs and call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Jul 2019 @tdend @tdlast Addition of Thermal shutdown manager APIs and call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Jul 2019 @tdend @tdlast Updated the Location APIs and call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Jun 2019 @tdend @tdlast Addition of Audio APIs for play, capture, DTMF and related call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td May 2019 @tdend @tdlast Addition of TCU Activity Management APIs and call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Mar 2019 @tdend @tdlast Addition of Thermal manager APIs and call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Jan 2019 @tdend @tdlast Addition of Audio APIs and call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Nov 2018 @tdend @tdlast Addition of C-V2X APIs @tdlastend @trendcline
+@tr @tdmulrowempty @td Oct 2018 @tdend @tdlast Addition of Network Selection and Serving System Management APIs and call flows @tdlastend @trendcline
+@tr @tdmulrowempty @td Jun 2018 @tdend @tdlast Added Cellular Connection Management APIs @tdlastend @trendcline
+@tr @tdmulrowempty @td Dec 2017 @tdend @tdlast Added subscription APIs and section on Versioning and API Status @tdlastend @trendcline
+@tr @tdmulrowempty @td Sep 2017 @tdend @tdlast Initial release @tdlastend @trend
+
+@tableend
+@latexonly \rm @endlatexonly
+
+@newpage
+@latexonly
+%Define headers/footers for rest of document.
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sl\sffamily\footnotesize{\doctitleheader}}
+\fancyhead[R]{\sl\sffamily\footnotesize\firstleftmark}
+\fancyfoot[L]{\sffamily\footnotesize\dcn}
+%For Regular Distribution, comment out the next two lines
+%\fancyfoot[C]{\sffamily\footnotesize \copyrighttext}
+%\fancyfoot[R]{\sffamily\footnotesize\thepage \\ \begin{center}\sffamily\footnotesize\textbf \copyrightreserved \end{center}}
+%For Regular Distribution, uncomment the next two lines
+\fancyfoot[C]{\sffamily\scriptsize\textbf{MAY CONTAIN U.S. AND INTERNATIONAL EXPORT CONTROLLED INFORMATION}}
+\fancyfoot[R]{\sffamily\footnotesize\thepage }
+\renewcommand\footrulewidth{.2pt} %Adds a rule (line) to footer.
+
+\tocloftpagestyle{plain} %Sets the page style for the first page of the ToC. The "plain" style removes any previously defined headers/footers and only includes a page number in the footer.
+\bookmarktableofcontents %Generates a bookmark for the TOC.
+\textsf{\tableofcontents} %Generates the TOC on the second run.
+\pagestyle{fancy} %Redefines the page style to use the fancyhdr package to turn on the custom page style.
+\tocloftpagestyle{fancy}
+\bookmarklistoffigures %AD. LB 5/1/15. Generates a bookmark for the LOF.
+\newpage
+\listoffigures %Generates the LOF on the second run. If there are not figures, comment out this line.
+%\vspace{40pt}%AD. LB 5/1/15. Space prior to List of Tables. Comment out this line if there is no LOF.
+%\bookmarklistoftables %Generates the LOT on the second run. If there are no tables, comment out this line.
+%\listoftables %Generates the LOT on the second run. If there are no tables, comment out this line.
+@endlatexonly
+
+*/

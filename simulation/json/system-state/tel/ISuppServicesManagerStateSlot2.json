@@ -1,0 +1,36 @@
+{
+    "ISuppServicesManager" :
+    {
+        "CallWaitingPref" :
+        {
+            "SuppServicesStatus" : 1
+        },
+        "CallForwardingPref" :
+        {
+            "ForwardInfoList" :
+            [
+               {
+                   "SuppServicesStatus" : 2,
+                   "ForwardOperation" : -1,
+                   "ForwardReason" : 1,
+                   "ServiceClass" : " 1 ",
+                   "Number" : "",
+                   "NoReplyTimer" : 0
+               },
+               {
+                  "SuppServicesStatus" : 2,
+                  "ForwardOperation" : -1,
+                  "ForwardReason" : 2,
+                  "ServiceClass" : " 1 ",
+                  "Number" : "",
+                  "NoReplyTimer" : 0
+               }
+            ]
+        },
+        "CallOirPref" :
+        {
+           "SuppServicesStatus" : 2,
+           "ServiceClass" : " 1 "
+        }
+    }
+}

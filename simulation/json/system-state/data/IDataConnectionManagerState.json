@@ -1,0 +1,39 @@
+{
+	"IDataConnectionManager": {
+		"getDefaultProfile": {
+			"profileId": 1,
+			"slotId": 1
+		},
+		"getSlotId": {
+			"slotId": 1
+		},
+		"requestRoamingMode": {
+			"isRoamingEnabled": false,
+			"profileId": 1
+		},
+		"requestThrottledApnInfo": {
+			"apnThrottleInfo": [
+				{
+					"apnName": "ims",
+					"profileIds": [1],
+					"ipv4time": 40200,
+					"ipv6time": 40200,
+					"isBlocked": true,
+					"mcc": 301,
+					"mnc": 101
+				},
+				{
+					"apnName": "w1v4v6.com",
+					"profileIds": [2],
+					"ipv4time": 40200,
+					"ipv6time": 40200,
+					"isBlocked": true,
+					"mcc": 301,
+					"mnc": 101
+				}
+
+			]
+
+		}
+	}
+}

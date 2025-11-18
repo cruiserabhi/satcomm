@@ -1,0 +1,9 @@
+Name: libtelux_therm
+Version: @SDK_VERSION@
+Description: This simulation library contains APIs for fetching thermal information in a simulated SDK environment.
+
+prefix=@CMAKE_INSTALL_PREFIX@
+includedir=@CMAKE_INSTALL_INCLUDEDIR@
+libdir=@CMAKE_INSTALL_LIBDIR@
+Cflags:-I${includedir} -I${includedir}/telux
+Libs: -L${libdir} -ltelux_therm

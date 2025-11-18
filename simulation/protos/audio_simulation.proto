@@ -1,0 +1,536 @@
+/*
+ *  Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
+ *  SPDX-License-Identifier: BSD-3-Clause-Clear
+ */
+
+ syntax = "proto3";
+
+ package audioStub;
+
+ import "google/protobuf/any.proto";
+ import "google/protobuf/empty.proto";
+
+ import "common_simulation.proto";
+
+
+ /*******************************************************************
+  * Services Definition                                             *
+  *******************************************************************/
+
+ /*
+  * This service is used to execute AudioManager related APIs.
+  */
+ service AudioService {
+     rpc ClientConnected(AudioClientConnect) returns (commonStub.GetServiceStatusReply) {}
+     rpc ClientDisconnected(AudioClientDisconnect) returns (google.protobuf.Empty) {}
+     rpc CreateStream(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc DeleteStream(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc GetStreamDevices(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc SetStreamDevices(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc GetStreamMuteStatus(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc SetStreamMute(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc GetStreamVolume(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc SetStreamVolume(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc StartAudio(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc StopAudio(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc PlayDtmfTone(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc StopDtmfTone(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc GetDevices(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc GetStreamTypes(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc GetCalibrationInitStatus(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc Write(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc Read(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc PlayTone(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc StopTone(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc CreateTranscoder(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc DeleteTranscoder(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc Flush(AudioRequest) returns (commonStub.StatusMsg) {}
+     rpc Drain(AudioRequest) returns (commonStub.StatusMsg) {}
+     /*
+      * When a client connects to the server, the audio requests are sent using the above unary
+      * rpc calls and the status of the request is returned in the response of the rpc call. If the
+      * status of the audio request is success then it's offloaded to audio server for processing.
+      *
+      * To send async response from the server a server-side grpc stream is established when the
+      * client connects. Client listens on the ClientReader of this stream for async responses.
+      * Audio server after processing the request, sends the response to the client using the
+      * ServerWriter of the grpc stream.
+      *
+      * This stream is established per client.
+      */
+     rpc SetupAsyncResponseStream(AudioClientConnect) returns (stream AsyncResponseMessage) {}
+
+ }
+
+ /*******************************************************************
+  * Messages Definition                                             *
+  *******************************************************************/
+
+ /* Various enumerations and data type used with telsdk audio APIs */
+
+// @ref: telux::audio::DeviceDirection
+message DeviceDirection {
+    enum Type {
+        DUMMY = 0;
+        RX = 1;
+        TX = 2;
+        NONE = -1;
+    }
+    Type type = 1;
+}
+
+// @ref: telux::audio::DeviceType
+message DeviceType {
+    enum Type {
+        DUMMY = 0;
+        DEVICE_TYPE_SPEAKER = 1;
+        DEVICE_TYPE_SPEAKER_2 = 2;
+        DEVICE_TYPE_SPEAKER_3 = 3;
+        DEVICE_TYPE_BT_SCO_SPEAKER = 4;
+        DEVICE_TYPE_PROXY_SPEAKER = 5;
+        DEVICE_TYPE_MIC = 257;
+        DEVICE_TYPE_MIC_2 = 258;
+        DEVICE_TYPE_MIC_3 = 259;
+        DEVICE_TYPE_BT_SCO_MIC = 260;
+        DEVICE_TYPE_PROXY_MIC = 261;
+        DEVICE_TYPE_NONE = -1;
+    }
+    Type type = 1;
+}
+
+// Mapped telux::audio::ChannelType
+message ChannelType {
+    enum Type {
+        DUMMY = 0;
+        LEFT = 1;
+        RIGHT = 2;
+        BOTH = 3;
+    }
+    Type type = 1;
+}
+
+// Mapped to telux::audio::AudioFormat
+message AudioFormat {
+    enum Type {
+        DUMMY = 0;
+        PCM_16BIT_SIGNED = 1;
+        /** Adaptive multirate narrow band format */
+        AMRNB = 2;
+        /** Adaptive multirate wide band format */
+        AMRWB = 3;
+        /** Extended adaptive multirate wide band format */
+        AMRWB_PLUS = 4;
+        UNKNOWN = -1;
+    }
+    Type type = 1;
+}
+
+/**
+ * Representative of type of frame structure.
+ * Typical transport interface or file storage.
+ */
+message AmrwbpFrameFormat {
+    enum Type {
+        TRANSPORT_INTERFACE_FORMAT = 0;
+        FILE_STORAGE_FORMAT = 1;
+        UNKNOWN = -1; /**< Unknown format */
+    }
+    Type type = 1;
+};
+
+/**
+ *  Frame format codec specific parameters
+ */
+message AmrwbpParams {
+    uint32 bitWidth = 1; /**< Bitwidth of Stream, Typical Values <16/24>. */
+    AmrwbpFrameFormat frameFormat = 2;
+};
+
+/**
+ *  Represents information about the audio format.
+ */
+message FormatInfo {
+    uint32 inSampleRate = 1; /**< Sample Rate of audio, Typical Values <8k/16k/32k/48k> */
+    ChannelType inChannelType = 2; /**< parameter for configuration of channel type */
+    AudioFormat inAudioFormat = 3;  /**< Represents audio format */
+    AmrwbpParams inParams = 4; /**< Represents codec specific parameters, like Frame Format */
+    uint32 outSampleRate = 5; /**< Sample Rate of audio, Typical Values <8k/16k/32k/48k> */
+    ChannelType outChannelType = 6; /**< parameter for configuration of channel type */
+    AudioFormat outAudioFormat = 7;  /**< Represents audio format */
+    AmrwbpParams outParams = 8; /**< Represents codec specific parameters, like Frame Format */
+};
+
+
+// @ref: telux::audio::EcnrMode
+message EcnrMode {
+    enum Type {
+        DISABLE = 0;
+        ENABLE = 1;
+    }
+    Type type = 1;
+}
+
+// @ref: telux::audio::Direction
+message Direction {
+    enum Type {
+        DUMMY = 0;
+        RX = 1;
+        TX = 2;
+    }
+    Type type = 1;
+}
+
+// @ref: telux::audio::StreamDirection
+message StreamDirection {
+    enum Type {
+        DUMMY = 0;
+        RX = 1;
+        TX = 2;
+        NONE = -1;
+    }
+    Type type = 1;
+}
+
+// Mapped to telux::audio::StreamType
+message StreamType {
+    enum Type {
+        VOICE_CALL = 0;
+        PLAY = 1;
+        CAPTURE = 2;
+    }
+    Type type = 1;
+}
+
+// @ref: telux::audio::CalibrationInitStatus
+message CalibrationInitStatus {
+    enum Type {
+        INIT_SUCCESS = 0;
+        INIT_FAILED = 1;
+        UNKNOWN = -1;
+    }
+    Type type = 1;
+}
+
+// @ref: telux::audio::DtmfLowFreq
+message DtmfLowFreq {
+    enum Type {
+        DUMMY = 0;
+        FREQ_697 = 697;
+        FREQ_770 = 770;
+        FREQ_852 = 852;
+        FREQ_941 = 941;
+    }
+    Type type = 1;
+}
+
+// @ref: telux::audio::DtmfHighFreq
+message DtmfHighFreq {
+    enum Type {
+        DUMMY = 0;
+        FREQ_1209 = 1209;
+        FREQ_1336 = 1336;
+        FREQ_1477 = 1477;
+        FREQ_1633 = 1633;
+    }
+    Type type = 1;
+}
+
+// @ref: telux::audio::StreamConfig.
+message StreamConfig {
+    int32 slotId = 1;
+    StreamType streamType = 2;
+    uint32 sampleRate = 3;
+    ChannelType channelType = 4;
+    repeated DeviceType deviceTypes = 5;
+    AudioFormat audioFormat = 6;
+    EcnrMode ecnrMode = 7;
+    // Represent voice path direction for in call audio.
+    repeated Direction voicePaths = 8;
+    bool enableHpcm = 9;
+}
+
+// Used to pass the stream parameter for created stream.
+message CreatedStreamInfo {
+    StreamType streamType = 1;
+    uint32 streamId = 2;
+    uint32 readMinSize = 3;
+    uint32 readMaxSize = 4;
+    uint32 writeMinSize = 5;
+    uint32 writeMaxSize = 6;
+}
+
+// Used to pass the stream parameter for created stream.
+message CreatedTranscoderInfo {
+    uint32 inStreamId = 1;
+    uint32 outStreamId = 2;
+    uint32 readMinSize = 3;
+    uint32 readMaxSize = 4;
+    uint32 writeMinSize = 5;
+    uint32 writeMaxSize = 6;
+}
+
+/* Messages for audio requests. These are sent as part of any message in AudioRequest. */
+
+// Mapped to telux::audio::IAudioDevice
+message SubsystemDevice {
+    DeviceType deviceType = 1;
+    DeviceDirection direction = 2;
+}
+
+message StreamMute {
+    bool enable = 1;
+    StreamDirection direction = 2;
+}
+
+message StreamVolume {
+    repeated ChannelVolume volume = 1;
+    StreamDirection direction = 2;
+}
+
+message DtmfTone {
+    DtmfLowFreq lowFreq = 1;
+    DtmfHighFreq highFreq = 2;
+    StreamDirection direction = 3;
+}
+
+message ChannelVolume {
+    ChannelType channelType = 1;
+    // Volume range in float <0 to 1.0>
+    float vol = 2;
+}
+
+// Pass the list of the supported audio devices from audio server to client.
+message GetDevicesResponse {
+    repeated SubsystemDevice devices = 1;
+}
+
+// Pass the list of the supported audio stream types from audio server to client.
+message GetStreamTypesResponse {
+    repeated StreamType streamTypes = 1;
+}
+
+// Gets the current initialization status of the audio calibration database (ACDB).
+message GetCalibrationInitStatusResponse {
+    CalibrationInitStatus calStatus = 1;
+}
+
+message CreateStreamRequest {
+StreamConfig streamConfig = 1;
+}
+
+message CreateStreamResponse {
+CreatedStreamInfo createdStreamInfo = 1;
+}
+
+message DeleteStreamRequest {
+    uint32 streamId = 1;
+}
+
+message DeleteStreamResponse {
+    uint32 streamId = 1;
+}
+
+message DeleteTranscoder {
+    uint32 inStreamId = 1;
+    uint32 outStreamId = 2;
+}
+
+message SetMuteRequest {
+    uint32 streamId = 1;
+    StreamMute muteStatus = 2;
+}
+
+message SetMuteResponse {
+    uint32 streamId = 1;
+}
+
+message GetMuteRequest {
+    uint32 streamId = 1;
+    StreamDirection dir = 2;
+}
+
+message GetMuteResponse {
+    uint32 streamId = 1;
+    StreamMute muteStatus = 2;
+}
+
+message SetVolumeRequest {
+    uint32 streamId = 1;
+    StreamVolume volume = 2;
+}
+
+message SetVolumeResponse {
+    uint32 streamId = 1;
+}
+
+message GetVolumeRequest {
+    uint32 streamId = 1;
+    StreamDirection dir = 2;
+}
+
+message GetVolumeResponse {
+    uint32 streamId = 1;
+    StreamVolume volumeInfo = 2;
+}
+
+message SetDeviceRequest {
+    uint32 streamId = 1;
+    repeated DeviceType deviceTypes = 2;
+}
+
+message SetDeviceResponse {
+    uint32 streamId = 1;
+}
+
+message GetDeviceRequest {
+    uint32 streamId = 1;
+}
+
+message GetDeviceResponse {
+    uint32 streamId = 1;
+    repeated DeviceType deviceTypes = 2;
+}
+
+message StartDtmfToneRequest {
+    DtmfTone dtmfTone = 1;
+    /* Gain and duration are uint16 on target. Protobuf supports only uint32 and uint64. Hence,
+     * using uint32 for transporting.
+     */
+    uint32 duration = 2;
+    uint32 gain = 3;
+    uint32 streamId = 4;
+}
+
+message StartDtmfToneResponse {
+uint32 streamId = 1;
+}
+
+message StopDtmfToneRequest {
+    uint32 streamId = 1;
+    StreamDirection dir = 2;
+}
+
+message StopDtmfToneResponse {
+uint32 streamId = 1;
+}
+
+message StartStreamRequest {
+    uint32 streamId = 1;
+}
+
+message StartStreamResponse {
+    uint32 streamId = 1;
+}
+
+message StopStreamRequest {
+    uint32 streamId = 1;
+}
+
+message StopStreamResponse {
+    uint32 streamId = 1;
+}
+
+message FlushRequest {
+    uint32 streamId = 1;
+}
+
+message FlushResponse {
+    uint32 streamId = 1;
+}
+
+message DrainRequest {
+    uint32 streamId = 1;
+}
+
+message DrainResponse {
+    uint32 streamId = 1;
+}
+
+message writeRequest {
+    bytes buffer = 1;
+    uint32 dataLength = 2;
+    uint32 isLastBuffer = 3;
+    uint32 streamId = 4;
+    uint32 offset = 5;
+    int64 timeStamp = 6;
+}
+
+message writeResponse {
+    uint32 streamId = 1;
+    uint32 dataLength = 2;
+}
+
+message readRequest {
+    uint32 streamId = 1;
+    uint32 numBytesToRead = 2;
+}
+
+message readResponse {
+    uint32 streamId = 1;
+    uint32 dataLength = 2;
+    bytes buffer = 3;
+}
+
+message PlayToneRequest {
+    repeated uint32 freq = 1;
+    uint32 duration = 2;
+    uint32 gain = 3;
+    uint32 streamId = 4;
+}
+
+message PlayToneResponse {
+    uint32 streamId = 1;
+}
+
+message StopToneRequest {
+    uint32 streamId = 1;
+}
+
+message StopToneResponse {
+    uint32 streamId = 1;
+}
+
+message DrainEvent {
+    uint32 streamId = 1;
+}
+
+message WriteReadyEvent {
+    uint32 streamId = 1;
+}
+
+
+/* Messages for audio requests. These are sent as part of any message in AudioRequest. */
+message AudioClientConnect {
+    /*
+     * When a client connects to the server, a server-side stream is established for async response.
+     * Server caches serverWriter with clientId. When multiple clients are connected, to send
+     * response for an audio request server uses clientId to identify the serverWriter and sends
+     * the response on that particular stream.
+     */
+    int32 clientId = 1;
+}
+
+message AudioClientDisconnect {
+    int32 clientId = 1;
+}
+
+message AudioRequest {
+    uint32 msgId = 1;
+    /*
+     * cmdId is associated with each audio request. On the client side library, when a request is
+     * received, the result listener for that request is cached against cmdId. When a response is
+     * received with particular cmdId, the corresponding result listener is invoked.
+     */
+    int32 cmdId = 2;
+    int32 clientId = 3;
+    google.protobuf.Any any = 4;
+
+}
+
+message AsyncResponseMessage {
+    int32 msgId = 1;
+    int32 cmdId = 2;
+    /* All audio response are converted to any type message and sent on the server-side stream.*/
+    google.protobuf.Any any = 3;
+    commonStub.ErrorCode error = 4;
+ }

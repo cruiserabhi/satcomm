@@ -1,0 +1,9 @@
+Name: libtelux_platform_diag
+Version: @SDK_VERSION@
+Description: This library contains implementation of Diagnostics related service APIs.
+
+prefix=@CMAKE_INSTALL_PREFIX@
+includedir=@CMAKE_INSTALL_INCLUDEDIR@
+libdir=@CMAKE_INSTALL_LIBDIR@
+Cflags:-I${includedir} -I${includedir}/telux
+Libs: -L${libdir} -ltelux_platform_diag

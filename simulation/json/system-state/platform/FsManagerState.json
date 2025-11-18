@@ -1,0 +1,12 @@
+{
+    "fsEventsState": {
+        "EFS_BACKUP_START": false,
+        "EFS_BACKUP_END": false,
+        "EFS_RESTORE_START": true,
+        "EFS_RESTORE_END": false,
+        "MRC_OTA_START": false,
+        "MRC_OTA_END": false,
+        "MRC_OTA_RESUME": false,
+        "MRC_ABSYNC": false
+    }
+}

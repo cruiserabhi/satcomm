@@ -1,0 +1,112 @@
+{
+    "ISmsManager" :
+    {
+        "IsSubsystemReady" : "SERVICE_AVAILABLE",
+        "IsSubsystemReadyDelay" : 100,
+        "DefaultCallbackDelay" : 400,
+        "setSmscAddress" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestSmscAddress" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestSmsMessageList" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "deleteMessage" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "readMessage" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "sendSmsDeprecated" :
+        [
+            {
+                "numberOfSegments" : 2,
+                "status" : "SUCCESS"
+            },
+            {
+                "sentCallbackErrorCode" : "SUCCESS",
+                "sentCallbackDelay" : 9000,
+                "sentCallbackMsgRefs" : "1 2"
+            },
+            {
+                "deliveryCallbackErrorCode" : "SUCCESS",
+                "deliveryCallbackDelay" : 9000
+            }
+        ],
+        "sendRawSms" :
+        [
+            {   "receiverAddress" : "0909999994587",
+                "status" : "SUCCESS"
+            },
+            {
+                "smsResponseCbErrorCode" : "SUCCESS",
+                "smsResponseCbDelay" : 9000,
+                "smsResponseCbMsgRefs" : "1 2"
+            },
+            {
+                "onDeliveryReportErrorCode" : "SUCCESS",
+                "onDeliveryReportMsgRef" : 1,
+                "onDeliveryReportCallbackDelay" : 12000
+            },
+            {
+                "onDeliveryReportErrorCode" : "SUCCESS",
+                "onDeliveryReportMsgRef" : 2,
+                "onDeliveryReportCallbackDelay" : 12000
+            }
+        ],
+        "sendSms" :
+        [
+            {   "numberOfSegments" : 2,
+                "status" : "SUCCESS"
+            },
+            {
+                "smsResponseCbErrorCode" : "SUCCESS",
+                "smsResponseCbDelay" : 9000,
+                "smsResponseCbMsgRefs" : "1 2"
+            },
+            {
+                "onDeliveryReportErrorCode" : "SUCCESS",
+                "onDeliveryReportMsgRef" : 1,
+                "onDeliveryReportCallbackDelay" : 12000
+            },
+            {
+                "onDeliveryReportErrorCode" : "SUCCESS",
+                "onDeliveryReportMsgRef" : 2,
+                "onDeliveryReportCallbackDelay" : 12000
+            }
+        ],
+        "requestStorageDetails" :
+        {
+            "requestStorageDetailsCbMaxCount" : 10,
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "setPreferredStorage" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "requestPreferredStorage" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        },
+        "setTag" :
+        {
+            "status" : "SUCCESS",
+            "error" : "SUCCESS"
+        }
+    }
+}

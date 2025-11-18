@@ -1,0 +1,67 @@
+# eCall MSD as per EN 15733 standard
+# possible set of values 0=FALSE, 1=TRUE
+
+MESSAGE_IDENTIFIER = 1
+AUTOMATIC_ACTIVATION = 1
+TEST_CALL = 0
+POSITION_CAN_BE_TRUSTED = 1
+
+# VEHICLE_TYPE specifies a vehicle class
+# Possible VEHICLE_TYPE values are 0 to 12
+#  0=passenger vehicle class M1
+#  1=buses and coaches class M2,
+#  2=buses and coaches class M3,
+#  3=light commercial vehicles class N1,
+#  4=heavy duty vehicles class N2,
+#  5=heavy duty vehicles class N3,
+#  6=motorcycles class L1e,
+#  7=motorcycles class L2e,
+#  8=motorcycles class L3e,
+#  9=motorcycles class L4e,
+#  10=motorcycles class L5e,
+#  11=motorcycles class L6e,
+#  12=motorcycles class L7e,
+VEHICLE_TYPE = 0
+
+ISO_WMI = ECA
+ISO_VDS = LLEXAM
+ISO_VIS_MODEL_YEAR = P
+ISO_VIS_SEQ_PLANT = LE02013
+GASOLINE_TANK_PRESENT = 1
+DIESEL_TANK_PRESENT = 0
+COMPRESSED_NATURALGAS = 0
+LIQUID_PROPANE_GAS = 0
+ELECTRIC_ENERGY_STORAGE = 0
+HYDROGEN_STORAGE = 0
+OTHER_STORAGE = 0
+TIMESTAMP = 1367878452
+VEHICLE_POSITION_LATITUDE = 118422000
+VEHICLE_POSITION_LONGITUDE = -421902360
+VEHICLE_DIRECTION = 45
+NUMBER_OF_PASSENGERS_PRESENT = 1
+NUMBER_OF_PASSENGERS = 2
+OPTIONAL_ADDITIONAL_DATA_PRESENT = 1
+EUROPEAN_ECALL_OID = 8.1
+# If already encoded optional additional data content is available, fill "EUROPEAN_ECALL_OAD",
+# otherwise fill Euro NCAP optional additional data content fields.
+# For example, EUROPEAN_ECALL_OAD = 0832D28480
+#############################################
+# Below are the Euro NCAP optional additional data content fields.
+EURONCAP_LOCATION_OF_IMPACT = 2
+# Possible LOCATION_OF_IMPACT values are 0 to 6
+#  0 = unknown
+#  1 = none,
+#  2 = front,
+#  3 = rear,
+#  4 = driver_side,
+#  5 = non_driver_side,
+#  6 = other
+EURONCAP_ROLL_OVER_DETECTED_PRESENT = 0
+EURONCAP_ROLL_OVER_DETECTED = 0
+# Range limit is 100 to 255
+EURONCAP_DELTAV_RANGELIMIT = 125
+# Delta VX range is -255 to 255
+EURONCAP_DELTAV_DELTAVX = -45
+# Delta VY range is -255 to 255
+EURONCAP_DELTAV_DELTAVY = 10
+#############################################

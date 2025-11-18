@@ -1,0 +1,135 @@
+/*
+ *  Copyright (c) 2017-2021, The Linux Foundation. All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are
+ *  met:
+ *    * Redistributions of source code must retain the above copyright
+ *      notice, this list of conditions and the following disclaimer.
+ *    * Redistributions in binary form must reproduce the above
+ *      copyright notice, this list of conditions and the following
+ *      disclaimer in the documentation and/or other materials provided
+ *      with the distribution.
+ *    * Neither the name of The Linux Foundation nor the names of its
+ *      contributors may be used to endorse or promote products derived
+ *      from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED
+ *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ *  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT
+ *  ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS
+ *  BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ *  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+ *  IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+/*
+ *  Changes from Qualcomm Innovation Center, Inc. are provided under the following license:
+ *
+ *  Copyright (c) 2021-2023 Qualcomm Innovation Center, Inc. All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted (subject to the limitations in the
+ *  disclaimer below) provided that the following conditions are met:
+ *
+ *      * Redistributions of source code must retain the above copyright
+ *        notice, this list of conditions and the following disclaimer.
+ *
+ *      * Redistributions in binary form must reproduce the above
+ *        copyright notice, this list of conditions and the following
+ *        disclaimer in the documentation and/or other materials provided
+ *        with the distribution.
+ *
+ *      * Neither the name of Qualcomm Innovation Center, Inc. nor the names of its
+ *        contributors may be used to endorse or promote products derived
+ *        from this software without specific prior written permission.
+ *
+ *  NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE
+ *  GRANTED BY THIS LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT
+ *  HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
+ *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ *  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ *  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ *  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+ *  IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ *  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+ *  IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*=============================================================================
+                             Edit History
+when       who     what, where, why
+--------   ---     ------------------------------------------------------------
+10/13/23   FS      Added support for Diagnostics Services in Telematics SDK
+03/06/23   MH      Added documentation for thermal notifications.
+11/02/22   FS      Added support for WLAN feature in Telematics SDK
+01/10/22   BS      Added documentation for sensor self test.
+12/24/21   MH      Added documentation for ECALL and OTA operations
+11/25/21   RR      Added support for Xtra feature for location in Telematics SDK
+08/17/21   FS      Added documentation for subsystem restart handling
+08/09/21   BS      Added further EFS API related information for platform subsystem
+07/02/21   BS      Updated thermal subsystem readiness flow for new methodology
+06/16/21   SS      Added documentation for Remote SIM provisioning support in Telematics SDK
+06/07/21   BS      Added documentation for platform subsystem
+04/04/21   BS      Added documentation for sensor subsystem
+04/01/21   FS      Added new serving system manager APIs for Data
+02/12/21   RV      Added new sub system Readiness APIs for Audio
+01/29/21   FS      Updated data subsystem readiness flow for new methodology
+12/01/20   AK      Added Location SDK simulation libraries
+05/27/20   FS      Added L2TP Feature Support in Telematics SDK
+03/12/20   SD      Added robust location support to location configurator in Telematics SDK
+02/14/20   SD      Added location configurator support to Telematics SDK
+01/15/20   FS      Added Socks Proxy Feature Support in Telematics SDK
+01/15/20   SM      Added software bridge management support in Telematics SDK
+11/15/19   RV      Added compressed audio format playback on voice paths support in Telematics SDK
+11/10/19   FS      Added Data Networking Features support to Telematics SDK
+11/05/19   RV      Added Audio Format Transcoding Support in Telematics SDK
+10/22/19   SD      Added location constraint time uncertainty support to Telematics SDK
+10/22/19   SD      Added location concurrent reports support to Telematics SDK
+10/10/19   GS      Added Data Filter Support to Telematics SDK
+09/16/19   RV      Added Modem Config Support to Telematics SDK
+09/15/19   RV      Added Compressed Audio Format Playback support in Telematics SDK
+09/05/19   AK      Added Audio Loopback, Tone Generation support in Telematics SDK
+09/04/19   AG      Added Remote SIM support to Telematics SDK
+07/22/19   AK      Added Thermal Shutdown Management support in Telamatics SDK
+06/10/19   RK      Updated with Audio Play, Capture and DTMF support in Telematics SDK
+05/10/19   SM      Added TCU Activity management support in Telematics SDK
+01/28/19   RK      Updated with Audio support to the Telematics SDK
+02/27/17   LB      Created to support the Telematics SDK
+
+NOTE: for an appendix, the label must match the filename
+=============================================================================*/
+/**
+@page introduction Introduction
+
+@latexonly
+%Header/footers redefined for Revision History page. No header
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sl\sffamily\footnotesize\textbf{\doctitleheader}}
+\fancyhead[R]{\sl\sffamily\footnotesize\textbf{\firstleftmark}}
+\fancyfoot[L]{\sffamily\footnotesize\textbf{\dcn}}
+%For Regular Distribution, comment out the next two lines
+%\fancyfoot[C]{\sffamily\footnotesize \copyrighttext}
+%\fancyfoot[R]{\sffamily\footnotesize\thepage \\ \begin{center}\sffamily\footnotesize\textbf \copyrightreserved \end{center}}
+%For Regular Distribution, uncomment the next two lines
+\fancyfoot[C]{\sffamily\scriptsize\textbf{MAY CONTAIN U.S. AND INTERNATIONAL EXPORT CONTROLLED INFORMATION}}
+\fancyfoot[R]{\sffamily\footnotesize\thepage }
+\renewcommand\footrulewidth{.2pt} %Adds a rule (line) to footer.
+@endlatexonly
+
+@section sec_purpose Purpose
+The Telematics software development kit (TelSDK) is a set of application programming interfaces (APIs) that provide access to the QTI-specific hardware and software capabilities.
+
+The primary purpose of this document is to outline various features of TelSDK and demonstrate how to use various TelSDK APIs to develop an application. It provides sample application's source code to familiarize developer with the API usage.
+
+@section sec_scope Scope
+This document focusses on how to use TelSDK APIs to implement a given use-case. It assumes that the developer is familiar with Linux and C++11 programming.
+
+*/
