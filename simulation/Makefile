@@ -6,8 +6,15 @@ export ROOTFS_BN := $(shell basename ${ROOTFS})
 export PATH := ${SIM_REPO}/build/build/bin:$(PATH)
 
 THIRD_PARTY := ${SIM_REPO}/third_party
+DOWNLOAD_PROXY ?=
+DOWNLOAD_ENV := env
+ifneq (${DOWNLOAD_PROXY},)
+DOWNLOAD_ENV := env https_proxy=${DOWNLOAD_PROXY} http_proxy=${DOWNLOAD_PROXY}
+endif
+
 GRPC_VERSION ?= 1.52.1
 GRPC_ARCHIVE := ${THIRD_PARTY}/grpc-v${GRPC_VERSION}.tar.gz
+GRPC_ARCHIVE_URL ?= https://github.com/grpc/grpc/archive/refs/tags/v${GRPC_VERSION}.tar.gz
 GRPC_SRC_DIR := ${THIRD_PARTY}/grpc-${GRPC_VERSION}
 GRPC_BUILD_DIR := ${SIM_REPO}/build/build_grpc
 CMAKE_PREFIX_LIST := ${ROOTFS}/lib/cmake;/usr/lib/x86_64-linux-gnu/cmake
@@ -18,7 +25,7 @@ builddir:
 
 ${GRPC_ARCHIVE}:
 	mkdir -p ${THIRD_PARTY}
-	wget -O ${GRPC_ARCHIVE} https://github.com/grpc/grpc/archive/refs/tags/v${GRPC_VERSION}.tar.gz
+	${DOWNLOAD_ENV} wget -O ${GRPC_ARCHIVE} ${GRPC_ARCHIVE_URL}
 
 ${GRPC_SRC_DIR}/CMakeLists.txt: ${GRPC_ARCHIVE}
 	mkdir -p ${THIRD_PARTY}
@@ -55,7 +62,7 @@ jsoncpp: | builddir
 	fi
 
 cmake: | builddir
-	cd build && wget https://cmake.org/files/v3.15/cmake-3.15.3-Linux-x86_64.sh && chmod a+x ./cmake-3.15.3-Linux-x86_64.sh && ./cmake-3.15.3-Linux-x86_64.sh --prefix=${PWD}/build --skip-license && rm cmake-3.15.3-Linux-x86_64.sh
+	cd build && ${DOWNLOAD_ENV} wget https://cmake.org/files/v3.15/cmake-3.15.3-Linux-x86_64.sh && chmod a+x ./cmake-3.15.3-Linux-x86_64.sh && ./cmake-3.15.3-Linux-x86_64.sh --prefix=${PWD}/build --skip-license && rm cmake-3.15.3-Linux-x86_64.sh
 
 grpc: | builddir
 	mkdir -p ${ROOTFS}/bin ${ROOTFS}/include ${ROOTFS}/lib
