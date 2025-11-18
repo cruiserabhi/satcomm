@@ -12,20 +12,46 @@ ifneq (${DOWNLOAD_PROXY},)
 DOWNLOAD_ENV := env https_proxy=${DOWNLOAD_PROXY} http_proxy=${DOWNLOAD_PROXY}
 endif
 
+define download_with_fallback
+	@set -e; \
+	urls="$(1)"; \
+	out="$(2)"; \
+	mkdir -p $$(dirname $$out); \
+	for url in $$urls; do \
+	        echo "Fetching $$url -> $$out"; \
+	        if ${DOWNLOAD_ENV} wget -O $$out $$url; then exit 0; fi; \
+	        if [ -n "${DOWNLOAD_PROXY}" ]; then echo "Proxy download failed for $$url; retrying without proxy"; fi; \
+	        if env -u https_proxy -u http_proxy wget -O $$out $$url; then exit 0; fi; \
+	done; \
+	echo "ERROR: unable to download $$urls"; \
+	exit 1
+endef
+
 GRPC_VERSION ?= 1.52.1
 GRPC_ARCHIVE := ${THIRD_PARTY}/grpc-v${GRPC_VERSION}.tar.gz
 GRPC_ARCHIVE_URL ?= https://github.com/grpc/grpc/archive/refs/tags/v${GRPC_VERSION}.tar.gz
+GRPC_ARCHIVE_FALLBACK_URL ?= https://storage.googleapis.com/grpc-bazel-mirror/github.com/grpc/grpc/archive/refs/tags/v${GRPC_VERSION}.tar.gz
 GRPC_SRC_DIR := ${THIRD_PARTY}/grpc-${GRPC_VERSION}
 GRPC_BUILD_DIR := ${SIM_REPO}/build/build_grpc
 CMAKE_PREFIX_LIST := ${ROOTFS}/lib/cmake;/usr/lib/x86_64-linux-gnu/cmake
+
+JSONCPP_VERSION ?= 1.9.5
+JSONCPP_ARCHIVE := ${THIRD_PARTY}/jsoncpp-${JSONCPP_VERSION}.tar.gz
+JSONCPP_ARCHIVE_URL ?= https://github.com/open-source-parsers/jsoncpp/archive/refs/tags/${JSONCPP_VERSION}.tar.gz
+JSONCPP_ARCHIVE_FALLBACK_URL ?= https://downloads.sourceforge.net/project/jsoncpp/jsoncpp/${JSONCPP_VERSION}/jsoncpp-${JSONCPP_VERSION}.tar.gz
+JSONCPP_SRC_DIR := ${THIRD_PARTY}/jsoncpp-${JSONCPP_VERSION}
+JSONCPP_BUILD_DIR := ${SIM_REPO}/build/build_jsoncpp
+
+CMAKE_INSTALLER := ${SIM_REPO}/build/cmake-3.15.3-Linux-x86_64.sh
+CMAKE_INSTALLER_URL ?= https://cmake.org/files/v3.15/cmake-3.15.3-Linux-x86_64.sh
+CMAKE_INSTALLER_FALLBACK_URL ?= https://github.com/Kitware/CMake/releases/download/v3.15.3/cmake-3.15.3-Linux-x86_64.sh
 
 # Ensure the shared build directory exists before any targets that rely on it.
 builddir:
 	mkdir -p build
 
 ${GRPC_ARCHIVE}:
-	mkdir -p ${THIRD_PARTY}
-	${DOWNLOAD_ENV} wget -O ${GRPC_ARCHIVE} ${GRPC_ARCHIVE_URL}
+	$(call download_with_fallback,${GRPC_ARCHIVE_URL} ${GRPC_ARCHIVE_FALLBACK_URL},${GRPC_ARCHIVE})
 
 ${GRPC_SRC_DIR}/CMakeLists.txt: ${GRPC_ARCHIVE}
 	mkdir -p ${THIRD_PARTY}
@@ -38,7 +64,7 @@ rootfs: grpc jsoncpp all
 setup: cmake grpc jsoncpp
 
 clean:
-	rm -rf build/build_telux_headers build/build_sim build/build_apps
+	rm -rf build/build_telux_headers build/build_sim build/build_apps build/build_grpc build/build_jsoncpp
 
 cleanall: clean
 	rm -rf build simulation/protos/proto-src
@@ -47,37 +73,59 @@ headers: | builddir
 	cd build && mkdir -p build_telux_headers && cd build_telux_headers && cmake -DCMAKE_INSTALL_PREFIX=${ROOTFS} ../../include && make install
 
 jsoncpp: | builddir
-	if [ ! -d /usr/include/jsoncpp ] && [ ! -d /usr/include/json ]; then \
-		echo "jsoncpp development headers are missing; please install libjsoncpp-dev"; \
-		exit 1; \
-	fi
-	if ls /usr/lib/x86_64-linux-gnu/libjsoncpp.so* >/dev/null 2>&1; then \
-		mkdir -p ${ROOTFS}/include/jsoncpp ${ROOTFS}/lib; \
-		if [ -d /usr/include/jsoncpp ]; then cp -r /usr/include/jsoncpp/. ${ROOTFS}/include/jsoncpp/; fi; \
-		if [ -d /usr/include/json ]; then cp -r /usr/include/json/. ${ROOTFS}/include/jsoncpp/; fi; \
-		cp /usr/lib/x86_64-linux-gnu/libjsoncpp.so* ${ROOTFS}/lib/; \
+	mkdir -p ${ROOTFS}/include/jsoncpp ${ROOTFS}/lib
+	need_build=0; \
+	if [ -d /usr/include/jsoncpp ] || [ -d /usr/include/json ]; then \
+	        echo "Copying system jsoncpp headers into rootfs"; \
+	        if [ -d /usr/include/jsoncpp ]; then cp -r /usr/include/jsoncpp/. ${ROOTFS}/include/jsoncpp/; fi; \
+	        if [ -d /usr/include/json ]; then cp -r /usr/include/json/. ${ROOTFS}/include/jsoncpp/; fi; \
 	else \
-		echo "jsoncpp libraries are missing; please install libjsoncpp-dev"; \
-		exit 1; \
+	        need_build=1; \
+	fi; \
+	if ls /usr/lib/x86_64-linux-gnu/libjsoncpp.so* >/dev/null 2>&1; then \
+	        cp /usr/lib/x86_64-linux-gnu/libjsoncpp.so* ${ROOTFS}/lib/; \
+	else \
+	        need_build=1; \
+	fi; \
+	if [ $$need_build -eq 1 ] || [ ! -f ${ROOTFS}/lib/libjsoncpp.so ]; then \
+	        $(MAKE) jsoncpp-build; \
 	fi
+
+${JSONCPP_ARCHIVE}:
+	$(call download_with_fallback,${JSONCPP_ARCHIVE_URL} ${JSONCPP_ARCHIVE_FALLBACK_URL},${JSONCPP_ARCHIVE})
+
+${JSONCPP_SRC_DIR}/CMakeLists.txt: ${JSONCPP_ARCHIVE}
+	mkdir -p ${THIRD_PARTY}
+	tar -xzf ${JSONCPP_ARCHIVE} -C ${THIRD_PARTY}
+
+jsoncpp-build: ${JSONCPP_SRC_DIR}/CMakeLists.txt cmake | builddir
+	mkdir -p ${JSONCPP_BUILD_DIR}
+	cd ${JSONCPP_BUILD_DIR} && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBUILD_SHARED_LIBS=ON -DJSONCPP_WITH_TESTS=OFF -DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF -DCMAKE_INSTALL_PREFIX=${ROOTFS} ${JSONCPP_SRC_DIR}
+	cd ${JSONCPP_BUILD_DIR} && cmake --build . --target install -- -j $(shell nproc)
 
 cmake: | builddir
-	cd build && ${DOWNLOAD_ENV} wget https://cmake.org/files/v3.15/cmake-3.15.3-Linux-x86_64.sh && chmod a+x ./cmake-3.15.3-Linux-x86_64.sh && ./cmake-3.15.3-Linux-x86_64.sh --prefix=${PWD}/build --skip-license && rm cmake-3.15.3-Linux-x86_64.sh
+	$(call download_with_fallback,${CMAKE_INSTALLER_URL} ${CMAKE_INSTALLER_FALLBACK_URL},${CMAKE_INSTALLER})
+	chmod a+x ${CMAKE_INSTALLER}
+	cd build && ${CMAKE_INSTALLER} --prefix=${PWD}/build --skip-license
+	rm -f ${CMAKE_INSTALLER}
 
 grpc: | builddir
-	mkdir -p ${ROOTFS}/bin ${ROOTFS}/include ${ROOTFS}/lib
+	mkdir -p ${ROOTFS}/bin ${ROOTFS}/include ${ROOTFS}/lib ${ROOTFS}/lib/pkgconfig
 	if command -v grpc_cpp_plugin >/dev/null 2>&1 && pkg-config --exists protobuf grpc grpc++; then \
-		echo "Using system gRPC/protobuf artifacts"; \
-		cp $$(command -v grpc_cpp_plugin) ${ROOTFS}/bin/; \
-		if command -v protoc >/dev/null 2>&1; then cp $$(command -v protoc) ${ROOTFS}/bin/; fi; \
-		if pkg-config --variable=includedir protobuf >/dev/null 2>&1; then cp -r $$(pkg-config --variable=includedir protobuf)/google ${ROOTFS}/include/; fi; \
-		if pkg-config --variable=includedir grpc >/dev/null 2>&1; then cp -r $$(pkg-config --variable=includedir grpc)/grpc ${ROOTFS}/include/; fi; \
-		if pkg-config --variable=includedir grpc++ >/dev/null 2>&1; then cp -r $$(pkg-config --variable=includedir grpc++)/grpcpp ${ROOTFS}/include/; fi; \
-		find $$(pkg-config --variable=libdir protobuf) -maxdepth 1 -name 'libprotobuf*.so*' -exec cp {} ${ROOTFS}/lib/ \; && \
-		find $$(pkg-config --variable=libdir grpc) -maxdepth 1 -name 'libgrpc*.so*' -exec cp {} ${ROOTFS}/lib/ \; && \
-		find $$(pkg-config --variable=libdir grpc++) -maxdepth 1 -name 'libgrpc++*.so*' -exec cp {} ${ROOTFS}/lib/ \; ; \
+	        echo "Using system gRPC/protobuf artifacts"; \
+	        cp $$(command -v grpc_cpp_plugin) ${ROOTFS}/bin/; \
+	        if command -v protoc >/dev/null 2>&1; then cp $$(command -v protoc) ${ROOTFS}/bin/; fi; \
+	        if pkg-config --variable=includedir protobuf >/dev/null 2>&1; then cp -r $$(pkg-config --variable=includedir protobuf)/google ${ROOTFS}/include/; fi; \
+	        if pkg-config --variable=includedir grpc >/dev/null 2>&1; then cp -r $$(pkg-config --variable=includedir grpc)/grpc ${ROOTFS}/include/; fi; \
+	        if pkg-config --variable=includedir grpc++ >/dev/null 2>&1; then cp -r $$(pkg-config --variable=includedir grpc++)/grpcpp ${ROOTFS}/include/; fi; \
+	        if pkg-config --variable=pcfiledir protobuf >/dev/null 2>&1; then cp $$(pkg-config --variable=pcfiledir protobuf)/protobuf*.pc ${ROOTFS}/lib/pkgconfig/; fi; \
+	        if pkg-config --variable=pcfiledir grpc >/dev/null 2>&1; then cp $$(pkg-config --variable=pcfiledir grpc)/grpc*.pc ${ROOTFS}/lib/pkgconfig/; fi; \
+	        if pkg-config --variable=pcfiledir grpc++ >/dev/null 2>&1; then cp $$(pkg-config --variable=pcfiledir grpc++)/grpc++*.pc ${ROOTFS}/lib/pkgconfig/; fi; \
+	        find $$(pkg-config --variable=libdir protobuf) -maxdepth 1 -name 'libprotobuf*.so*' -exec cp {} ${ROOTFS}/lib/ \; || true; \
+	        find $$(pkg-config --variable=libdir grpc) -maxdepth 1 -name 'libgrpc*.so*' -exec cp {} ${ROOTFS}/lib/ \; || true; \
+	        find $$(pkg-config --variable=libdir grpc++) -maxdepth 1 -name 'libgrpc++*.so*' -exec cp {} ${ROOTFS}/lib/ \; || true; \
 	else \
-		$(MAKE) grpc-build; \
+	        $(MAKE) grpc-build; \
 	fi
 
 
