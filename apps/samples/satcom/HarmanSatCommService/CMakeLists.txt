@@ -27,7 +27,7 @@ set(SVC_SRC
   src/C_SatCommService.cpp
 )
 set(SVC_HDR
-  /HarmanSatCommService/include/C_SatCommService.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/C_SatCommService.hpp
 )
 
 add_library(harman_satcom_service SHARED ${SVC_SRC} ${SVC_HDR} ${CJSON_SRC})
@@ -38,7 +38,7 @@ install(TARGETS harman_satcom_service
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
         RUNTIME DESTINATION bin)
-install(DIRECTORY HarmanSatCommService/include DESTINATION HarmanSatCommService/include)
+install(FILES ${SVC_HDR} DESTINATION include/HarmanSatCommService)
 
 # ---------- AudioTest app ----------
 add_executable(AudioTest
