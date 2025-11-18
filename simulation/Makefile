@@ -1,4 +1,7 @@
-export SIM_REPO := ${PWD}
+export SIM_REPO := $(CURDIR)
+
+ROOTFS ?= $(SIM_REPO)/rootfs
+export ROOTFS
 export ROOTFS_BN := $(shell basename ${ROOTFS})
 
 all: apps
