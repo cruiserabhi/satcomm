@@ -17,7 +17,7 @@ DOWNLOAD_ENV := env https_proxy=${DOWNLOAD_PROXY} http_proxy=${DOWNLOAD_PROXY}
 endif
 
 define download_with_fallback
-	@set -e; \
+	set -e; \
 	urls="$(1)"; \
 	out="$(2)"; \
 	mkdir -p $$(dirname $$out); \
@@ -86,6 +86,47 @@ ${GRPC_ARCHIVE}:
 ${GRPC_SRC_DIR}/CMakeLists.txt: ${GRPC_ARCHIVE}
 	mkdir -p ${THIRD_PARTY}
 	tar -xzf ${GRPC_ARCHIVE} -C ${THIRD_PARTY}
+
+# Populate gRPC's bundled third_party sources so CMake does not attempt
+# to download them.  We prefer locally provided archives placed in the
+# repository root (DOWNLOAD_CACHE) before falling back to network URLs
+# that match the hashes referenced in grpc/bazel/grpc_deps.bzl.
+define ensure_grpc_dep
+	set -e; \
+	target_dir="$(1)"; \
+	archive_name="$(2)"; \
+	strip_components="$(3)"; \
+	urls="$(4)"; \
+	if [ -d $$target_dir ] && find $$target_dir -mindepth 1 -print -quit | grep -q .; then \
+		echo "Using existing $$target_dir"; \
+	else \
+		archive_path=${THIRD_PARTY}/$$archive_name; \
+		$(call download_with_fallback,$$urls,$$archive_path); \
+		mkdir -p $$target_dir; \
+		tar -xzf $$archive_path -C $$target_dir --strip-components=$$strip_components; \
+	fi
+endef
+
+grpc-deps: ${GRPC_SRC_DIR}/CMakeLists.txt
+	$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/abseil-cpp,abseil-cpp-20220623.0.tar.gz,1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/abseil/abseil-cpp/archive/20220623.0.tar.gz https://github.com/abseil/abseil-cpp/archive/20220623.0.tar.gz)
+	$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/cares/cares,c-ares-6654436a307a5a686b008c1d4c93b0085da6e6d8.tar.gz,1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/c-ares/c-ares/archive/6654436a307a5a686b008c1d4c93b0085da6e6d8.tar.gz https://github.com/c-ares/c-ares/archive/6654436a307a5a686b008c1d4c93b0085da6e6d8.tar.gz)
+	$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/re2,re2-2022-04-01.tar.gz,1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/google/re2/archive/2022-04-01.tar.gz https://github.com/google/re2/archive/2022-04-01.tar.gz)
+	$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/zlib,zlib-04f42ceca40f73e2978b50e93806c2a18c1281fc.tar.gz,1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/madler/zlib/archive/04f42ceca40f73e2978b50e93806c2a18c1281fc.tar.gz https://github.com/madler/zlib/archive/04f42ceca40f73e2978b50e93806c2a18c1281fc.tar.gz)
+	$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/boringssl-with-bazel,boringssl-6195bf8242156c9a2fa75702eee058f91b86a88b.tar.gz,1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/google/boringssl/archive/6195bf8242156c9a2fa75702eee058f91b86a88b.tar.gz https://github.com/google/boringssl/archive/6195bf8242156c9a2fa75702eee058f91b86a88b.tar.gz)
+	@# Prefer the locally supplied protobuf bundle when present.
+	@if [ -d ${GRPC_SRC_DIR}/third_party/protobuf ] && find ${GRPC_SRC_DIR}/third_party/protobuf -mindepth 1 -print -quit | grep -q .; then \
+		echo "Using existing ${GRPC_SRC_DIR}/third_party/protobuf"; \
+	elif [ -f ${REPO_TOP}/protobuf-33.1.tar.gz ]; then \
+		echo "Using local protobuf archive ${REPO_TOP}/protobuf-33.1.tar.gz"; \
+		mkdir -p ${GRPC_SRC_DIR}/third_party/protobuf; \
+		tar -xzf ${REPO_TOP}/protobuf-33.1.tar.gz -C ${GRPC_SRC_DIR}/third_party/protobuf --strip-components=1; \
+	else \
+		$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/protobuf,protobuf-24487dd1045c7f3d64a21f38a3f0c06cc4cf2edb.tar.gz,1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/protocolbuffers/protobuf/archive/24487dd1045c7f3d64a21f38a3f0c06cc4cf2edb.tar.gz https://github.com/protocolbuffers/protobuf/archive/24487dd1045c7f3d64a21f38a3f0c06cc4cf2edb.tar.gz); \
+	fi
+	$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/googleapis,googleapis-2f9af297c84c55c8b871ba4495e01ade42476c92.tar.gz,1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/googleapis/googleapis/archive/2f9af297c84c55c8b871ba4495e01ade42476c92.tar.gz https://github.com/googleapis/googleapis/archive/2f9af297c84c55c8b871ba4495e01ade42476c92.tar.gz)
+	$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/envoy-api,data-plane-api-bf6154e482bbd5e6f64032993206e66b6116f2bd.tar.gz,1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/envoyproxy/data-plane-api/archive/bf6154e482bbd5e6f64032993206e66b6116f2bd.tar.gz https://github.com/envoyproxy/data-plane-api/archive/bf6154e482bbd5e6f64032993206e66b6116f2bd.tar.gz)
+	$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/opencensus-proto,opencensus-proto-0.3.0.tar.gz,1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/census-instrumentation/opencensus-proto/archive/v0.3.0.tar.gz https://github.com/census-instrumentation/opencensus-proto/archive/v0.3.0.tar.gz)
+	$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/xds,xds-06c439db220b89134a8a49bad41994560d6537c6.tar.gz,1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/cncf/xds/archive/06c439db220b89134a8a49bad41994560d6537c6.tar.gz https://github.com/cncf/xds/archive/06c439db220b89134a8a49bad41994560d6537c6.tar.gz)
 
 all: apps
 
@@ -163,7 +204,7 @@ grpc: | builddir
 	fi
 
 
-grpc-build: ${GRPC_SRC_DIR}/CMakeLists.txt cmake | builddir
+grpc-build: ${GRPC_SRC_DIR}/CMakeLists.txt grpc-deps cmake | builddir
 	mkdir -p ${GRPC_BUILD_DIR}
 	cd ${GRPC_BUILD_DIR} && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${ROOTFS} -DgRPC_INSTALL=ON -DgRPC_BUILD_TESTS=OFF -DgRPC_ABSL_PROVIDER=module -DgRPC_CARES_PROVIDER=module -DgRPC_PROTOBUF_PROVIDER=module -DgRPC_RE2_PROVIDER=module -DgRPC_SSL_PROVIDER=module -DgRPC_ZLIB_PROVIDER=module ${GRPC_SRC_DIR}
 	cd ${GRPC_BUILD_DIR} && cmake --build . --target grpc_cpp_plugin -- -j $(shell nproc)
