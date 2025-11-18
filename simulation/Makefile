@@ -58,6 +58,24 @@ JSONCPP_ARCHIVE_FALLBACK_URL ?= https://downloads.sourceforge.net/project/jsoncp
 JSONCPP_SRC_DIR := ${THIRD_PARTY}/jsoncpp-${JSONCPP_VERSION}
 JSONCPP_BUILD_DIR := ${SIM_REPO}/build/build_jsoncpp
 
+CARES_ARCHIVE_NAME := c-ares-6654436a307a5a686b008c1d4c93b0085da6e6d8.tar.gz
+LOCAL_CARES_MAIN_ZIP ?= ${REPO_TOP}/c-ares-main.zip
+CARES_CACHE_ARCHIVE := ${DOWNLOAD_CACHE}/${CARES_ARCHIVE_NAME}
+CARES_LOCAL_PREREQ :=
+
+ifneq ($(wildcard ${LOCAL_CARES_MAIN_ZIP}),)
+CARES_LOCAL_PREREQ := ${CARES_CACHE_ARCHIVE}
+${CARES_CACHE_ARCHIVE}: ${LOCAL_CARES_MAIN_ZIP}
+	@mkdir -p $(dir ${CARES_CACHE_ARCHIVE})
+	@echo "Repacking ${LOCAL_CARES_MAIN_ZIP} into ${CARES_CACHE_ARCHIVE}"
+	@tmpdir=$$(mktemp -d); \
+		unzip -q ${LOCAL_CARES_MAIN_ZIP} -d $$tmpdir; \
+		srcdir=$$(find $$tmpdir -maxdepth 1 -type d -name 'c-ares-*' | head -n1); \
+		if [ -z "$$srcdir" ]; then echo "ERROR: Unable to locate c-ares sources in ${LOCAL_CARES_MAIN_ZIP}"; rm -rf $$tmpdir; exit 1; fi; \
+		tar -czf ${CARES_CACHE_ARCHIVE} -C $$tmpdir $$(basename $$srcdir); \
+		rm -rf $$tmpdir
+endif
+
 CMAKE_INSTALLER := ${SIM_REPO}/build/cmake-3.15.3-Linux-x86_64.sh
 CMAKE_INSTALLER_URL ?= https://cmake.org/files/v3.15/cmake-3.15.3-Linux-x86_64.sh
 CMAKE_INSTALLER_FALLBACK_URL ?= https://github.com/Kitware/CMake/releases/download/v3.15.3/cmake-3.15.3-Linux-x86_64.sh
@@ -107,9 +125,9 @@ define ensure_grpc_dep
 	fi
 endef
 
-grpc-deps: ${GRPC_SRC_DIR}/CMakeLists.txt
+grpc-deps: ${GRPC_SRC_DIR}/CMakeLists.txt ${CARES_LOCAL_PREREQ}
 	$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/abseil-cpp,abseil-cpp-20220623.0.tar.gz,1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/abseil/abseil-cpp/archive/20220623.0.tar.gz https://github.com/abseil/abseil-cpp/archive/20220623.0.tar.gz)
-	$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/cares/cares,c-ares-6654436a307a5a686b008c1d4c93b0085da6e6d8.tar.gz,1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/c-ares/c-ares/archive/6654436a307a5a686b008c1d4c93b0085da6e6d8.tar.gz https://github.com/c-ares/c-ares/archive/6654436a307a5a686b008c1d4c93b0085da6e6d8.tar.gz)
+	$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/cares/cares,${CARES_ARCHIVE_NAME},1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/c-ares/c-ares/archive/6654436a307a5a686b008c1d4c93b0085da6e6d8.tar.gz https://github.com/c-ares/c-ares/archive/6654436a307a5a686b008c1d4c93b0085da6e6d8.tar.gz)
 	$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/re2,re2-2022-04-01.tar.gz,1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/google/re2/archive/2022-04-01.tar.gz https://github.com/google/re2/archive/2022-04-01.tar.gz)
 	$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/zlib,zlib-04f42ceca40f73e2978b50e93806c2a18c1281fc.tar.gz,1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/madler/zlib/archive/04f42ceca40f73e2978b50e93806c2a18c1281fc.tar.gz https://github.com/madler/zlib/archive/04f42ceca40f73e2978b50e93806c2a18c1281fc.tar.gz)
 	$(call ensure_grpc_dep,${GRPC_SRC_DIR}/third_party/boringssl-with-bazel,boringssl-6195bf8242156c9a2fa75702eee058f91b86a88b.tar.gz,1,https://storage.googleapis.com/grpc-bazel-mirror/github.com/google/boringssl/archive/6195bf8242156c9a2fa75702eee058f91b86a88b.tar.gz https://github.com/google/boringssl/archive/6195bf8242156c9a2fa75702eee058f91b86a88b.tar.gz)
